@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:docs.mercury.com)",
+      "WebFetch(domain:docs.dify.ai)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(dify plugin package:*)",
+      "Bash(ls:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(tree:*)",
+      "Bash(dify plugin checksum:*)",
+      "Bash(go run:*)",
+      "Bash(for f in *.yaml)",
+      "Bash(do echo \"Checking $f...\")",
+      "Bash(python3 -c \"import yaml; yaml.safe_load\\(open\\(''$f''\\)\\)\")",
+      "Bash(done)",
+      "Bash(uv run:*)",
+      "Bash(for file in *.yaml)",
+      "Bash(do sed -i '' 's/form: llm/form: form/g' \"$file\")",
+      "Bash(git init:*)"
+    ]
+  }
+}
