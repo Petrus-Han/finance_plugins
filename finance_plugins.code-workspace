@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../plugin-training"
+    },
+    {
+      "path": "../../dify/ee/dify-official-plugins"
+    },
+    {
+      "path": "../../anthropics/skills"
+    }
+  ],
+  "settings": {}
+}
