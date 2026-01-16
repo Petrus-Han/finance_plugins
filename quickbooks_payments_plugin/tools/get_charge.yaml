@@ -1,0 +1,29 @@
+identity:
+  name: get_charge
+  author: petrus
+  label:
+    en_US: Get Charge
+    zh_Hans: 获取支付信息
+  icon: icon.svg
+description:
+  human:
+    en_US: Retrieve details of a specific payment charge by ID.
+    zh_Hans: 通过 ID 检索特定支付的详细信息。
+  llm: This tool retrieves the details of a specific payment charge including its status, amount, and other transaction information.
+
+parameters:
+  - name: charge_id
+    type: string
+    required: true
+    label:
+      en_US: Charge ID
+      zh_Hans: 支付 ID
+    human_description:
+      en_US: The ID of the charge to retrieve
+      zh_Hans: 要检索的支付 ID
+    llm_description: The unique identifier of the charge returned by create_charge
+    form: form
+
+extra:
+  python:
+    source: tools/get_charge.py

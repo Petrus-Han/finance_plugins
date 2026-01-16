@@ -1,0 +1,70 @@
+identity:
+  author: petrus
+  name: quickbooks
+  label:
+    en_US: QuickBooks Online
+    zh_Hans: QuickBooks 在线版
+  description:
+    en_US: QuickBooks Online Accounting API integration for automated accounting synchronization
+    zh_Hans: QuickBooks 在线版会计 API 集成，用于自动化的会计同步
+  icon: icon.svg
+
+credentials_for_provider:
+  environment:
+    type: select
+    required: true
+    default: sandbox
+    label:
+      en_US: API Environment
+      zh_Hans: API 环境
+    help:
+      en_US: "Choose the QuickBooks environment. Use Sandbox for testing, Production for live accounting data."
+      zh_Hans: "选择 QuickBooks 环境。测试使用 Sandbox，生产会计数据使用 Production。"
+    options:
+      - value: sandbox
+        label:
+          en_US: Sandbox
+          zh_Hans: 沙盒环境
+      - value: production
+        label:
+          en_US: Production
+          zh_Hans: 生产环境
+
+oauth_schema:
+  client_schema:
+    - name: "client_id"
+      type: "secret-input"
+      required: true
+      url: https://developer.intuit.com/app/developer/qbo/docs/get-started
+      placeholder:
+        en_US: "Please input your Client ID"
+        zh_Hans: "请输入你的 Client ID"
+      help:
+        en_US: "Client ID from your QuickBooks Online app. Create one at developer.intuit.com"
+        zh_Hans: "来自 QuickBooks Online 应用的 Client ID。在 developer.intuit.com 创建"
+      label:
+        en_US: "Client ID"
+        zh_Hans: "Client ID"
+    - name: "client_secret"
+      type: "secret-input"
+      required: true
+      url: https://developer.intuit.com/app/developer/qbo/docs/get-started
+      placeholder:
+        en_US: "Please input your Client Secret"
+        zh_Hans: "请输入你的 Client Secret"
+      help:
+        en_US: "Client Secret from your QuickBooks Online app"
+        zh_Hans: "来自 QuickBooks Online 应用的 Client Secret"
+      label:
+        en_US: "Client Secret"
+        zh_Hans: "Client Secret"
+  credentials_schema:
+    - name: "access_token"
+      type: "secret-input"
+      label:
+        en_US: "Access Token"
+        zh_Hans: "访问令牌"
+
+extra:
+  python:
+    source: provider/quickbooks.py

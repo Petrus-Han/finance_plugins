@@ -1,0 +1,37 @@
+version: 0.2.1
+type: plugin
+author: petrus
+name: mercury_tools
+created_at: "2026-01-13T00:00:00Z"
+label:
+  en_US: Mercury Banking Tools
+  zh_Hans: Mercury 银行工具
+icon: icon.svg
+description:
+  en_US: Mercury Banking API tools for accessing accounts, transactions, and financial data.
+  zh_Hans: Mercury 银行 API 工具，用于访问账户、交易和财务数据。
+
+meta:
+  version: 0.2.1
+  minimum_dify_version: 1.10.0
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+
+resource:
+  memory: 1048576
+  permission:
+    tool:
+      enabled: true
+
+plugins:
+  tools:
+    - provider/mercury_tools.yaml
+
+tags:
+  - finance
+  - utilities
