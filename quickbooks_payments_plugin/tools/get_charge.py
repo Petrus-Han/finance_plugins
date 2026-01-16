@@ -1,0 +1,75 @@
+from collections.abc import Generator
+from typing import Any
+
+import httpx
+
+from dify_plugin import Tool
+from dify_plugin.entities.tool import ToolInvokeMessage
+
+
+class GetChargeTool(Tool):
+    """Tool to retrieve charge details from QuickBooks Payments."""
+
+    def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
+        """
+        Invoke the get_charge tool to retrieve charge details.
+
+        Args:
+            tool_parameters: Dictionary containing charge_id
+
+        Returns:
+            Charge details
+        """
+        charge_id = tool_parameters.get("charge_id")
+        if not charge_id:
+            yield self.create_text_message("charge_id is required")
+            return
+
+        # Get credentials
+        access_token = self.runtime.credentials.get("access_token")
+        if not access_token:
+            yield self.create_text_message("QuickBooks Payments API Access Token is required.")
+            return
+
+        # Get API base URL
+        environment = self.runtime.credentials.get("environment", "sandbox")
+        if environment == "sandbox":
+            api_base_url = "https://sandbox.api.intuit.com/quickbooks/v4/payments"
+        else:
+            api_base_url = "https://api.intuit.com/quickbooks/v4/payments"
+
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Accept": "application/json"
+        }
+
+        try:
+            response = httpx.get(
+                f"{api_base_url}/charges/{charge_id}",
+                headers=headers,
+                timeout=30
+            )
+
+            if response.status_code == 200:
+                data = response.json()
+                yield self.create_json_message(data)
+
+            elif response.status_code == 404:
+                yield self.create_text_message(f"Charge with ID '{charge_id}' not found.")
+
+            elif response.status_code == 401:
+                yield self.create_text_message(
+                    "Authentication failed. Please check your QuickBooks Payments API access token."
+                )
+
+            else:
+                error_detail = response.json() if response.content else {}
+                error_msg = error_detail.get("message", response.text)
+                yield self.create_text_message(
+                    f"Failed to retrieve charge: {response.status_code} - {error_msg}"
+                )
+
+        except httpx.HTTPError as e:
+            yield self.create_text_message(f"Network error: {str(e)}")
+        except Exception as e:
+            yield self.create_text_message(f"Unexpected error: {str(e)}")

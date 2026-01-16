@@ -1,0 +1,61 @@
+identity:
+  name: create_purchase
+  label:
+    en_US: Create Purchase
+    zh_Hans: 创建采购
+
+description:
+  human:
+    en_US: Record a new purchase (expense) in QuickBooks.
+    zh_Hans: 在 QuickBooks 中记录新的采购（费用）。
+  llm: Create a purchase transaction in QuickBooks to record business expenses paid from a bank account to a vendor.
+
+extra:
+  python:
+    source: tools/create_purchase.py
+
+parameters:
+  - name: bank_account_id
+    form: form
+    type: string
+    required: true
+    label:
+      en_US: Bank Account ID
+  - name: expense_account_id
+    form: form
+    type: string
+    required: true
+    label:
+      en_US: Expense Account ID
+  - name: amount
+    form: form
+    type: number
+    required: true
+  - name: txn_date
+    form: form
+    type: string
+    required: true
+    label:
+      en_US: Transaction Date (YYYY-MM-DD)
+  - name: vendor_id
+    form: form
+    type: string
+    required: false
+    label:
+      en_US: Vendor ID
+  - name: description
+    form: form
+    type: string
+    required: false
+  - name: note
+    form: form
+    type: string
+    required: false
+  - name: payment_type
+    form: form
+    type: string
+    required: false
+    default: CreditCard
+
+output_schema:
+  type: object

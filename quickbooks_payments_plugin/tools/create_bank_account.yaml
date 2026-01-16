@@ -1,0 +1,106 @@
+identity:
+  name: create_bank_account
+  author: petrus
+  label:
+    en_US: Create Bank Account
+    zh_Hans: 创建银行账户
+  icon: icon.svg
+description:
+  human:
+    en_US: Create a reusable bank account for a customer for future ACH payments.
+    zh_Hans: 为客户创建可重复使用的银行账户，用于未来的 ACH 支付。
+  llm: This tool creates and saves a bank account for a customer that can be reused for future payments without needing to provide the account details again.
+
+parameters:
+  - name: customer_id
+    type: string
+    required: true
+    label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    human_description:
+      en_US: QuickBooks customer ID
+      zh_Hans: QuickBooks 客户 ID
+    llm_description: The customer ID in QuickBooks system
+    form: form
+
+  - name: routing_number
+    type: string
+    required: true
+    label:
+      en_US: Routing Number
+      zh_Hans: 路由号码
+    human_description:
+      en_US: 9-digit bank routing number
+      zh_Hans: 9 位银行路由号码
+    llm_description: 9-digit bank routing number
+    form: form
+
+  - name: account_number
+    type: string
+    required: true
+    label:
+      en_US: Account Number
+      zh_Hans: 账户号码
+    human_description:
+      en_US: Bank account number
+      zh_Hans: 银行账户号码
+    llm_description: Bank account number
+    form: form
+
+  - name: account_type
+    type: select
+    required: true
+    options:
+      - value: PERSONAL_CHECKING
+        label:
+          en_US: Personal Checking
+          zh_Hans: 个人支票账户
+      - value: PERSONAL_SAVINGS
+        label:
+          en_US: Personal Savings
+          zh_Hans: 个人储蓄账户
+      - value: BUSINESS_CHECKING
+        label:
+          en_US: Business Checking
+          zh_Hans: 企业支票账户
+      - value: BUSINESS_SAVINGS
+        label:
+          en_US: Business Savings
+          zh_Hans: 企业储蓄账户
+    label:
+      en_US: Account Type
+      zh_Hans: 账户类型
+    human_description:
+      en_US: Type of bank account
+      zh_Hans: 银行账户类型
+    llm_description: Select the type of bank account
+    form: form
+
+  - name: name
+    type: string
+    required: true
+    label:
+      en_US: Account Holder Name
+      zh_Hans: 账户持有人姓名
+    human_description:
+      en_US: Full name of the account holder
+      zh_Hans: 账户持有人的完整姓名
+    llm_description: Full name as it appears on the bank account
+    form: form
+
+  - name: phone
+    type: string
+    required: false
+    label:
+      en_US: Phone Number
+      zh_Hans: 电话号码
+    human_description:
+      en_US: Optional phone number
+      zh_Hans: 可选的电话号码
+    llm_description: Optional phone number for the account holder
+    form: form
+
+extra:
+  python:
+    source: tools/create_bank_account.py

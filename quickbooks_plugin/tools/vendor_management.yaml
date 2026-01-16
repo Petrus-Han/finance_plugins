@@ -1,0 +1,38 @@
+identity:
+  name: vendor_management
+  label:
+    en_US: Vendor Management
+    zh_Hans: 供应商管理
+
+description:
+  human:
+    en_US: Search or create vendors in QuickBooks.
+    zh_Hans: 在 QuickBooks 中搜索或创建供应商。
+  llm: Search for existing vendors in QuickBooks by name, or create a new vendor if one doesn't exist. Returns vendor ID and details.
+
+extra:
+  python:
+    source: tools/vendor_management.py
+
+parameters:
+  - name: action
+    form: form
+    type: select
+    required: true
+    options:
+      - value: search
+        label:
+          en_US: Search
+      - value: create
+        label:
+          en_US: Create
+  - name: name
+    form: form
+    type: string
+    required: true
+    label:
+      en_US: Vendor Name
+      zh_Hans: 供应商名称
+
+output_schema:
+  type: object

@@ -1,0 +1,42 @@
+identity:
+  name: get_chart_of_accounts
+  label:
+    en_US: Get Chart of Accounts
+    zh_Hans: 获取会计科目表
+
+description:
+  human:
+    en_US: Fetch your QuickBooks Chart of Accounts, optionally filtered by type.
+    zh_Hans: 获取您的 QuickBooks 会计科目表，可选择按类型过滤。
+  llm: Retrieve the list of accounts from QuickBooks Chart of Accounts, including account IDs, names, types, and status. Can be filtered by account type (e.g., Expense, Bank, Income).
+
+extra:
+  python:
+    source: tools/get_chart_of_accounts.py
+
+parameters:
+  - name: account_type
+    form: form
+    type: string
+    required: false
+    label:
+      en_US: Account Type
+      zh_Hans: 科目类型
+    placeholder:
+      en_US: e.g., Expense, Bank, Income
+
+output_schema:
+  type: array
+  items:
+    type: object
+    properties:
+      Id:
+        type: string
+      Name:
+        type: string
+      Type:
+        type: string
+      SubType:
+        type: string
+      Active:
+        type: boolean

@@ -1,0 +1,30 @@
+identity:
+  name: get_account
+  author: petrus
+  label:
+    en_US: Get Account Details
+    zh_Hans: 获取账户详情
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Get detailed information for a specific Mercury bank account by account ID
+    zh_Hans: 通过账户 ID 获取特定 Mercury 银行账户的详细信息
+  llm: A tool to retrieve detailed information for a specific Mercury bank account including balance, status, and account numbers
+
+parameters:
+  - name: account_id
+    type: string
+    required: true
+    label:
+      en_US: Account ID
+      zh_Hans: 账户 ID
+    human_description:
+      en_US: The unique identifier of the Mercury account to retrieve
+      zh_Hans: 要检索的 Mercury 账户的唯一标识符
+    llm_description: The unique identifier (ID) of the Mercury account to retrieve detailed information for
+    form: llm
+
+extra:
+  python:
+    source: tools/get_account.py

@@ -1,0 +1,53 @@
+identity:
+  name: create_refund
+  author: petrus
+  label:
+    en_US: Create Refund
+    zh_Hans: 创建退款
+  icon: icon.svg
+description:
+  human:
+    en_US: Refund a previously captured payment charge.
+    zh_Hans: 退款之前已捕获的支付。
+  llm: This tool creates a refund for a previously captured charge. You can refund the full amount or a partial amount.
+
+parameters:
+  - name: charge_id
+    type: string
+    required: true
+    label:
+      en_US: Charge ID
+      zh_Hans: 支付 ID
+    human_description:
+      en_US: The ID of the charge to refund
+      zh_Hans: 要退款的支付 ID
+    llm_description: The unique identifier of the charge to refund
+    form: form
+
+  - name: amount
+    type: string
+    required: false
+    label:
+      en_US: Refund Amount
+      zh_Hans: 退款金额
+    human_description:
+      en_US: Amount to refund (leave empty for full refund)
+      zh_Hans: 退款金额（留空则全额退款）
+    llm_description: The amount to refund as a decimal string. Leave empty to refund the full charge amount.
+    form: form
+
+  - name: description
+    type: string
+    required: false
+    label:
+      en_US: Description
+      zh_Hans: 描述
+    human_description:
+      en_US: Optional reason for the refund
+      zh_Hans: 可选的退款原因
+    llm_description: Optional description or reason for this refund
+    form: form
+
+extra:
+  python:
+    source: tools/create_refund.py

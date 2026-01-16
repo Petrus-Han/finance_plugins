@@ -1,0 +1,19 @@
+identity:
+  name: get_accounts
+  author: petrus
+  label:
+    en_US: Get Accounts
+    zh_Hans: 获取账户列表
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Retrieve all Mercury bank accounts associated with your API token
+    zh_Hans: 获取与您的 API 令牌关联的所有 Mercury 银行账户
+  llm: A tool to retrieve all Mercury bank accounts including checking, savings, and treasury accounts with balance information
+
+parameters: []
+
+extra:
+  python:
+    source: tools/get_accounts.py

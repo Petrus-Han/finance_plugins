@@ -1,0 +1,50 @@
+identity:
+  name: create_deposit
+  label:
+    en_US: Create Deposit
+    zh_Hans: 创建存款
+
+description:
+  human:
+    en_US: Record a new deposit in QuickBooks.
+    zh_Hans: 在 QuickBooks 中记录新的存款。
+  llm: Create a deposit transaction in QuickBooks, recording money received into a bank account from an income source.
+
+extra:
+  python:
+    source: tools/create_deposit.py
+
+parameters:
+  - name: bank_account_id
+    form: form
+    type: string
+    required: true
+    label:
+      en_US: Bank Account ID
+  - name: income_account_id
+    form: form
+    type: string
+    required: true
+    label:
+      en_US: Income Account ID
+  - name: amount
+    form: form
+    type: number
+    required: true
+  - name: txn_date
+    form: form
+    type: string
+    required: true
+    label:
+      en_US: Transaction Date (YYYY-MM-DD)
+  - name: description
+    form: form
+    type: string
+    required: false
+  - name: note
+    form: form
+    type: string
+    required: false
+
+output_schema:
+  type: object

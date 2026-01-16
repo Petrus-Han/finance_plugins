@@ -1,0 +1,79 @@
+identity:
+  author: petrus
+  name: quickbooks_payments
+  label:
+    en_US: QuickBooks Payments
+    zh_Hans: QuickBooks 支付
+  description:
+    en_US: QuickBooks Payments API for processing credit card, debit card, and ACH/eCheck payments
+    zh_Hans: QuickBooks 支付 API，用于处理信用卡、借记卡和 ACH/eCheck 支付
+  icon: icon.svg
+
+credentials_for_provider:
+  environment:
+    type: select
+    required: true
+    default: sandbox
+    label:
+      en_US: API Environment
+      zh_Hans: API 环境
+    help:
+      en_US: "Select API environment. Use Sandbox for testing."
+      zh_Hans: "选择 API 环境。使用沙盒环境进行测试。"
+    options:
+      - value: sandbox
+        label:
+          en_US: Sandbox
+          zh_Hans: 沙盒环境
+      - value: production
+        label:
+          en_US: Production
+          zh_Hans: 生产环境
+
+oauth_schema:
+  client_schema:
+    - name: "client_id"
+      type: "secret-input"
+      required: true
+      url: https://developer.intuit.com/app/developer/qbpayments/docs/get-started
+      placeholder:
+        en_US: "Please input your Client ID"
+        zh_Hans: "请输入你的 Client ID"
+      help:
+        en_US: "Client ID from your QuickBooks Payments app. Create one at developer.intuit.com"
+        zh_Hans: "来自 QuickBooks Payments 应用的 Client ID。在 developer.intuit.com 创建"
+      label:
+        en_US: "Client ID"
+        zh_Hans: "Client ID"
+    - name: "client_secret"
+      type: "secret-input"
+      required: true
+      url: https://developer.intuit.com/app/developer/qbpayments/docs/get-started
+      placeholder:
+        en_US: "Please input your Client Secret"
+        zh_Hans: "请输入你的 Client Secret"
+      help:
+        en_US: "Client Secret from your QuickBooks Payments app"
+        zh_Hans: "来自 QuickBooks Payments 应用的 Client Secret"
+      label:
+        en_US: "Client Secret"
+        zh_Hans: "Client Secret"
+  credentials_schema:
+    - name: "access_token"
+      type: "secret-input"
+      label:
+        en_US: "Access Token"
+        zh_Hans: "访问令牌"
+
+extra:
+  python:
+    source: provider/quickbooks_payments.py
+
+tools:
+  - tools/create_token.yaml
+  - tools/create_charge.yaml
+  - tools/get_charge.yaml
+  - tools/create_refund.yaml
+  - tools/create_bank_account.yaml
+  - tools/get_bank_accounts.yaml
+  - tools/delete_bank_account.yaml

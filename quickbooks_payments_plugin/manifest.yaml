@@ -1,0 +1,37 @@
+version: 0.1.4
+type: plugin
+author: petrus
+name: quickbooks_payments
+created_at: "2026-01-14T00:00:00Z"
+label:
+  en_US: QuickBooks Payments
+  zh_Hans: QuickBooks 支付
+icon: icon.svg
+description:
+  en_US: QuickBooks Payments API integration for processing credit card, debit card, and bank account (ACH/eCheck) payments.
+  zh_Hans: QuickBooks 支付 API 集成，用于处理信用卡、借记卡和银行账户（ACH/eCheck）支付。
+
+resource:
+  memory: 134217728
+  permission:
+    tool:
+      enabled: true
+
+meta:
+  version: 0.1.4
+  minimum_dify_version: 1.0.0
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+
+plugins:
+  tools:
+    - provider/quickbooks_payments.yaml
+
+tags:
+  - finance
+  - utilities

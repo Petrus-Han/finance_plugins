@@ -1,0 +1,92 @@
+identity:
+  author: petrus
+  name: mercury_tools
+  label:
+    en_US: Mercury Banking Tools
+    zh_Hans: Mercury 银行工具
+  description:
+    en_US: Access Mercury Banking API for accounts, transactions, and financial data
+    zh_Hans: 访问 Mercury 银行 API 获取账户、交易和财务数据
+  icon: icon.svg
+  tags:
+    - finance
+    - utilities
+
+credentials_for_provider:
+  api_environment:
+    type: select
+    required: true
+    default: production
+    label:
+      en_US: API Environment
+      zh_Hans: API 环境
+    options:
+      - value: production
+        label:
+          en_US: Production
+          zh_Hans: 生产环境
+      - value: sandbox
+        label:
+          en_US: Sandbox
+          zh_Hans: 沙盒环境
+    help:
+      en_US: "Select the Mercury API environment. Use Production for real data, Sandbox for testing."
+      zh_Hans: "选择 Mercury API 环境。生产环境用于真实数据，沙盒环境用于测试。"
+
+  access_token:
+    type: secret-input
+    required: true
+    label:
+      en_US: Mercury API Access Token
+      zh_Hans: Mercury API 访问令牌
+    placeholder:
+      en_US: Enter your Mercury API access token
+      zh_Hans: 输入您的 Mercury API 访问令牌
+    help:
+      en_US: "Get your access token from Mercury Settings > API Tokens. Requires read permissions for accounts and transactions."
+      zh_Hans: "从 Mercury 设置 > API 令牌获取访问令牌。需要账户和交易的读取权限。"
+    url: https://mercury.com/settings/tokens
+
+oauth_schema:
+  client_schema:
+    - name: "client_id"
+      type: "secret-input"
+      required: true
+      url: https://mercury.com/developers
+      placeholder:
+        en_US: "Please input your Client ID"
+        zh_Hans: "请输入你的 Client ID"
+      help:
+        en_US: "Client ID is used to authenticate OAuth requests to the Mercury API. Requires Mercury approval for OAuth access."
+        zh_Hans: "Client ID 用于认证 OAuth 请求到 Mercury API。需要 Mercury 批准 OAuth 访问。"
+      label:
+        en_US: "Client ID"
+        zh_Hans: "Client ID"
+    - name: "client_secret"
+      type: "secret-input"
+      required: true
+      url: https://mercury.com/developers
+      placeholder:
+        en_US: "Please input your Client Secret"
+        zh_Hans: "请输入你的 Client Secret"
+      help:
+        en_US: "Client Secret is used to authenticate OAuth requests to the Mercury API."
+        zh_Hans: "Client Secret 用于认证 OAuth 请求到 Mercury API。"
+      label:
+        en_US: "Client Secret"
+        zh_Hans: "Client Secret"
+  credentials_schema:
+    - name: "access_token"
+      type: "secret-input"
+      label:
+        en_US: "Access Token"
+        zh_Hans: "访问令牌"
+
+extra:
+  python:
+    source: provider/mercury_tools.py
+
+tools:
+  - tools/get_accounts.yaml
+  - tools/get_account.yaml
+  - tools/get_transactions.yaml
