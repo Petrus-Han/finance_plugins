@@ -1,14 +1,8 @@
----
-name: quickbooks-api
-description: QuickBooks Online API reference for creating purchases, deposits, vendors, and querying accounting data. Use when working with QuickBooks entities, OAuth authentication, or financial data synchronization.
-allowed-tools: Read, Grep, Glob, Edit, Write, Bash
----
-
-# QuickBooks API Reference
+# QuickBooks API 参考
 
 QuickBooks Online API 参考文档，用于金融交易和会计实体管理。
 
-## When to Use This Skill
+## 何时使用此技能
 
 - 创建 QuickBooks 工具插件
 - 实现 Purchase/Deposit 实体
@@ -16,9 +10,9 @@ QuickBooks Online API 参考文档，用于金融交易和会计实体管理。
 - 查询会计科目或供应商
 - 映射 Mercury 交易到 QuickBooks
 
-## API Essentials
+## API 基础
 
-### Base URL Pattern
+### Base URL 模式
 
 ```
 https://quickbooks.api.intuit.com/v3/company/{realmId}/{entity}
@@ -26,7 +20,7 @@ https://quickbooks.api.intuit.com/v3/company/{realmId}/{entity}
 
 **重要**: `realmId` 在所有请求中都是必需的，在 OAuth 回调中获取。
 
-### Authentication
+### 认证
 
 ```python
 headers = {
@@ -38,16 +32,16 @@ headers = {
 
 Token 刷新由 Dify OAuth 系统自动处理。
 
-### Environments
+### 环境
 
 | 环境 | Base URL |
-|-----|----------|
+|------|----------|
 | Sandbox | `https://sandbox-quickbooks.api.intuit.com` |
 | Production | `https://quickbooks.api.intuit.com` |
 
-## Common Entities
+## 常用实体
 
-### Purchase (Expense)
+### Purchase (费用)
 
 ```json
 {
@@ -65,7 +59,7 @@ Token 刷新由 Dify OAuth 系统自动处理。
 }
 ```
 
-### Deposit (Income)
+### Deposit (收入)
 
 ```json
 {
@@ -82,7 +76,7 @@ Token 刷新由 Dify OAuth 系统自动处理。
 }
 ```
 
-### Vendor
+### Vendor (供应商)
 
 ```json
 {
@@ -93,7 +87,7 @@ Token 刷新由 Dify OAuth 系统自动处理。
 }
 ```
 
-## Query Language (SQL-like)
+## 查询语言 (类 SQL)
 
 ```sql
 -- 获取所有供应商
@@ -109,7 +103,7 @@ SELECT * FROM Purchase WHERE TxnDate >= '2025-01-01'
 SELECT * FROM Entity STARTPOSITION 1 MAXRESULTS 100
 ```
 
-## OAuth Configuration
+## OAuth 配置
 
 ### Provider YAML
 
@@ -134,9 +128,9 @@ oauth:
     - com.intuit.quickbooks.accounting
 ```
 
-## Implementation Patterns
+## 实现模式
 
-### 1. Idempotency Check (金融数据关键!)
+### 1. 幂等性检查 (金融数据关键!)
 
 ```python
 def create_purchase(self, mercury_txn_id: str, ...):
@@ -151,7 +145,7 @@ def create_purchase(self, mercury_txn_id: str, ...):
     # ... 在 PrivateNote 中存储 mercury_txn_id
 ```
 
-### 2. Find or Create Vendor
+### 2. 查找或创建供应商
 
 ```python
 def find_or_create_vendor(self, vendor_name: str):
@@ -171,7 +165,7 @@ def find_or_create_vendor(self, vendor_name: str):
     return response.json()["Vendor"]
 ```
 
-### 3. Error Handling
+### 3. 错误处理
 
 ```python
 # 常见错误
@@ -188,15 +182,15 @@ except requests.exceptions.HTTPError as e:
     if e.response.status_code == 409:
         return {"status": "duplicate"}
     elif e.response.status_code == 429:
-        time.sleep(2)  # Rate limit backoff
-        # Retry...
+        time.sleep(2)  # 速率限制退避
+        # 重试...
     else:
         raise ToolProviderCredentialValidationError(str(e))
 ```
 
-## Mercury → QuickBooks Mapping
+## Mercury → QuickBooks 映射
 
-### Debit Transaction (Expense) → Purchase
+### 借记交易 (费用) → Purchase
 
 ```python
 def map_debit_to_purchase(mercury_txn):
@@ -220,7 +214,7 @@ def map_debit_to_purchase(mercury_txn):
     }
 ```
 
-### Credit Transaction (Income) → Deposit
+### 贷记交易 (收入) → Deposit
 
 ```python
 def map_credit_to_deposit(mercury_txn):
@@ -238,9 +232,9 @@ def map_credit_to_deposit(mercury_txn):
     }
 ```
 
-## Testing
+## 测试
 
-### Sandbox Environment
+### 沙箱环境
 
 1. 在 developer.intuit.com 创建沙箱公司
 2. 获取沙箱 realm_id
@@ -248,14 +242,14 @@ def map_credit_to_deposit(mercury_txn):
 4. 测试所有实体创建
 5. 在沙箱 QuickBooks 中验证数据
 
-### Common Test Cases
+### 常见测试用例
 
 ```python
-# Test 1: 创建供应商
+# 测试 1: 创建供应商
 vendor = create_vendor("Test Vendor")
 assert vendor["Id"] is not None
 
-# Test 2: 创建采购
+# 测试 2: 创建采购
 purchase = create_purchase({
     "transaction_id": "test_txn_123",
     "amount": -100.00,
@@ -264,16 +258,16 @@ purchase = create_purchase({
 })
 assert purchase["status"] == "created"
 
-# Test 3: 防重复
+# 测试 3: 防重复
 duplicate = create_purchase({...})  # 相同 txn_id
 assert duplicate["status"] == "duplicate"
 
-# Test 4: 查询
+# 测试 4: 查询
 results = query("SELECT * FROM Vendor WHERE DisplayName = 'Test Vendor'")
 assert len(results) > 0
 ```
 
-## Best Practices
+## 最佳实践
 
 1. **始终检查重复** - 使用 PrivateNote 存储 Mercury 交易 ID
 2. **缓存会计科目表** - 加载一次，重复使用
@@ -284,7 +278,7 @@ assert len(results) > 0
 7. **发送前验证数据** - 检查必填字段
 8. **使用 minorversion 参数** - `?minorversion=65` 获取最新功能
 
-## Rate Limit Strategy
+## 速率限制策略
 
 ```python
 import time
@@ -305,12 +299,12 @@ def rate_limit():
     request_times.append(time.time())
 ```
 
-## Quick Reference
+## 快速参考
 
-### Entity Endpoints
+### 实体端点
 
-| Entity | Endpoint |
-|--------|----------|
+| 实体 | 端点 |
+|------|------|
 | Vendor | `/v3/company/{realmId}/vendor` |
 | Purchase | `/v3/company/{realmId}/purchase` |
 | Deposit | `/v3/company/{realmId}/deposit` |
@@ -321,15 +315,15 @@ def rate_limit():
 
 - `com.intuit.quickbooks.accounting` - 完整会计访问
 
-### Required Fields
+### 必填字段
 
-| Entity | Required Fields |
-|--------|----------------|
+| 实体 | 必填字段 |
+|------|----------|
 | Purchase | `AccountRef`, `PaymentType`, `Line[]` |
 | Deposit | `DepositToAccountRef`, `Line[]` |
 | Vendor | `DisplayName` |
 
-## Related Skills
+## 相关技能
 
 - **01-design**: 设计阶段
 - **02-api-reference**: 通用 API 参考收集指南
@@ -337,7 +331,7 @@ def rate_limit():
 - **04-testing**: 测试验证
 - **05-packaging**: 打包发布
 
-## Reference Documents
+## 参考文档
 
 - `archive/QuickBooks_API_Documentation.md` - 完整 API 参考
 - `QuickBooks_Payments_API_Documentation.md` - Payments API 参考
