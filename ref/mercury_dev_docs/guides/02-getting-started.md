@@ -1,0 +1,70 @@
+# Getting Started
+
+Learn how to authenticate, set up API tokens, and make your first API call to Mercury
+
+First, you'll need to log into your Mercury account and go to the [Settings page](https://app.mercury.com/settings) to generate a new API token.
+
+If you do not see the option to add an API token in the settings page, it means the user you are signed in as does not have the correct permissions to create an API token. Please sign in to a user that has higher level permissions, or get your user permissions updated by an admin on your account. This is a setting that can be fully controlled by an admin from your company - usually the person who initially set up the Mercury account or the beneficial owner will have admin access.
+
+## Securing Your API Token
+
+After you generate a token, make sure to save it in a secure place. You won't be able to see it again after closing the dialog.
+
+Someone who steals your Mercury API token can interact with your accounts on your behalf, so treat it as securely as you would treat any password. Tokens should **never** be stored in source control. If you accidentally publicize a token via version control or other methods, you should immediately revoke it and generate a new one from your Mercury dashboard.
+
+## Token Permission Tiers
+
+There are three types of tokens: read-only, read-write, and custom. The scope of your token should be limited to your needs.
+
+- **Read Only**: Can fetch all available data on your Mercury account.
+  - If you don't need to initiate transactions or manage recipients via the API, you should create a read-only token. Does not require an IP whitelist.
+- **Read and Write**: Can initiate transactions without admin approval, and manage recipients.
+  - Requires an IP whitelist for security purposes.
+- **Custom**: Can only perform requests on the specific scopes granted. Here are a couple of examples:
+  - To initiate payments that require admin approvals, or queue payments without providing a whitelisted IP, use a Custom token with the `RequestSendMoney` scope
+  - If you only need to fetch accounts and statements, create a Custom token that only has access to these specific scopes.
+
+## Using the Token
+
+The Mercury API utilizes basic authentication over HTTPS to authenticate actions. Use your API key for the basic auth username, and no value or empty string for the password. Virtually all HTTP libraries have built-in support for basic auth, and can be used like so:
+
+### Ruby
+
+```ruby
+req = Net::HTTP::Get.new('https://api.mercury.com/api/v1/accounts')
+req.basic_auth 'secret-token:mercury_production_wma_24SCp4G81X3yHL4Wq8FgzuaP9ye3VKf2mgTDctXyRg5HY_yrucrem', ''
+```
+
+### Python
+
+```python
+import requests
+
+token = 'secret-token:mercury_production_wma_24SCp4G81X3yHL4Wq8FgzuaP9ye3VKf2mgTDctXyRg5HY_yrucrem'
+req = requests.get('https://api.mercury.com/api/v1/accounts', auth=(token, ''))
+```
+
+### cURL
+
+```bash
+curl --user secret-token:mercury_production_wma_24SCp4G81X3yHL4Wq8FgzuaP9ye3VKf2mgTDctXyRg5HY_yrucrem:
+```
+
+For convenience, you may also specify the token via bearer auth with a standard authentication header:
+
+```bash
+curl -H "Authorization: Bearer secret-token:mercury_production_wma_24SCp4G81X3yHL4Wq8FgzuaP9ye3VKf2mgTDctXyRg5HY_yrucrem"
+```
+
+If your token is about to expire due to inactivity, using it to access any of the endpoints will prevent it from getting deleted:
+
+```bash
+curl https://api.mercury.com/api/v1/accounts --header 'accept: application/json' --header "Authorization: Bearer TOKEN"
+```
+
+---
+
+## Navigation
+
+- Previous: [Welcome](./01-welcome.md)
+- Next: [API Token Security Policies](./03-api-token-security-policies.md)
