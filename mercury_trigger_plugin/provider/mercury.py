@@ -367,7 +367,8 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
         }
 
         api_base_url = self._get_api_base_url(credentials)
-        url = f"{api_base_url}/webhooks/{external_id}"
+        # Mercury API uses singular /webhook/{id} for DELETE
+        url = f"{api_base_url}/webhook/{external_id}"
         log_info(f"Deleting webhook at: DELETE {url}")
 
         try:
@@ -440,7 +441,8 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
             )
 
         api_base_url = self._get_api_base_url(credentials)
-        url = f"{api_base_url}/webhooks/{external_id}"
+        # Mercury API uses singular /webhook/{id} for GET single webhook
+        url = f"{api_base_url}/webhook/{external_id}"
         log_info(f"Getting webhook status at: GET {url}")
 
         headers = {
