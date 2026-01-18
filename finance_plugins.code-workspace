@@ -11,6 +11,9 @@
     },
     {
       "path": "../../anthropics/skills"
+    },
+    {
+      "path": "../dify-plugin-skill"
     }
   ],
   "settings": {}
