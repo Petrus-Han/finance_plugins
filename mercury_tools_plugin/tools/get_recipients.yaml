@@ -1,0 +1,28 @@
+identity:
+  name: get_recipients
+  author: alai-sudo
+  label:
+    en_US: Get Recipients
+    zh_Hans: 获取收款人列表
+description:
+  human:
+    en_US: Retrieve a list of all payment recipients (payees) from Mercury.
+    zh_Hans: 获取 Mercury 中所有付款收款人（收款方）的列表。
+  llm: Fetches all recipients configured in the Mercury account. Recipients are payees that can receive payments.
+parameters:
+  - name: limit
+    type: number
+    required: false
+    default: 50
+    label:
+      en_US: Limit
+      zh_Hans: 数量限制
+    human_description:
+      en_US: Maximum number of recipients to return (default 50)
+      zh_Hans: 返回的最大收款人数量（默认50）
+    llm_description: Maximum number of recipients to return in a single request
+    form: form
+
+extra:
+  python:
+    source: tools/get_recipients.py

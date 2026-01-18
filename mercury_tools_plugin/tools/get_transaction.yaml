@@ -1,0 +1,27 @@
+identity:
+  name: get_transaction
+  author: alai-sudo
+  label:
+    en_US: Get Transaction Details
+    zh_Hans: 获取交易详情
+description:
+  human:
+    en_US: Retrieve detailed information about a specific transaction.
+    zh_Hans: 获取特定交易的详细信息。
+  llm: Fetches complete details for a specific transaction by ID, including status, counterparty info, and tracking details.
+parameters:
+  - name: transaction_id
+    type: string
+    required: true
+    label:
+      en_US: Transaction ID
+      zh_Hans: 交易 ID
+    human_description:
+      en_US: The unique identifier of the transaction
+      zh_Hans: 交易的唯一标识符
+    llm_description: Mercury transaction ID (e.g., txn_xxx)
+    form: llm
+
+extra:
+  python:
+    source: tools/get_transaction.py

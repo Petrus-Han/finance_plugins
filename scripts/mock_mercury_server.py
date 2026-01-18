@@ -294,7 +294,7 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
         if path == "/" or path == "/status":
             self._send_json({
                 "service": "Mock Mercury Server",
-                "version": "1.0.0",
+                "version": "1.1.0",
                 "status": "running",
                 "api_token": MOCK_TOKEN,
                 "registered_webhooks": len(registered_webhooks),
@@ -302,10 +302,15 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
                 "endpoints": {
                     "Mercury API": {
                         "GET /api/v1/accounts": "List accounts",
+                        "GET /api/v1/account/{id}": "Get account details",
+                        "GET /api/v1/account/{id}/transactions": "Get account transactions",
+                        "GET /api/v1/recipients": "List recipients",
+                        "GET /api/v1/recipient/{id}": "Get recipient details",
+                        "GET /api/v1/categories": "List categories",
                         "GET /api/v1/webhooks": "List webhooks",
                         "POST /api/v1/webhooks": "Create webhook",
-                        "GET /api/v1/webhooks/{id}": "Get webhook",
-                        "DELETE /api/v1/webhooks/{id}": "Delete webhook"
+                        "GET /api/v1/webhook/{id}": "Get webhook (singular)",
+                        "DELETE /api/v1/webhook/{id}": "Delete webhook (singular)"
                     },
                     "Simulation": {
                         "POST /simulate/transaction": "Simulate transaction.created",
@@ -340,8 +345,9 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
             self._send_json({"webhooks": webhooks})
             return
 
-        # GET /api/v1/webhooks/{id}
-        if path.startswith("/api/v1/webhooks/"):
+        # GET /api/v1/webhook/{id} (singular - per Mercury spec)
+        # Also support /api/v1/webhooks/{id} for backward compatibility
+        if path.startswith("/api/v1/webhook/") or path.startswith("/api/v1/webhooks/"):
             if not self._check_auth():
                 return
             webhook_id = path.split("/")[-1]
@@ -351,6 +357,112 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
                 self._send_json(wh_copy)
             else:
                 self._send_json({"error": "not_found", "message": "Webhook not found"}, 404)
+            return
+
+        # GET /api/v1/account/{id} - Get single account details
+        if path.startswith("/api/v1/account/") and "/transactions" not in path and "/cards" not in path:
+            if not self._check_auth():
+                return
+            account_id = path.split("/")[-1]
+            account = next((a for a in MOCK_ACCOUNTS if a["id"] == account_id), None)
+            if account:
+                self._send_json(account)
+            else:
+                self._send_json({"error": "not_found", "message": "Account not found"}, 404)
+            return
+
+        # GET /api/v1/account/{id}/transactions - Get account transactions
+        if "/transactions" in path and path.startswith("/api/v1/account/"):
+            if not self._check_auth():
+                return
+            parts = path.split("/")
+            account_id = parts[4] if len(parts) > 4 else None
+
+            # Generate mock transactions for the account
+            transactions = [
+                {
+                    "id": f"txn_mock_{i:03d}",
+                    "accountId": account_id,
+                    "amount": -150.00 * (i + 1),
+                    "status": "posted" if i % 2 == 0 else "pending",
+                    "postedAt": f"2026-01-{15-i:02d}T10:30:00Z",
+                    "counterpartyName": f"Vendor {i + 1}",
+                    "bankDescription": f"Payment to Vendor {i + 1}",
+                    "note": "",
+                    "mercuryCategory": "transfers",
+                    "kind": "debit",
+                    "type": "externalTransfer",
+                    "createdAt": f"2026-01-{15-i:02d}T10:30:00Z"
+                }
+                for i in range(5)
+            ]
+            self._send_json({"transactions": transactions, "total": len(transactions)})
+            return
+
+        # GET /api/v1/recipients - List recipients
+        if path == "/api/v1/recipients":
+            if not self._check_auth():
+                return
+            recipients = [
+                {
+                    "id": "rcp_mock_001",
+                    "name": "Acme Corp",
+                    "status": "active",
+                    "paymentMethod": "ach",
+                    "accountNumber": "****5678",
+                    "routingNumber": "021000021",
+                    "createdAt": "2024-06-01T10:00:00Z"
+                },
+                {
+                    "id": "rcp_mock_002",
+                    "name": "Test Vendor LLC",
+                    "status": "active",
+                    "paymentMethod": "wire",
+                    "accountNumber": "****9012",
+                    "routingNumber": "021000021",
+                    "createdAt": "2024-07-15T14:30:00Z"
+                }
+            ]
+            self._send_json({"recipients": recipients})
+            return
+
+        # GET /api/v1/recipient/{id} - Get recipient details
+        if path.startswith("/api/v1/recipient/"):
+            if not self._check_auth():
+                return
+            recipient_id = path.split("/")[-1]
+            if recipient_id == "rcp_mock_001":
+                self._send_json({
+                    "id": "rcp_mock_001",
+                    "name": "Acme Corp",
+                    "status": "active",
+                    "paymentMethod": "ach",
+                    "accountNumber": "123456789",
+                    "routingNumber": "021000021",
+                    "address": {
+                        "address1": "123 Main St",
+                        "city": "New York",
+                        "state": "NY",
+                        "postalCode": "10001"
+                    },
+                    "createdAt": "2024-06-01T10:00:00Z"
+                })
+            else:
+                self._send_json({"error": "not_found", "message": "Recipient not found"}, 404)
+            return
+
+        # GET /api/v1/categories - List categories
+        if path == "/api/v1/categories":
+            if not self._check_auth():
+                return
+            categories = [
+                {"id": "cat_001", "name": "Software & SaaS", "color": "#3B82F6"},
+                {"id": "cat_002", "name": "Marketing", "color": "#10B981"},
+                {"id": "cat_003", "name": "Payroll", "color": "#F59E0B"},
+                {"id": "cat_004", "name": "Office Supplies", "color": "#EF4444"},
+                {"id": "cat_005", "name": "Travel", "color": "#8B5CF6"}
+            ]
+            self._send_json({"categories": categories})
             return
 
         # GET /webhooks/list (no auth, for debugging)
@@ -375,6 +487,41 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
         """Handle POST requests."""
         path = urlparse(self.path).path
         data = self._read_body()
+
+        # POST /api/v1/recipients - Create recipient
+        if path == "/api/v1/recipients":
+            if not self._check_auth():
+                return
+
+            name = data.get("name")
+            if not name:
+                self._send_json({
+                    "error": "validation_error",
+                    "message": "name is required"
+                }, 400)
+                return
+
+            recipient_id = f"rcp_{secrets.token_hex(12)}"
+            recipient = {
+                "id": recipient_id,
+                "name": name,
+                "status": "active",
+                "paymentMethod": data.get("paymentMethod", "ach"),
+                "accountNumber": data.get("accountNumber", ""),
+                "routingNumber": data.get("routingNumber", ""),
+                "address": data.get("address", {}),
+                "createdAt": datetime.now(timezone.utc).isoformat()
+            }
+
+            print(f"\n{'='*60}")
+            print(f"[CREATE] Recipient Created")
+            print(f"{'='*60}")
+            print(f"  ID: {recipient_id}")
+            print(f"  Name: {name}")
+            print(f"{'='*60}\n")
+
+            self._send_json(recipient, 201)
+            return
 
         # POST /api/v1/webhooks - Create webhook
         if path == "/api/v1/webhooks":
@@ -538,8 +685,9 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
         """Handle DELETE requests."""
         path = urlparse(self.path).path
 
-        # DELETE /api/v1/webhooks/{id}
-        if path.startswith("/api/v1/webhooks/"):
+        # DELETE /api/v1/webhook/{id} (singular - per Mercury spec)
+        # Also support /api/v1/webhooks/{id} for backward compatibility
+        if path.startswith("/api/v1/webhook/") or path.startswith("/api/v1/webhooks/"):
             if not self._check_auth():
                 return
 
@@ -551,6 +699,16 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
                 self.end_headers()
             else:
                 self._send_json({"error": "not_found", "message": "Webhook not found"}, 404)
+            return
+
+        # DELETE /api/v1/recipient/{id}
+        if path.startswith("/api/v1/recipient/"):
+            if not self._check_auth():
+                return
+            recipient_id = path.split("/")[-1]
+            print(f"\n[DELETE] Recipient removed (mock): {recipient_id}\n")
+            self.send_response(204)
+            self.end_headers()
             return
 
         self._send_json({"error": "not_found", "message": "Endpoint not found"}, 404)
@@ -566,16 +724,30 @@ def print_banner():
   API Token:      {MOCK_TOKEN}
 
   Mercury API Endpoints:
-    GET  /api/v1/accounts           List accounts
-    GET  /api/v1/webhooks           List webhooks
-    POST /api/v1/webhooks           Create webhook (returns secret)
-    GET  /api/v1/webhooks/{{id}}      Get webhook
-    DELETE /api/v1/webhooks/{{id}}    Delete webhook
+    Accounts:
+      GET  /api/v1/accounts                    List all accounts
+      GET  /api/v1/account/{{id}}                Get account details
+      GET  /api/v1/account/{{id}}/transactions   Get account transactions
+
+    Recipients:
+      GET  /api/v1/recipients                  List all recipients
+      GET  /api/v1/recipient/{{id}}              Get recipient details
+      POST /api/v1/recipients                  Create recipient
+      DELETE /api/v1/recipient/{{id}}            Delete recipient
+
+    Categories:
+      GET  /api/v1/categories                  List expense categories
+
+    Webhooks:
+      GET  /api/v1/webhooks                    List webhooks
+      POST /api/v1/webhooks                    Create webhook (returns secret)
+      GET  /api/v1/webhook/{{id}}                Get webhook details
+      DELETE /api/v1/webhook/{{id}}              Delete webhook
 
   Simulation Endpoints:
-    POST /simulate/transaction      Send transaction.created event
-    POST /simulate/transaction/update  Send transaction.updated event
-    POST /simulate/custom           Send custom event (JSON body)
+    POST /simulate/transaction                 Send transaction.created event
+    POST /simulate/transaction/update          Send transaction.updated event
+    POST /simulate/custom                      Send custom event (JSON body)
 
   Quick Start:
     1. Start your Dify plugin or webhook receiver
