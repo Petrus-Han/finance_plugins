@@ -21,7 +21,8 @@
       "Bash(uv run:*)",
       "Bash(for file in *.yaml)",
       "Bash(do sed -i '' 's/form: llm/form: form/g' \"$file\")",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(xargs:*)"
     ]
   }
 }
