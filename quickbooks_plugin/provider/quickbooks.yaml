@@ -68,3 +68,13 @@ oauth_schema:
 extra:
   python:
     source: provider/quickbooks.py
+
+tools:
+  - tools/get_chart_of_accounts.yaml
+  - tools/vendor_management.yaml
+  - tools/customer_management.yaml
+  - tools/create_purchase.yaml
+  - tools/create_deposit.yaml
+  - tools/create_transfer.yaml
+  - tools/create_invoice.yaml
+  - tools/create_bill.yaml

@@ -1,0 +1,84 @@
+identity:
+  name: customer_management
+  author: alai-sudo
+  label:
+    en_US: Customer Management
+    zh_Hans: 客户管理
+description:
+  human:
+    en_US: List, search, or create customers in QuickBooks Online.
+    zh_Hans: 在 QuickBooks Online 中列出、搜索或创建客户。
+  llm: Manages QuickBooks customers. Can list all customers, search by name, or create new customers for tracking income sources.
+parameters:
+  - name: action
+    type: select
+    required: true
+    label:
+      en_US: Action
+      zh_Hans: 操作
+    human_description:
+      en_US: What operation to perform
+      zh_Hans: 要执行的操作
+    options:
+      - value: list
+        label:
+          en_US: List Customers
+          zh_Hans: 列出客户
+      - value: search
+        label:
+          en_US: Search Customer
+          zh_Hans: 搜索客户
+      - value: create
+        label:
+          en_US: Create Customer
+          zh_Hans: 创建客户
+    form: form
+
+  - name: display_name
+    type: string
+    required: false
+    label:
+      en_US: Display Name
+      zh_Hans: 显示名称
+    human_description:
+      en_US: Customer display name (required for create, used for search)
+      zh_Hans: 客户显示名称（创建时必填，搜索时使用）
+    llm_description: The name to display for this customer
+    form: llm
+
+  - name: company_name
+    type: string
+    required: false
+    label:
+      en_US: Company Name
+      zh_Hans: 公司名称
+    human_description:
+      en_US: Company name (optional)
+      zh_Hans: 公司名称（可选）
+    form: llm
+
+  - name: email
+    type: string
+    required: false
+    label:
+      en_US: Email
+      zh_Hans: 电子邮件
+    human_description:
+      en_US: Primary email address
+      zh_Hans: 主要电子邮件地址
+    form: llm
+
+  - name: phone
+    type: string
+    required: false
+    label:
+      en_US: Phone
+      zh_Hans: 电话
+    human_description:
+      en_US: Primary phone number
+      zh_Hans: 主要电话号码
+    form: llm
+
+extra:
+  python:
+    source: tools/customer_management.py
