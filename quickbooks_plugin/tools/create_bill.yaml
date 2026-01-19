@@ -1,0 +1,106 @@
+identity:
+  name: create_bill
+  author: petrus
+  label:
+    en_US: Create Bill
+    zh_Hans: 创建账单
+description:
+  human:
+    en_US: Create a new bill (accounts payable) in QuickBooks Online from a vendor.
+    zh_Hans: 在 QuickBooks Online 中从供应商创建新的应付账款。
+  llm: Create a new bill in QuickBooks Online representing money owed to a vendor. Returns the created bill details including ID and total amount.
+parameters:
+  - name: vendor_id
+    type: string
+    required: true
+    label:
+      en_US: Vendor ID
+      zh_Hans: 供应商 ID
+    human_description:
+      en_US: The QuickBooks vendor ID for the bill
+      zh_Hans: 账单的 QuickBooks 供应商 ID
+    llm_description: The QuickBooks Online vendor ID (numeric string)
+    form: llm
+
+  - name: line_items
+    type: string
+    required: true
+    label:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目（JSON）
+    human_description:
+      en_US: "JSON array of line items. Each item: {amount, description, account_id, customer_id, billable_status}"
+      zh_Hans: "行项目的 JSON 数组。每项: {amount, description, account_id, customer_id, billable_status}"
+    llm_description: |
+      JSON array of bill line items. Each item should have:
+      - amount (required): Line total amount
+      - description (optional): Line description
+      - account_id (optional): Expense account ID
+      - customer_id (optional): Customer ID if billable
+      - billable_status (optional): Billable, NotBillable, or HasBeenBilled
+      Example: [{"amount": 500, "description": "Office supplies", "account_id": "64"}]
+    form: llm
+
+  - name: txn_date
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
+      en_US: Bill date (YYYY-MM-DD format)
+      zh_Hans: 账单日期（YYYY-MM-DD 格式）
+    llm_description: Bill date in YYYY-MM-DD format. Defaults to today if not provided.
+    form: llm
+
+  - name: due_date
+    type: string
+    required: false
+    label:
+      en_US: Due Date
+      zh_Hans: 到期日期
+    human_description:
+      en_US: Payment due date (YYYY-MM-DD format)
+      zh_Hans: 付款到期日期（YYYY-MM-DD 格式）
+    llm_description: Payment due date in YYYY-MM-DD format
+    form: llm
+
+  - name: doc_number
+    type: string
+    required: false
+    label:
+      en_US: Reference Number
+      zh_Hans: 参考编号
+    human_description:
+      en_US: Bill reference/document number
+      zh_Hans: 账单参考/文档编号
+    llm_description: Bill reference number or vendor invoice number
+    form: llm
+
+  - name: private_note
+    type: string
+    required: false
+    label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Internal note
+      zh_Hans: 内部备注
+    llm_description: Internal note for the bill
+    form: llm
+
+  - name: ap_account_id
+    type: string
+    required: false
+    label:
+      en_US: AP Account ID
+      zh_Hans: 应付账款账户 ID
+    human_description:
+      en_US: Accounts Payable account ID (uses default if not specified)
+      zh_Hans: 应付账款账户 ID（不指定则使用默认）
+    llm_description: Optional Accounts Payable account ID. Uses default AP account if not specified.
+    form: llm
+
+extra:
+  python:
+    source: tools/create_bill.py

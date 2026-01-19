@@ -679,6 +679,102 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
             })
             return
 
+        # POST /api/v1/account/{id}/request-send-money - Request to send money
+        if "/request-send-money" in path and path.startswith("/api/v1/account/"):
+            if not self._check_auth():
+                return
+
+            parts = path.split("/")
+            account_id = parts[4] if len(parts) > 4 else None
+
+            recipient_id = data.get("recipientId")
+            amount = data.get("amount")
+
+            if not recipient_id or not amount:
+                self._send_json({
+                    "error": "validation_error",
+                    "message": "recipientId and amount are required"
+                }, 400)
+                return
+
+            request_id = f"smr_{secrets.token_hex(12)}"
+            txn_id = f"txn_{secrets.token_hex(12)}"
+
+            result = {
+                "id": request_id,
+                "transactionId": txn_id,
+                "status": "pending_approval",
+                "amount": float(amount),
+                "recipientId": recipient_id,
+                "accountId": account_id,
+                "paymentMethod": data.get("paymentMethod", "ach"),
+                "note": data.get("note", ""),
+                "externalMemo": data.get("externalMemo", ""),
+                "createdAt": datetime.now(timezone.utc).isoformat()
+            }
+
+            print(f"\n{'='*60}")
+            print(f"[SEND MONEY] Request Created")
+            print(f"{'='*60}")
+            print(f"  Request ID: {request_id}")
+            print(f"  Transaction ID: {txn_id}")
+            print(f"  Amount: ${amount}")
+            print(f"  Recipient: {recipient_id}")
+            print(f"  Status: pending_approval")
+            print(f"{'='*60}\n")
+
+            self._send_json(result, 202)
+            return
+
+        # POST /api/v1/transfer - Create internal transfer
+        if path == "/api/v1/transfer":
+            if not self._check_auth():
+                return
+
+            from_account_id = data.get("fromAccountId")
+            to_account_id = data.get("toAccountId")
+            amount = data.get("amount")
+
+            if not from_account_id or not to_account_id or not amount:
+                self._send_json({
+                    "error": "validation_error",
+                    "message": "fromAccountId, toAccountId, and amount are required"
+                }, 400)
+                return
+
+            if from_account_id == to_account_id:
+                self._send_json({
+                    "error": "validation_error",
+                    "message": "Source and destination accounts must be different"
+                }, 400)
+                return
+
+            txn_id = f"txn_{secrets.token_hex(12)}"
+
+            result = {
+                "id": txn_id,
+                "status": "sent",
+                "amount": float(amount),
+                "fromAccountId": from_account_id,
+                "toAccountId": to_account_id,
+                "note": data.get("note", ""),
+                "kind": "internalTransfer",
+                "createdAt": datetime.now(timezone.utc).isoformat()
+            }
+
+            print(f"\n{'='*60}")
+            print(f"[TRANSFER] Internal Transfer Created")
+            print(f"{'='*60}")
+            print(f"  Transaction ID: {txn_id}")
+            print(f"  Amount: ${amount}")
+            print(f"  From: {from_account_id}")
+            print(f"  To: {to_account_id}")
+            print(f"  Status: sent")
+            print(f"{'='*60}\n")
+
+            self._send_json(result, 201)
+            return
+
         self._send_json({"error": "not_found", "message": "Endpoint not found"}, 404)
 
     def do_DELETE(self):

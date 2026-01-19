@@ -1,0 +1,75 @@
+identity:
+  name: internal_transfer
+  author: petrus
+  label:
+    en_US: Internal Transfer
+    zh_Hans: 内部转账
+description:
+  human:
+    en_US: Create an internal transfer between two Mercury accounts within the same organization.
+    zh_Hans: 在同一组织的两个 Mercury 账户之间创建内部转账。
+  llm: Create an internal fund transfer between two Mercury bank accounts owned by the same organization. This is instant and does not require approval.
+parameters:
+  - name: from_account_id
+    type: string
+    required: true
+    label:
+      en_US: From Account ID
+      zh_Hans: 源账户 ID
+    human_description:
+      en_US: The Mercury account ID to transfer from
+      zh_Hans: 转出的 Mercury 账户 ID
+    llm_description: The source Mercury account ID (starts with 'acc_' or 'account_')
+    form: llm
+
+  - name: to_account_id
+    type: string
+    required: true
+    label:
+      en_US: To Account ID
+      zh_Hans: 目标账户 ID
+    human_description:
+      en_US: The Mercury account ID to transfer to
+      zh_Hans: 转入的 Mercury 账户 ID
+    llm_description: The destination Mercury account ID (starts with 'acc_' or 'account_')
+    form: llm
+
+  - name: amount
+    type: number
+    required: true
+    label:
+      en_US: Amount
+      zh_Hans: 金额
+    human_description:
+      en_US: Amount to transfer (positive number)
+      zh_Hans: 转账金额（正数）
+    llm_description: The amount to transfer in USD (must be positive)
+    form: llm
+
+  - name: note
+    type: string
+    required: false
+    label:
+      en_US: Note
+      zh_Hans: 备注
+    human_description:
+      en_US: Internal note for the transfer
+      zh_Hans: 转账的内部备注
+    llm_description: Optional internal note for the transfer
+    form: llm
+
+  - name: idempotency_key
+    type: string
+    required: false
+    label:
+      en_US: Idempotency Key
+      zh_Hans: 幂等键
+    human_description:
+      en_US: Unique key to prevent duplicate transfers
+      zh_Hans: 防止重复转账的唯一键
+    llm_description: Optional unique key for request deduplication
+    form: form
+
+extra:
+  python:
+    source: tools/internal_transfer.py

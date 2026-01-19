@@ -1,0 +1,113 @@
+identity:
+  name: send_money
+  author: petrus
+  label:
+    en_US: Send Money
+    zh_Hans: 发送付款
+description:
+  human:
+    en_US: Request to send money from a Mercury account to a recipient. May require approval depending on account settings.
+    zh_Hans: 请求从 Mercury 账户向收款人发送付款。根据账户设置可能需要审批。
+  llm: Request to send money from a Mercury bank account to a configured recipient. Supports ACH, wire, and check payments. Returns the request status and may require approval.
+parameters:
+  - name: account_id
+    type: string
+    required: true
+    label:
+      en_US: Account ID
+      zh_Hans: 账户 ID
+    human_description:
+      en_US: The Mercury account ID to send money from
+      zh_Hans: 用于发送付款的 Mercury 账户 ID
+    llm_description: The Mercury source account ID (starts with 'acc_' or 'account_')
+    form: llm
+
+  - name: recipient_id
+    type: string
+    required: true
+    label:
+      en_US: Recipient ID
+      zh_Hans: 收款人 ID
+    human_description:
+      en_US: The recipient ID to send money to
+      zh_Hans: 收款人 ID
+    llm_description: The Mercury recipient ID (starts with 'rcp_' or 'recipient_')
+    form: llm
+
+  - name: amount
+    type: number
+    required: true
+    label:
+      en_US: Amount
+      zh_Hans: 金额
+    human_description:
+      en_US: Amount to send (positive number)
+      zh_Hans: 发送金额（正数）
+    llm_description: The amount to send in USD (must be positive)
+    form: llm
+
+  - name: payment_method
+    type: select
+    required: false
+    default: ach
+    label:
+      en_US: Payment Method
+      zh_Hans: 付款方式
+    human_description:
+      en_US: Payment method to use
+      zh_Hans: 使用的付款方式
+    llm_description: Payment method - ach (default), wire, or check
+    options:
+      - value: ach
+        label:
+          en_US: ACH Transfer
+          zh_Hans: ACH 转账
+      - value: wire
+        label:
+          en_US: Wire Transfer
+          zh_Hans: 电汇
+      - value: check
+        label:
+          en_US: Check
+          zh_Hans: 支票
+    form: form
+
+  - name: note
+    type: string
+    required: false
+    label:
+      en_US: Internal Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Internal note for the payment (not visible to recipient)
+      zh_Hans: 付款的内部备注（收款人不可见）
+    llm_description: Optional internal note for the payment
+    form: llm
+
+  - name: external_memo
+    type: string
+    required: false
+    label:
+      en_US: External Memo
+      zh_Hans: 外部备注
+    human_description:
+      en_US: Memo visible to the recipient
+      zh_Hans: 收款人可见的备注
+    llm_description: Optional memo that will be visible to the recipient
+    form: llm
+
+  - name: idempotency_key
+    type: string
+    required: false
+    label:
+      en_US: Idempotency Key
+      zh_Hans: 幂等键
+    human_description:
+      en_US: Unique key to prevent duplicate requests
+      zh_Hans: 防止重复请求的唯一键
+    llm_description: Optional unique key for request deduplication
+    form: form
+
+extra:
+  python:
+    source: tools/send_money.py
