@@ -1,5 +1,6 @@
 identity:
   name: get_chart_of_accounts
+  author: petrus
   label:
     en_US: Get Chart of Accounts
     zh_Hans: 获取会计科目表
@@ -22,6 +23,9 @@ parameters:
     label:
       en_US: Account Type
       zh_Hans: 科目类型
+    human_description:
+      en_US: Filter by account type (e.g., Expense, Bank, Income)
+      zh_Hans: 按账户类型筛选（如：费用、银行、收入）
     placeholder:
       en_US: e.g., Expense, Bank, Income
 
