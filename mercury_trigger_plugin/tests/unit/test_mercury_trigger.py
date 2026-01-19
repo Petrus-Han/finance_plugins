@@ -405,6 +405,49 @@ class TestSubscriptionConstructor:
 
         assert url == "https://api-sandbox.mercury.com/api/v1"
 
+    def test_get_api_base_url_mock(self):
+        """Test mock API URL selection."""
+        from provider.mercury import MercurySubscriptionConstructor
+
+        mock_runtime = create_mock_runtime()
+        constructor = MercurySubscriptionConstructor(runtime=mock_runtime)
+
+        credentials = {
+            "api_environment": "mock",
+            "mock_server_url": "http://192.168.1.100:8765"
+        }
+        url = constructor._get_api_base_url(credentials)
+
+        assert url == "http://192.168.1.100:8765/api/v1"
+
+    def test_get_api_base_url_mock_with_trailing_slash(self):
+        """Test mock API URL with trailing slash."""
+        from provider.mercury import MercurySubscriptionConstructor
+
+        mock_runtime = create_mock_runtime()
+        constructor = MercurySubscriptionConstructor(runtime=mock_runtime)
+
+        credentials = {
+            "api_environment": "mock",
+            "mock_server_url": "http://192.168.1.100:8765/"
+        }
+        url = constructor._get_api_base_url(credentials)
+
+        assert url == "http://192.168.1.100:8765/api/v1"
+
+    def test_get_api_base_url_mock_missing_url(self):
+        """Test mock environment without URL raises error."""
+        from provider.mercury import MercurySubscriptionConstructor
+        from dify_plugin.errors.trigger import TriggerProviderCredentialValidationError
+
+        mock_runtime = create_mock_runtime()
+        constructor = MercurySubscriptionConstructor(runtime=mock_runtime)
+
+        credentials = {"api_environment": "mock"}
+
+        with pytest.raises(TriggerProviderCredentialValidationError):
+            constructor._get_api_base_url(credentials)
+
 
 def main():
     """Run tests."""
