@@ -95,3 +95,5 @@ tools:
   - tools/get_recipient.yaml
   - tools/create_recipient.yaml
   - tools/update_transaction.yaml
+  - tools/send_money.yaml
+  - tools/internal_transfer.yaml

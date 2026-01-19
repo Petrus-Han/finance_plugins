@@ -34,6 +34,27 @@ def create_mock_session():
     return session
 
 
+def get_message_text(result) -> str:
+    """Extract text from ToolInvokeMessage."""
+    if hasattr(result, 'message'):
+        msg = result.message
+        if hasattr(msg, 'text'):
+            return msg.text
+        return str(msg)
+    return str(result)
+
+
+def get_json_data(result) -> dict:
+    """Extract JSON data from ToolInvokeMessage."""
+    if hasattr(result, 'message'):
+        msg = result.message
+        if hasattr(msg, 'json_object'):
+            return msg.json_object
+        if isinstance(msg, dict):
+            return msg
+    return {}
+
+
 class TestGetChartOfAccountsTool:
     """Tests for GetChartOfAccountsTool."""
 
@@ -71,7 +92,8 @@ class TestGetChartOfAccountsTool:
         results = list(tool._invoke({}))
 
         assert len(results) == 1
-        assert results[0].json_object["count"] == 2
+        data = get_json_data(results[0])
+        assert data.get("count") == 2
 
     @patch('httpx.get')
     def test_get_accounts_filter_by_type(self, mock_get):
@@ -110,15 +132,15 @@ class TestGetChartOfAccountsTool:
         results = list(tool._invoke({}))
 
         assert len(results) == 1
-        assert "required" in results[0].message.lower()
+        assert "required" in get_message_text(results[0]).lower()
 
 
 class TestVendorManagementTool:
     """Tests for VendorManagementTool."""
 
     @patch('httpx.get')
-    def test_list_vendors_success(self, mock_get):
-        """Test successful vendor listing."""
+    def test_search_vendors_success(self, mock_get):
+        """Test successful vendor search."""
         from tools.vendor_management import VendorManagementTool
 
         mock_response = MagicMock()
@@ -139,11 +161,12 @@ class TestVendorManagementTool:
         mock_get.return_value = mock_response
 
         tool = VendorManagementTool(runtime=create_mock_runtime(), session=create_mock_session())
-        results = list(tool._invoke({"action": "list"}))
+        results = list(tool._invoke({"action": "search", "name": "Acme"}))
 
         assert len(results) == 1
-        assert results[0].json_object["count"] == 1
-        assert results[0].json_object["vendors"][0]["display_name"] == "Acme Corp"
+        data = get_json_data(results[0])
+        assert data.get("count") == 1
+        assert data.get("vendors", [{}])[0].get("display_name") == "Acme Corp"
 
     @patch('httpx.post')
     def test_create_vendor_success(self, mock_post):
@@ -164,11 +187,12 @@ class TestVendorManagementTool:
         tool = VendorManagementTool(runtime=create_mock_runtime(), session=create_mock_session())
         results = list(tool._invoke({
             "action": "create",
-            "display_name": "New Vendor"
+            "name": "New Vendor"
         }))
 
         assert len(results) == 1
-        assert results[0].json_object["id"] == "new_vendor"
+        data = get_json_data(results[0])
+        assert data.get("id") == "new_vendor"
 
 
 class TestCustomerManagementTool:
@@ -201,7 +225,8 @@ class TestCustomerManagementTool:
         results = list(tool._invoke({"action": "list"}))
 
         assert len(results) == 1
-        assert results[0].json_object["count"] == 1
+        data = get_json_data(results[0])
+        assert data.get("count") == 1
 
     @patch('httpx.post')
     def test_create_customer_success(self, mock_post):
@@ -227,7 +252,8 @@ class TestCustomerManagementTool:
         }))
 
         assert len(results) == 1
-        assert results[0].json_object["id"] == "new_customer"
+        data = get_json_data(results[0])
+        assert data.get("id") == "new_customer"
 
     def test_create_customer_missing_name(self):
         """Test error when display_name is missing."""
@@ -237,7 +263,7 @@ class TestCustomerManagementTool:
         results = list(tool._invoke({"action": "create"}))
 
         assert len(results) == 1
-        assert "required" in results[0].message.lower()
+        assert "required" in get_message_text(results[0]).lower()
 
 
 class TestCreatePurchaseTool:
@@ -271,8 +297,9 @@ class TestCreatePurchaseTool:
         }))
 
         assert len(results) == 1
-        assert results[0].json_object["id"] == "purchase_123"
-        assert results[0].json_object["total_amount"] == 500.00
+        data = get_json_data(results[0])
+        assert data.get("id") == "purchase_123"
+        assert data.get("total_amount") == 500.00
 
     def test_create_purchase_missing_required(self):
         """Test error when required fields are missing."""
@@ -285,7 +312,7 @@ class TestCreatePurchaseTool:
         }))
 
         assert len(results) == 1
-        assert "required" in results[0].message.lower()
+        assert "required" in get_message_text(results[0]).lower()
 
 
 class TestCreateDepositTool:
@@ -317,7 +344,8 @@ class TestCreateDepositTool:
         }))
 
         assert len(results) == 1
-        assert results[0].json_object["id"] == "deposit_123"
+        data = get_json_data(results[0])
+        assert data.get("id") == "deposit_123"
 
 
 class TestCreateTransferTool:
@@ -350,9 +378,10 @@ class TestCreateTransferTool:
         }))
 
         assert len(results) == 1
-        assert results[0].json_object["id"] == "transfer_123"
-        assert results[0].json_object["from_account"]["name"] == "Checking"
-        assert results[0].json_object["to_account"]["name"] == "Savings"
+        data = get_json_data(results[0])
+        assert data.get("id") == "transfer_123"
+        assert data.get("from_account", {}).get("name") == "Checking"
+        assert data.get("to_account", {}).get("name") == "Savings"
 
     def test_create_transfer_missing_required(self):
         """Test error when required fields are missing."""
@@ -365,7 +394,7 @@ class TestCreateTransferTool:
         }))
 
         assert len(results) == 1
-        assert "required" in results[0].message.lower()
+        assert "required" in get_message_text(results[0]).lower()
 
 
 class TestAPIEnvironment:

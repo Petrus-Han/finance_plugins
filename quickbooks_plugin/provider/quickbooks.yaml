@@ -76,3 +76,5 @@ tools:
   - tools/create_purchase.yaml
   - tools/create_deposit.yaml
   - tools/create_transfer.yaml
+  - tools/create_invoice.yaml
+  - tools/create_bill.yaml
