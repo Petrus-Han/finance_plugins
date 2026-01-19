@@ -174,6 +174,21 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
         # Get environment from credentials (default to sandbox)
         api_environment = credentials.get("api_environment", "sandbox")
 
+        # Handle mock environment with custom URL
+        if api_environment == "mock":
+            mock_url = credentials.get("mock_server_url", "").strip()
+            if not mock_url:
+                log_error("Mock environment selected but no mock_server_url provided")
+                raise TriggerProviderCredentialValidationError(
+                    "Mock Server URL is required when using Mock environment"
+                )
+            # Ensure URL ends with /api/v1
+            base_url = mock_url.rstrip("/")
+            if not base_url.endswith("/api/v1"):
+                base_url = f"{base_url}/api/v1"
+            log_info(f"Using Mock API base URL: {base_url}")
+            return base_url
+
         # Determine URL based on environment
         # Sandbox URL: https://api-sandbox.mercury.com/api/v1/
         # Production URL: https://api.mercury.com/api/v1/
@@ -367,7 +382,8 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
         }
 
         api_base_url = self._get_api_base_url(credentials)
-        url = f"{api_base_url}/webhooks/{external_id}"
+        # Mercury API uses singular /webhook/{id} for DELETE
+        url = f"{api_base_url}/webhook/{external_id}"
         log_info(f"Deleting webhook at: DELETE {url}")
 
         try:
@@ -440,7 +456,8 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
             )
 
         api_base_url = self._get_api_base_url(credentials)
-        url = f"{api_base_url}/webhooks/{external_id}"
+        # Mercury API uses singular /webhook/{id} for GET single webhook
+        url = f"{api_base_url}/webhook/{external_id}"
         log_info(f"Getting webhook status at: GET {url}")
 
         headers = {

@@ -1,0 +1,165 @@
+identity:
+  name: create_recipient
+  author: alai-sudo
+  label:
+    en_US: Create Recipient
+    zh_Hans: 创建收款人
+description:
+  human:
+    en_US: Create a new payment recipient in Mercury for sending payments.
+    zh_Hans: 在 Mercury 中创建新的付款收款人以发送付款。
+  llm: Creates a new recipient (payee) that can receive payments. Requires name and payment method details.
+parameters:
+  - name: name
+    type: string
+    required: true
+    label:
+      en_US: Recipient Name
+      zh_Hans: 收款人名称
+    human_description:
+      en_US: Name of the recipient (person or company)
+      zh_Hans: 收款人名称（个人或公司）
+    llm_description: The display name for this recipient
+    form: llm
+
+  - name: payment_method
+    type: select
+    required: true
+    default: ach
+    label:
+      en_US: Payment Method
+      zh_Hans: 付款方式
+    human_description:
+      en_US: How to pay this recipient
+      zh_Hans: 如何向该收款人付款
+    options:
+      - value: ach
+        label:
+          en_US: ACH Transfer
+          zh_Hans: ACH 转账
+      - value: wire
+        label:
+          en_US: Wire Transfer
+          zh_Hans: 电汇
+      - value: check
+        label:
+          en_US: Check
+          zh_Hans: 支票
+    form: form
+
+  - name: account_number
+    type: string
+    required: false
+    label:
+      en_US: Account Number
+      zh_Hans: 账户号码
+    human_description:
+      en_US: Bank account number (required for ACH/wire)
+      zh_Hans: 银行账户号码（ACH/电汇必填）
+    llm_description: The bank account number for electronic payments
+    form: llm
+
+  - name: routing_number
+    type: string
+    required: false
+    label:
+      en_US: Routing Number
+      zh_Hans: 路由号码
+    human_description:
+      en_US: ABA routing number (required for ACH/wire)
+      zh_Hans: ABA 路由号码（ACH/电汇必填）
+    llm_description: The 9-digit ABA routing number
+    form: llm
+
+  - name: account_type
+    type: select
+    required: false
+    default: checking
+    label:
+      en_US: Account Type
+      zh_Hans: 账户类型
+    human_description:
+      en_US: Type of bank account
+      zh_Hans: 银行账户类型
+    options:
+      - value: checking
+        label:
+          en_US: Checking
+          zh_Hans: 支票账户
+      - value: savings
+        label:
+          en_US: Savings
+          zh_Hans: 储蓄账户
+    form: form
+
+  - name: email
+    type: string
+    required: false
+    label:
+      en_US: Email
+      zh_Hans: 电子邮件
+    human_description:
+      en_US: Contact email for the recipient
+      zh_Hans: 收款人的联系邮箱
+    llm_description: Email address for payment notifications
+    form: llm
+
+  - name: address1
+    type: string
+    required: false
+    label:
+      en_US: Street Address
+      zh_Hans: 街道地址
+    human_description:
+      en_US: Street address (required for check payments)
+      zh_Hans: 街道地址（支票付款必填）
+    form: llm
+
+  - name: city
+    type: string
+    required: false
+    label:
+      en_US: City
+      zh_Hans: 城市
+    human_description:
+      en_US: City (required for check payments)
+      zh_Hans: 城市（支票付款必填）
+    form: llm
+
+  - name: region
+    type: string
+    required: false
+    label:
+      en_US: State/Region
+      zh_Hans: 州/地区
+    human_description:
+      en_US: State or region code (e.g., CA, NY)
+      zh_Hans: 州或地区代码（如 CA, NY）
+    form: llm
+
+  - name: postal_code
+    type: string
+    required: false
+    label:
+      en_US: Postal Code
+      zh_Hans: 邮政编码
+    human_description:
+      en_US: ZIP or postal code
+      zh_Hans: ZIP 或邮政编码
+    form: llm
+
+  - name: country
+    type: string
+    required: false
+    default: US
+    label:
+      en_US: Country
+      zh_Hans: 国家
+    human_description:
+      en_US: Country code (ISO 3166-1, default US)
+      zh_Hans: 国家代码（ISO 3166-1，默认 US）
+    form: form
+
+extra:
+  python:
+    source: tools/create_recipient.py

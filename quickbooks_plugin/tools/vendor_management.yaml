@@ -1,5 +1,6 @@
 identity:
   name: vendor_management
+  author: petrus
   label:
     en_US: Vendor Management
     zh_Hans: 供应商管理
@@ -19,13 +20,21 @@ parameters:
     form: form
     type: select
     required: true
+    label:
+      en_US: Action
+      zh_Hans: 操作
+    human_description:
+      en_US: What operation to perform (search or create)
+      zh_Hans: 要执行的操作（搜索或创建）
     options:
       - value: search
         label:
           en_US: Search
+          zh_Hans: 搜索
       - value: create
         label:
           en_US: Create
+          zh_Hans: 创建
   - name: name
     form: form
     type: string
@@ -33,6 +42,9 @@ parameters:
     label:
       en_US: Vendor Name
       zh_Hans: 供应商名称
+    human_description:
+      en_US: The vendor name to search for or create
+      zh_Hans: 要搜索或创建的供应商名称
 
 output_schema:
   type: object

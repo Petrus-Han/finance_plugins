@@ -1,5 +1,6 @@
 identity:
   name: create_deposit
+  author: petrus
   label:
     en_US: Create Deposit
     zh_Hans: 创建存款
@@ -16,35 +17,71 @@ extra:
 
 parameters:
   - name: bank_account_id
-    form: form
+    form: llm
     type: string
     required: true
     label:
       en_US: Bank Account ID
+      zh_Hans: 银行账户 ID
+    human_description:
+      en_US: The QuickBooks bank account ID to deposit into
+      zh_Hans: 存入的 QuickBooks 银行账户 ID
+    llm_description: The QuickBooks account ID for the bank account to deposit into
   - name: income_account_id
-    form: form
+    form: llm
     type: string
     required: true
     label:
       en_US: Income Account ID
+      zh_Hans: 收入账户 ID
+    human_description:
+      en_US: The QuickBooks income account ID
+      zh_Hans: QuickBooks 收入账户 ID
+    llm_description: The QuickBooks account ID for the income category
   - name: amount
-    form: form
+    form: llm
     type: number
     required: true
-  - name: txn_date
-    form: form
-    type: string
-    required: true
     label:
-      en_US: Transaction Date (YYYY-MM-DD)
+      en_US: Amount
+      zh_Hans: 金额
+    human_description:
+      en_US: Deposit amount
+      zh_Hans: 存款金额
+    llm_description: The deposit amount (positive number)
+  - name: txn_date
+    form: llm
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
+      en_US: Transaction date (YYYY-MM-DD format)
+      zh_Hans: 交易日期（YYYY-MM-DD 格式）
+    llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
   - name: description
-    form: form
+    form: llm
     type: string
     required: false
+    label:
+      en_US: Description
+      zh_Hans: 描述
+    human_description:
+      en_US: Deposit description
+      zh_Hans: 存款描述
+    llm_description: Description of the deposit
   - name: note
-    form: form
+    form: llm
     type: string
     required: false
+    label:
+      en_US: Note
+      zh_Hans: 备注
+    human_description:
+      en_US: Private note
+      zh_Hans: 私人备注
+    llm_description: Internal note for this deposit
 
 output_schema:
   type: object

@@ -90,3 +90,10 @@ tools:
   - tools/get_accounts.yaml
   - tools/get_account.yaml
   - tools/get_transactions.yaml
+  - tools/get_transaction.yaml
+  - tools/get_recipients.yaml
+  - tools/get_recipient.yaml
+  - tools/create_recipient.yaml
+  - tools/update_transaction.yaml
+  - tools/send_money.yaml
+  - tools/internal_transfer.yaml

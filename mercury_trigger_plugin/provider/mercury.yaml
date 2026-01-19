@@ -70,8 +70,8 @@ subscription_constructor:
         en_US: API Environment
         zh_Hans: API 环境
       help:
-        en_US: "Choose the Mercury API environment. Use Sandbox for testing, Production for live data."
-        zh_Hans: "选择 Mercury API 环境。测试使用 Sandbox，生产数据使用 Production。"
+        en_US: "Choose the Mercury API environment. Use Sandbox for testing, Production for live data, Mock for local testing."
+        zh_Hans: "选择 Mercury API 环境。测试使用 Sandbox，生产数据使用 Production，本地测试使用 Mock。"
       options:
         - value: sandbox
           label:
@@ -81,6 +81,23 @@ subscription_constructor:
           label:
             en_US: Production
             zh_Hans: 生产环境
+        - value: mock
+          label:
+            en_US: Mock (Local Testing)
+            zh_Hans: Mock（本地测试）
+
+    mock_server_url:
+      type: text-input
+      required: false
+      label:
+        en_US: Mock Server URL
+        zh_Hans: Mock 服务器地址
+      placeholder:
+        en_US: "http://your-server-ip:8765"
+        zh_Hans: "http://你的服务器IP:8765"
+      help:
+        en_US: "Only required when API Environment is set to 'Mock'. Enter the full URL of your mock Mercury server."
+        zh_Hans: "仅在 API 环境设置为 'Mock' 时需要填写。输入 mock Mercury 服务器的完整地址。"
 
 events:
 - events/transaction.yaml
