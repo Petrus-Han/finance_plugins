@@ -22,6 +22,132 @@ parameters:
     llm_description: Mercury recipient ID (e.g., recipient_xxx)
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description:
+        en_US: Recipient ID
+        zh_Hans: 收款人 ID
+    name:
+      type: string
+      description:
+        en_US: Recipient name
+        zh_Hans: 收款人名称
+    status:
+      type: string
+      description:
+        en_US: Recipient status
+        zh_Hans: 收款人状态
+    emails:
+      type: array
+      description:
+        en_US: Contact emails
+        zh_Hans: 联系邮箱
+      items:
+        type: string
+    payment_method:
+      type: string
+      description:
+        en_US: Payment method
+        zh_Hans: 付款方式
+    created_at:
+      type: string
+      description:
+        en_US: Creation timestamp
+        zh_Hans: 创建时间
+    electronic_routing_info:
+      type: object
+      description:
+        en_US: Electronic routing information
+        zh_Hans: 电子路由信息
+      properties:
+        account_number:
+          type: string
+          description:
+            en_US: Account number
+            zh_Hans: 账户号码
+        routing_number:
+          type: string
+          description:
+            en_US: Routing number
+            zh_Hans: 路由号码
+        bank_name:
+          type: string
+          description:
+            en_US: Bank name
+            zh_Hans: 银行名称
+        account_type:
+          type: string
+          description:
+            en_US: Account type
+            zh_Hans: 账户类型
+    address:
+      type: object
+      description:
+        en_US: Recipient address
+        zh_Hans: 收款人地址
+      properties:
+        address1:
+          type: string
+          description:
+            en_US: Street address line 1
+            zh_Hans: 街道地址第一行
+        address2:
+          type: string
+          description:
+            en_US: Street address line 2
+            zh_Hans: 街道地址第二行
+        city:
+          type: string
+          description:
+            en_US: City
+            zh_Hans: 城市
+        region:
+          type: string
+          description:
+            en_US: State/Region
+            zh_Hans: 州/地区
+        postal_code:
+          type: string
+          description:
+            en_US: Postal code
+            zh_Hans: 邮政编码
+        country:
+          type: string
+          description:
+            en_US: Country
+            zh_Hans: 国家
+    attachments:
+      type: array
+      description:
+        en_US: Recipient attachments
+        zh_Hans: 收款人附件
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description:
+              en_US: Attachment ID
+              zh_Hans: 附件 ID
+          file_name:
+            type: string
+            description:
+              en_US: File name
+              zh_Hans: 文件名
+          tax_form_type:
+            type: string
+            description:
+              en_US: Tax form type
+              zh_Hans: 税表类型
+          uploaded_at:
+            type: string
+            description:
+              en_US: Upload timestamp
+              zh_Hans: 上传时间
+
 extra:
   python:
     source: tools/get_recipient.py

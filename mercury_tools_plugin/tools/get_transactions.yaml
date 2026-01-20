@@ -75,6 +75,88 @@ parameters:
     llm_description: Number of transactions to skip for pagination (default 0)
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    transactions:
+      type: array
+      description:
+        en_US: List of transactions
+        zh_Hans: 交易列表
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description:
+              en_US: Transaction ID
+              zh_Hans: 交易 ID
+          amount:
+            type: number
+            description:
+              en_US: Transaction amount
+              zh_Hans: 交易金额
+          posted_at:
+            type: string
+            description:
+              en_US: Posted timestamp
+              zh_Hans: 入账时间
+          status:
+            type: string
+            description:
+              en_US: Transaction status
+              zh_Hans: 交易状态
+          counterparty_name:
+            type: string
+            description:
+              en_US: Counterparty name
+              zh_Hans: 交易对手名称
+          bank_description:
+            type: string
+            description:
+              en_US: Bank description
+              zh_Hans: 银行描述
+          note:
+            type: string
+            description:
+              en_US: Internal note
+              zh_Hans: 内部备注
+          category:
+            type: string
+            description:
+              en_US: Transaction category
+              zh_Hans: 交易分类
+          type:
+            type: string
+            description:
+              en_US: Transaction type
+              zh_Hans: 交易类型
+          account_id:
+            type: string
+            description:
+              en_US: Account ID
+              zh_Hans: 账户 ID
+    count:
+      type: number
+      description:
+        en_US: Number of transactions returned
+        zh_Hans: 返回的交易数量
+    total:
+      type: number
+      description:
+        en_US: Total number of transactions matching criteria
+        zh_Hans: 符合条件的交易总数
+    offset:
+      type: number
+      description:
+        en_US: Current offset for pagination
+        zh_Hans: 当前分页偏移量
+    limit:
+      type: number
+      description:
+        en_US: Maximum results per page
+        zh_Hans: 每页最大结果数
+
 extra:
   python:
     source: tools/get_transactions.py

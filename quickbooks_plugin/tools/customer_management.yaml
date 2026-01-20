@@ -82,3 +82,80 @@ parameters:
 extra:
   python:
     source: tools/customer_management.py
+
+output_schema:
+  type: object
+  properties:
+    customers:
+      type: array
+      description:
+        en_US: List of customers (for list and search actions)
+        zh_Hans: 客户列表（用于列出和搜索操作）
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description:
+              en_US: Customer ID
+              zh_Hans: 客户 ID
+          display_name:
+            type: string
+            description:
+              en_US: Customer display name
+              zh_Hans: 客户显示名称
+          company_name:
+            type: string
+            description:
+              en_US: Company name
+              zh_Hans: 公司名称
+          email:
+            type: string
+            description:
+              en_US: Primary email address
+              zh_Hans: 主要电子邮件地址
+          phone:
+            type: string
+            description:
+              en_US: Primary phone number
+              zh_Hans: 主要电话号码
+          balance:
+            type: number
+            description:
+              en_US: Customer balance
+              zh_Hans: 客户余额
+          active:
+            type: boolean
+            description:
+              en_US: Whether the customer is active
+              zh_Hans: 客户是否活跃
+    count:
+      type: integer
+      description:
+        en_US: Total number of customers returned
+        zh_Hans: 返回的客户总数
+    id:
+      type: string
+      description:
+        en_US: Created customer ID (for create action)
+        zh_Hans: 创建的客户 ID（用于创建操作）
+    display_name:
+      type: string
+      description:
+        en_US: Created customer display name (for create action)
+        zh_Hans: 创建的客户显示名称（用于创建操作）
+    company_name:
+      type: string
+      description:
+        en_US: Created customer company name (for create action)
+        zh_Hans: 创建的客户公司名称（用于创建操作）
+    sync_token:
+      type: string
+      description:
+        en_US: QuickBooks sync token (for create action)
+        zh_Hans: QuickBooks 同步令牌（用于创建操作）
+    message:
+      type: string
+      description:
+        en_US: Success message (for create action)
+        zh_Hans: 成功消息（用于创建操作）

@@ -14,6 +14,63 @@ description:
 
 parameters: []
 
+output_schema:
+  type: object
+  properties:
+    accounts:
+      type: array
+      description:
+        en_US: List of Mercury bank accounts
+        zh_Hans: Mercury 银行账户列表
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description:
+              en_US: Account ID
+              zh_Hans: 账户 ID
+          name:
+            type: string
+            description:
+              en_US: Account name
+              zh_Hans: 账户名称
+          type:
+            type: string
+            description:
+              en_US: Account type (mercury)
+              zh_Hans: 账户类型
+          status:
+            type: string
+            description:
+              en_US: Account status (active/closed)
+              zh_Hans: 账户状态
+          current_balance:
+            type: number
+            description:
+              en_US: Current balance
+              zh_Hans: 当前余额
+          available_balance:
+            type: number
+            description:
+              en_US: Available balance
+              zh_Hans: 可用余额
+          currency:
+            type: string
+            description:
+              en_US: Currency code (USD)
+              zh_Hans: 货币代码
+          routing_number:
+            type: string
+            description:
+              en_US: Bank routing number
+              zh_Hans: 银行路由号
+          account_number:
+            type: string
+            description:
+              en_US: Account number
+              zh_Hans: 账户号码
+
 extra:
   python:
     source: tools/get_accounts.py

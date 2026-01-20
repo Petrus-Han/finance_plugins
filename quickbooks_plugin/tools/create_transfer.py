@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class CreateTransferTool(Tool):
@@ -26,8 +27,7 @@ class CreateTransferTool(Tool):
         amount = tool_parameters.get("amount")
 
         if not all([from_account_id, to_account_id, amount]):
-            yield self.create_text_message("from_account_id, to_account_id, and amount are required parameters")
-            return
+            raise ValueError("from_account_id, to_account_id, and amount are required parameters")
 
         # Get optional parameters
         txn_date = tool_parameters.get("txn_date")
@@ -38,8 +38,7 @@ class CreateTransferTool(Tool):
         realm_id = self.runtime.credentials.get("realm_id")
 
         if not access_token or not realm_id:
-            yield self.create_text_message("QuickBooks API Access Token and Realm ID are required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks API Access Token and Realm ID are required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -107,21 +106,19 @@ class CreateTransferTool(Tool):
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                yield self.create_text_message(f"Invalid request: {error_msg}")
+                raise ValueError(f"Invalid request: {error_msg}")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your QuickBooks API access token."
                 )
 
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                yield self.create_text_message(
+                raise Exception(
                     f"Failed to create transfer: {response.status_code} - {error_msg}"
                 )
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while creating transfer: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while creating transfer: {str(e)}") from e

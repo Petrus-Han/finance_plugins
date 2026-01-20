@@ -48,6 +48,40 @@ parameters:
     llm_description: Optional description or reason for this refund
     form: form
 
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description:
+        en_US: Unique identifier for the refund
+        zh_Hans: 退款的唯一标识符
+    status:
+      type: string
+      description:
+        en_US: Current status of the refund (ISSUED, PENDING, etc.)
+        zh_Hans: 退款的当前状态（ISSUED、PENDING 等）
+    amount:
+      type: string
+      description:
+        en_US: Amount refunded
+        zh_Hans: 退款金额
+    created:
+      type: string
+      description:
+        en_US: Timestamp when the refund was created
+        zh_Hans: 退款创建的时间戳
+    description:
+      type: string
+      description:
+        en_US: Description or reason for the refund
+        zh_Hans: 退款的描述或原因
+    context:
+      type: object
+      description:
+        en_US: Additional context information about the refund
+        zh_Hans: 退款的附加上下文信息
+
 extra:
   python:
     source: tools/create_refund.py

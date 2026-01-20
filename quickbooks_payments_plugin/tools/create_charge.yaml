@@ -100,6 +100,66 @@ parameters:
     llm_description: Optional customer identifier in QuickBooks system
     form: form
 
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description:
+        en_US: Unique identifier for the charge
+        zh_Hans: 支付的唯一标识符
+    status:
+      type: string
+      description:
+        en_US: Current status of the charge (CAPTURED, AUTHORIZED, etc.)
+        zh_Hans: 支付的当前状态（CAPTURED、AUTHORIZED 等）
+    amount:
+      type: string
+      description:
+        en_US: Amount charged
+        zh_Hans: 支付金额
+    currency:
+      type: string
+      description:
+        en_US: Currency code of the charge
+        zh_Hans: 支付的货币代码
+    created:
+      type: string
+      description:
+        en_US: Timestamp when the charge was created
+        zh_Hans: 支付创建的时间戳
+    auth_code:
+      type: string
+      description:
+        en_US: Authorization code from the payment processor
+        zh_Hans: 来自支付处理器的授权代码
+    captured:
+      type: boolean
+      description:
+        en_US: Whether the payment was captured immediately
+        zh_Hans: 支付是否已立即捕获
+    card:
+      type: object
+      description:
+        en_US: Card details used for the charge (if card payment)
+        zh_Hans: 用于支付的卡片详情（如果是卡支付）
+      properties:
+        number:
+          type: string
+          description:
+            en_US: Masked card number
+            zh_Hans: 已屏蔽的卡号
+        card_type:
+          type: string
+          description:
+            en_US: Type of card (VISA, MASTERCARD, etc.)
+            zh_Hans: 卡片类型（VISA、MASTERCARD 等）
+        name:
+          type: string
+          description:
+            en_US: Name on the card
+            zh_Hans: 卡上的姓名
+
 extra:
   python:
     source: tools/create_charge.py

@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class CreateTokenTool(Tool):
@@ -23,14 +24,12 @@ class CreateTokenTool(Tool):
         # Get payment type
         payment_type = tool_parameters.get("payment_type")
         if not payment_type or payment_type not in ["card", "bank_account"]:
-            yield self.create_text_message("payment_type is required and must be 'card' or 'bank_account'")
-            return
+            raise ValueError("payment_type is required and must be 'card' or 'bank_account'")
 
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("QuickBooks Payments API Access Token is required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks Payments API Access Token is required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -55,11 +54,10 @@ class CreateTokenTool(Tool):
             card_name = tool_parameters.get("card_name")
 
             if not all([card_number, card_exp_month, card_exp_year, card_cvc, card_name]):
-                yield self.create_text_message(
+                raise ValueError(
                     "For card payments, all fields are required: card_number, card_exp_month, "
                     "card_exp_year, card_cvc, card_name"
                 )
-                return
 
             request_body = {
                 "card": {
@@ -79,11 +77,10 @@ class CreateTokenTool(Tool):
             account_name = tool_parameters.get("bank_account_name")
 
             if not all([routing_number, account_number, account_type, account_name]):
-                yield self.create_text_message(
+                raise ValueError(
                     "For bank account payments, all fields are required: bank_routing_number, "
                     "bank_account_number, bank_account_type, bank_account_name"
                 )
-                return
 
             request_body = {
                 "bankAccount": {
@@ -120,21 +117,17 @@ class CreateTokenTool(Tool):
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(f"Invalid request: {error_msg}")
+                raise ValueError(f"Invalid request: {error_msg}")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your QuickBooks Payments API access token."
                 )
 
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to create token: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to create token: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while creating token: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while creating token: {str(e)}") from e

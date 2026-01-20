@@ -104,3 +104,62 @@ parameters:
 extra:
   python:
     source: tools/create_bill.py
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description:
+        en_US: Whether the bill was created successfully
+        zh_Hans: 账单是否创建成功
+    id:
+      type: string
+      description:
+        en_US: The unique identifier of the created bill
+        zh_Hans: 创建的账单唯一标识符
+    doc_number:
+      type: string
+      description:
+        en_US: The bill document/reference number
+        zh_Hans: 账单文档/参考编号
+    txn_date:
+      type: string
+      description:
+        en_US: The transaction date of the bill
+        zh_Hans: 账单的交易日期
+    due_date:
+      type: string
+      description:
+        en_US: The payment due date
+        zh_Hans: 付款到期日期
+    total_amount:
+      type: number
+      description:
+        en_US: The total amount of the bill
+        zh_Hans: 账单总金额
+    balance:
+      type: number
+      description:
+        en_US: The remaining balance on the bill
+        zh_Hans: 账单剩余余额
+    vendor:
+      type: string
+      description:
+        en_US: The vendor name
+        zh_Hans: 供应商名称
+    ap_account:
+      type: string
+      description:
+        en_US: The accounts payable account name
+        zh_Hans: 应付账款账户名称
+    sync_token:
+      type: string
+      description:
+        en_US: QuickBooks sync token for the record
+        zh_Hans: 记录的 QuickBooks 同步令牌
+    message:
+      type: string
+      description:
+        en_US: Success message with bill details
+        zh_Hans: 包含账单详情的成功消息

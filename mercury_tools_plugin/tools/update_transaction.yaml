@@ -46,6 +46,35 @@ parameters:
     llm_description: The category ID to assign
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description:
+        en_US: Whether the operation succeeded
+        zh_Hans: 操作是否成功
+    id:
+      type: string
+      description:
+        en_US: Transaction ID
+        zh_Hans: 交易 ID
+    note:
+      type: string
+      description:
+        en_US: Updated note
+        zh_Hans: 更新后的备注
+    status:
+      type: string
+      description:
+        en_US: Transaction status
+        zh_Hans: 交易状态
+    message:
+      type: string
+      description:
+        en_US: Status message
+        zh_Hans: 状态消息
+
 extra:
   python:
     source: tools/update_transaction.py

@@ -72,3 +72,69 @@ parameters:
 extra:
   python:
     source: tools/create_transfer.py
+
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description:
+        en_US: The unique identifier of the created transfer
+        zh_Hans: 创建的转账唯一标识符
+    txn_date:
+      type: string
+      description:
+        en_US: The transaction date of the transfer
+        zh_Hans: 转账的交易日期
+    amount:
+      type: number
+      description:
+        en_US: The transfer amount
+        zh_Hans: 转账金额
+    from_account:
+      type: object
+      description:
+        en_US: The source account information
+        zh_Hans: 转出账户信息
+      properties:
+        id:
+          type: string
+          description:
+            en_US: Source account ID
+            zh_Hans: 转出账户 ID
+        name:
+          type: string
+          description:
+            en_US: Source account name
+            zh_Hans: 转出账户名称
+    to_account:
+      type: object
+      description:
+        en_US: The destination account information
+        zh_Hans: 转入账户信息
+      properties:
+        id:
+          type: string
+          description:
+            en_US: Destination account ID
+            zh_Hans: 转入账户 ID
+        name:
+          type: string
+          description:
+            en_US: Destination account name
+            zh_Hans: 转入账户名称
+    private_note:
+      type: string
+      description:
+        en_US: Private note for the transfer
+        zh_Hans: 转账的私人备注
+    sync_token:
+      type: string
+      description:
+        en_US: QuickBooks sync token for the record
+        zh_Hans: 记录的 QuickBooks 同步令牌
+    meta_data:
+      type: object
+      description:
+        en_US: Metadata including creation and update timestamps
+        zh_Hans: 包含创建和更新时间戳的元数据

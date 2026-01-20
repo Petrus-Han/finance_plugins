@@ -36,6 +36,20 @@ parameters:
     llm_description: The unique identifier of the bank account to remove
     form: form
 
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description:
+        en_US: Whether the bank account was successfully deleted
+        zh_Hans: 银行账户是否成功删除
+    message:
+      type: string
+      description:
+        en_US: Status message describing the result of the operation
+        zh_Hans: 描述操作结果的状态消息
+
 extra:
   python:
     source: tools/delete_bank_account.py

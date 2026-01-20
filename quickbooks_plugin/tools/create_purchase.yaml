@@ -108,3 +108,60 @@ parameters:
 
 output_schema:
   type: object
+  properties:
+    id:
+      type: string
+      description:
+        en_US: The unique identifier of the created purchase
+        zh_Hans: 创建的采购唯一标识符
+    txn_date:
+      type: string
+      description:
+        en_US: The transaction date of the purchase
+        zh_Hans: 采购的交易日期
+    total_amount:
+      type: number
+      description:
+        en_US: The total amount of the purchase
+        zh_Hans: 采购总金额
+    payment_type:
+      type: string
+      description:
+        en_US: The payment type (Cash, Check, CreditCard)
+        zh_Hans: 付款类型（现金、支票、信用卡）
+    account:
+      type: string
+      description:
+        en_US: The bank account name used for payment
+        zh_Hans: 用于付款的银行账户名称
+    private_note:
+      type: string
+      description:
+        en_US: Private note for the purchase
+        zh_Hans: 采购的私人备注
+    sync_token:
+      type: string
+      description:
+        en_US: QuickBooks sync token for the record
+        zh_Hans: 记录的 QuickBooks 同步令牌
+    meta_data:
+      type: object
+      description:
+        en_US: Metadata including creation and update timestamps
+        zh_Hans: 包含创建和更新时间戳的元数据
+    entity:
+      type: object
+      description:
+        en_US: Vendor/entity information if applicable
+        zh_Hans: 供应商/实体信息（如适用）
+      properties:
+        name:
+          type: string
+          description:
+            en_US: Entity name
+            zh_Hans: 实体名称
+        type:
+          type: string
+          description:
+            en_US: Entity type (e.g., Vendor)
+            zh_Hans: 实体类型（如：供应商）
