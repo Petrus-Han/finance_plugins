@@ -9,79 +9,64 @@ description:
   human:
     en_US: Refund a previously captured payment charge.
     zh_Hans: 退款之前已捕获的支付。
-  llm: This tool creates a refund for a previously captured charge. You can refund the full amount or a partial amount.
-
+  llm: This tool creates a refund for a previously captured charge. You can refund
+    the full amount or a partial amount.
 parameters:
-  - name: charge_id
-    type: string
-    required: true
-    label:
-      en_US: Charge ID
-      zh_Hans: 支付 ID
-    human_description:
-      en_US: The ID of the charge to refund
-      zh_Hans: 要退款的支付 ID
-    llm_description: The unique identifier of the charge to refund
-    form: form
-
-  - name: amount
-    type: string
-    required: false
-    label:
-      en_US: Refund Amount
-      zh_Hans: 退款金额
-    human_description:
-      en_US: Amount to refund (leave empty for full refund)
-      zh_Hans: 退款金额（留空则全额退款）
-    llm_description: The amount to refund as a decimal string. Leave empty to refund the full charge amount.
-    form: form
-
-  - name: description
-    type: string
-    required: false
-    label:
-      en_US: Description
-      zh_Hans: 描述
-    human_description:
-      en_US: Optional reason for the refund
-      zh_Hans: 可选的退款原因
-    llm_description: Optional description or reason for this refund
-    form: form
-
+- name: charge_id
+  type: string
+  required: true
+  label:
+    en_US: Charge ID
+    zh_Hans: 支付 ID
+  human_description:
+    en_US: The ID of the charge to refund
+    zh_Hans: 要退款的支付 ID
+  llm_description: The unique identifier of the charge to refund
+  form: form
+- name: amount
+  type: string
+  required: false
+  label:
+    en_US: Refund Amount
+    zh_Hans: 退款金额
+  human_description:
+    en_US: Amount to refund (leave empty for full refund)
+    zh_Hans: 退款金额（留空则全额退款）
+  llm_description: The amount to refund as a decimal string. Leave empty to refund
+    the full charge amount.
+  form: form
+- name: description
+  type: string
+  required: false
+  label:
+    en_US: Description
+    zh_Hans: 描述
+  human_description:
+    en_US: Optional reason for the refund
+    zh_Hans: 可选的退款原因
+  llm_description: Optional description or reason for this refund
+  form: form
 output_schema:
   type: object
   properties:
     id:
       type: string
-      description:
-        en_US: Unique identifier for the refund
-        zh_Hans: 退款的唯一标识符
+      description: Unique identifier for the refund
     status:
       type: string
-      description:
-        en_US: Current status of the refund (ISSUED, PENDING, etc.)
-        zh_Hans: 退款的当前状态（ISSUED、PENDING 等）
+      description: Current status of the refund (ISSUED, PENDING, etc.)
     amount:
       type: string
-      description:
-        en_US: Amount refunded
-        zh_Hans: 退款金额
+      description: Amount refunded
     created:
       type: string
-      description:
-        en_US: Timestamp when the refund was created
-        zh_Hans: 退款创建的时间戳
+      description: Timestamp when the refund was created
     description:
       type: string
-      description:
-        en_US: Description or reason for the refund
-        zh_Hans: 退款的描述或原因
+      description: Description or reason for the refund
     context:
       type: object
-      description:
-        en_US: Additional context information about the refund
-        zh_Hans: 退款的附加上下文信息
-
+      description: Additional context information about the refund
 extra:
   python:
     source: tools/create_refund.py

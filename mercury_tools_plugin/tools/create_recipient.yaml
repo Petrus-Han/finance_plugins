@@ -165,39 +165,25 @@ output_schema:
   properties:
     success:
       type: boolean
-      description:
-        en_US: Whether the operation succeeded
-        zh_Hans: 操作是否成功
+      description: Whether the operation succeeded
     id:
       type: string
-      description:
-        en_US: Created recipient ID
-        zh_Hans: 创建的收款人 ID
+      description: Created recipient ID
     name:
       type: string
-      description:
-        en_US: Recipient name
-        zh_Hans: 收款人名称
+      description: Recipient name
     status:
       type: string
-      description:
-        en_US: Recipient status
-        zh_Hans: 收款人状态
+      description: Recipient status
     payment_method:
       type: string
-      description:
-        en_US: Payment method
-        zh_Hans: 付款方式
+      description: Payment method
     created_at:
       type: string
-      description:
-        en_US: Creation timestamp
-        zh_Hans: 创建时间
+      description: Creation timestamp
     message:
       type: string
-      description:
-        en_US: Status message
-        zh_Hans: 状态消息
+      description: Status message
 
 extra:
   python:

@@ -27,103 +27,65 @@ output_schema:
   properties:
     id:
       type: string
-      description:
-        en_US: Transaction ID
-        zh_Hans: 交易 ID
+      description: Transaction ID
     account_id:
       type: string
-      description:
-        en_US: Account ID
-        zh_Hans: 账户 ID
+      description: Account ID
     amount:
       type: number
-      description:
-        en_US: Transaction amount
-        zh_Hans: 交易金额
+      description: Transaction amount
     status:
       type: string
-      description:
-        en_US: Transaction status
-        zh_Hans: 交易状态
+      description: Transaction status
     counterparty_name:
       type: string
-      description:
-        en_US: Counterparty name
-        zh_Hans: 交易对手名称
+      description: Counterparty name
     counterparty_id:
       type: string
-      description:
-        en_US: Counterparty ID
-        zh_Hans: 交易对手 ID
+      description: Counterparty ID
     note:
       type: string
-      description:
-        en_US: Internal note
-        zh_Hans: 内部备注
+      description: Internal note
     external_memo:
       type: string
-      description:
-        en_US: External memo
-        zh_Hans: 外部备注
+      description: External memo
     posted_at:
       type: string
-      description:
-        en_US: Posted timestamp
-        zh_Hans: 入账时间
+      description: Posted timestamp
     created_at:
       type: string
-      description:
-        en_US: Creation timestamp
-        zh_Hans: 创建时间
+      description: Creation timestamp
     kind:
       type: string
-      description:
-        en_US: Transaction kind
-        zh_Hans: 交易种类
+      description: Transaction kind
     tracking_number:
       type: string
-      description:
-        en_US: Tracking number
-        zh_Hans: 追踪号码
+      description: Tracking number
     routing_details:
       type: object
-      description:
-        en_US: Routing information
-        zh_Hans: 路由信息
+      description: Routing information
       properties:
         account_number:
           type: string
-          description:
-            en_US: Account number
-            zh_Hans: 账户号码
+          description: Account number
         routing_number:
           type: string
-          description:
-            en_US: Routing number
-            zh_Hans: 路由号码
+          description: Routing number
         bank_name:
           type: string
-          description:
-            en_US: Bank name
-            zh_Hans: 银行名称
+          description: Bank name
     attachments:
       type: array
-      description:
-        en_US: Transaction attachments
-        zh_Hans: 交易附件
+      description: Transaction attachments
       items:
         type: object
         properties:
           id:
             type: string
-            description:
-              en_US: Attachment ID
-              zh_Hans: 附件 ID
+            description: Attachment ID
           file_name:
             type: string
-            description:
-              en_US: File name
-              zh_Hans: 文件名
+            description: File name
 
 extra:
   python:

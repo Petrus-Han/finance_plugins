@@ -4,120 +4,103 @@ identity:
   label:
     en_US: Create Deposit
     zh_Hans: 创建存款
-
 description:
   human:
     en_US: Record a new deposit in QuickBooks.
     zh_Hans: 在 QuickBooks 中记录新的存款。
-  llm: Create a deposit transaction in QuickBooks, recording money received into a bank account from an income source.
-
+  llm: Create a deposit transaction in QuickBooks, recording money received into a
+    bank account from an income source.
 extra:
   python:
     source: tools/create_deposit.py
-
 parameters:
-  - name: bank_account_id
-    form: llm
-    type: string
-    required: true
-    label:
-      en_US: Bank Account ID
-      zh_Hans: 银行账户 ID
-    human_description:
-      en_US: The QuickBooks bank account ID to deposit into
-      zh_Hans: 存入的 QuickBooks 银行账户 ID
-    llm_description: The QuickBooks account ID for the bank account to deposit into
-  - name: income_account_id
-    form: llm
-    type: string
-    required: true
-    label:
-      en_US: Income Account ID
-      zh_Hans: 收入账户 ID
-    human_description:
-      en_US: The QuickBooks income account ID
-      zh_Hans: QuickBooks 收入账户 ID
-    llm_description: The QuickBooks account ID for the income category
-  - name: amount
-    form: llm
-    type: number
-    required: true
-    label:
-      en_US: Amount
-      zh_Hans: 金额
-    human_description:
-      en_US: Deposit amount
-      zh_Hans: 存款金额
-    llm_description: The deposit amount (positive number)
-  - name: txn_date
-    form: llm
-    type: string
-    required: false
-    label:
-      en_US: Transaction Date
-      zh_Hans: 交易日期
-    human_description:
-      en_US: Transaction date (YYYY-MM-DD format)
-      zh_Hans: 交易日期（YYYY-MM-DD 格式）
-    llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
-  - name: description
-    form: llm
-    type: string
-    required: false
-    label:
-      en_US: Description
-      zh_Hans: 描述
-    human_description:
-      en_US: Deposit description
-      zh_Hans: 存款描述
-    llm_description: Description of the deposit
-  - name: note
-    form: llm
-    type: string
-    required: false
-    label:
-      en_US: Note
-      zh_Hans: 备注
-    human_description:
-      en_US: Private note
-      zh_Hans: 私人备注
-    llm_description: Internal note for this deposit
-
+- name: bank_account_id
+  form: llm
+  type: string
+  required: true
+  label:
+    en_US: Bank Account ID
+    zh_Hans: 银行账户 ID
+  human_description:
+    en_US: The QuickBooks bank account ID to deposit into
+    zh_Hans: 存入的 QuickBooks 银行账户 ID
+  llm_description: The QuickBooks account ID for the bank account to deposit into
+- name: income_account_id
+  form: llm
+  type: string
+  required: true
+  label:
+    en_US: Income Account ID
+    zh_Hans: 收入账户 ID
+  human_description:
+    en_US: The QuickBooks income account ID
+    zh_Hans: QuickBooks 收入账户 ID
+  llm_description: The QuickBooks account ID for the income category
+- name: amount
+  form: llm
+  type: number
+  required: true
+  label:
+    en_US: Amount
+    zh_Hans: 金额
+  human_description:
+    en_US: Deposit amount
+    zh_Hans: 存款金额
+  llm_description: The deposit amount (positive number)
+- name: txn_date
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Transaction Date
+    zh_Hans: 交易日期
+  human_description:
+    en_US: Transaction date (YYYY-MM-DD format)
+    zh_Hans: 交易日期（YYYY-MM-DD 格式）
+  llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
+- name: description
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Description
+    zh_Hans: 描述
+  human_description:
+    en_US: Deposit description
+    zh_Hans: 存款描述
+  llm_description: Description of the deposit
+- name: note
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Note
+    zh_Hans: 备注
+  human_description:
+    en_US: Private note
+    zh_Hans: 私人备注
+  llm_description: Internal note for this deposit
 output_schema:
   type: object
   properties:
     id:
       type: string
-      description:
-        en_US: The unique identifier of the created deposit
-        zh_Hans: 创建的存款唯一标识符
+      description: The unique identifier of the created deposit
     txn_date:
       type: string
-      description:
-        en_US: The transaction date of the deposit
-        zh_Hans: 存款的交易日期
+      description: The transaction date of the deposit
     total_amount:
       type: number
-      description:
-        en_US: The total amount of the deposit
-        zh_Hans: 存款总金额
+      description: The total amount of the deposit
     deposit_to_account:
       type: string
-      description:
-        en_US: The bank account name where the deposit was made
-        zh_Hans: 存款存入的银行账户名称
+      description: The bank account name where the deposit was made
     private_note:
       type: string
-      description:
-        en_US: Private note for the deposit
-        zh_Hans: 存款的私人备注
+      description: Private note for the deposit
     sync_token:
       type: string
-      description:
-        en_US: QuickBooks sync token for the record
-        zh_Hans: 记录的 QuickBooks 同步令牌
+      description: QuickBooks sync token for the record
     meta_data:
       type: object
-      description:
-        en_US: Metadata including creation and update timestamps
-        zh_Hans: 包含创建和更新时间戳的元数据
+      description: Metadata including creation and update timestamps
