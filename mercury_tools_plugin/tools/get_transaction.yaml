@@ -22,6 +22,71 @@ parameters:
     llm_description: Mercury transaction ID (e.g., txn_xxx)
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Transaction ID
+    account_id:
+      type: string
+      description: Account ID
+    amount:
+      type: number
+      description: Transaction amount
+    status:
+      type: string
+      description: Transaction status
+    counterparty_name:
+      type: string
+      description: Counterparty name
+    counterparty_id:
+      type: string
+      description: Counterparty ID
+    note:
+      type: string
+      description: Internal note
+    external_memo:
+      type: string
+      description: External memo
+    posted_at:
+      type: string
+      description: Posted timestamp
+    created_at:
+      type: string
+      description: Creation timestamp
+    kind:
+      type: string
+      description: Transaction kind
+    tracking_number:
+      type: string
+      description: Tracking number
+    routing_details:
+      type: object
+      description: Routing information
+      properties:
+        account_number:
+          type: string
+          description: Account number
+        routing_number:
+          type: string
+          description: Routing number
+        bank_name:
+          type: string
+          description: Bank name
+    attachments:
+      type: array
+      description: Transaction attachments
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Attachment ID
+          file_name:
+            type: string
+            description: File name
+
 extra:
   python:
     source: tools/get_transaction.py

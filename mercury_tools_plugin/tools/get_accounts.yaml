@@ -14,6 +14,43 @@ description:
 
 parameters: []
 
+output_schema:
+  type: object
+  properties:
+    accounts:
+      type: array
+      description: List of Mercury bank accounts
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Account ID
+          name:
+            type: string
+            description: Account name
+          type:
+            type: string
+            description: Account type (mercury)
+          status:
+            type: string
+            description: Account status (active/closed)
+          current_balance:
+            type: number
+            description: Current balance
+          available_balance:
+            type: number
+            description: Available balance
+          currency:
+            type: string
+            description: Currency code (USD)
+          routing_number:
+            type: string
+            description: Bank routing number
+          account_number:
+            type: string
+            description: Account number
+
 extra:
   python:
     source: tools/get_accounts.py

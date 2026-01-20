@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class GetTransactionTool(Tool):
@@ -24,14 +25,12 @@ class GetTransactionTool(Tool):
         # Get parameters
         transaction_id = tool_parameters.get("transaction_id", "")
         if not transaction_id:
-            yield self.create_text_message("Transaction ID is required.")
-            return
+            raise ValueError("Transaction ID is required.")
 
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("Mercury API Access Token is required.")
-            return
+            raise ValueError("Mercury API Access Token is required.")
 
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
@@ -98,21 +97,15 @@ class GetTransactionTool(Tool):
                 yield self.create_json_message(transaction_info)
 
             elif response.status_code == 404:
-                yield self.create_text_message(
-                    f"Transaction with ID '{transaction_id}' not found."
-                )
+                raise ValueError(f"Transaction with ID '{transaction_id}' not found.")
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your Mercury API access token."
                 )
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to retrieve transaction: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to retrieve transaction: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while fetching transaction: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while fetching transaction: {str(e)}") from e

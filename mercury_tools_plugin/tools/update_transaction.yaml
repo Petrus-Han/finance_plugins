@@ -46,6 +46,25 @@ parameters:
     llm_description: The category ID to assign
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    id:
+      type: string
+      description: Transaction ID
+    note:
+      type: string
+      description: Updated note
+    status:
+      type: string
+      description: Transaction status
+    message:
+      type: string
+      description: Status message
+
 extra:
   python:
     source: tools/update_transaction.py

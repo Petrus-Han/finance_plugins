@@ -4,43 +4,62 @@ identity:
   label:
     en_US: Get Chart of Accounts
     zh_Hans: 获取会计科目表
-
 description:
   human:
     en_US: Fetch your QuickBooks Chart of Accounts, optionally filtered by type.
     zh_Hans: 获取您的 QuickBooks 会计科目表，可选择按类型过滤。
-  llm: Retrieve the list of accounts from QuickBooks Chart of Accounts, including account IDs, names, types, and status. Can be filtered by account type (e.g., Expense, Bank, Income).
-
+  llm: Retrieve the list of accounts from QuickBooks Chart of Accounts, including
+    account IDs, names, types, and status. Can be filtered by account type (e.g.,
+    Expense, Bank, Income).
 extra:
   python:
     source: tools/get_chart_of_accounts.py
-
 parameters:
-  - name: account_type
-    form: form
-    type: string
-    required: false
-    label:
-      en_US: Account Type
-      zh_Hans: 科目类型
-    human_description:
-      en_US: Filter by account type (e.g., Expense, Bank, Income)
-      zh_Hans: 按账户类型筛选（如：费用、银行、收入）
-    placeholder:
-      en_US: e.g., Expense, Bank, Income
-
+- name: account_type
+  form: form
+  type: string
+  required: false
+  label:
+    en_US: Account Type
+    zh_Hans: 科目类型
+  human_description:
+    en_US: Filter by account type (e.g., Expense, Bank, Income)
+    zh_Hans: 按账户类型筛选（如：费用、银行、收入）
+  placeholder:
+    en_US: e.g., Expense, Bank, Income
 output_schema:
-  type: array
-  items:
-    type: object
-    properties:
-      Id:
-        type: string
-      Name:
-        type: string
-      Type:
-        type: string
-      SubType:
-        type: string
-      Active:
-        type: boolean
+  type: object
+  properties:
+    accounts:
+      type: array
+      description: List of accounts from the Chart of Accounts
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Account ID
+          name:
+            type: string
+            description: Account name
+          type:
+            type: string
+            description: Account type (e.g., Expense, Bank, Income)
+          sub_type:
+            type: string
+            description: Account subtype
+          active:
+            type: boolean
+            description: Whether the account is active
+          current_balance:
+            type: number
+            description: Current balance of the account
+          classification:
+            type: string
+            description: Account classification
+          fully_qualified_name:
+            type: string
+            description: Fully qualified name including parent accounts
+    count:
+      type: integer
+      description: Total number of accounts returned

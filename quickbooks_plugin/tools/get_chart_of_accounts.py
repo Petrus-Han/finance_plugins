@@ -6,6 +6,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class GetChartOfAccountsTool(Tool):
@@ -29,8 +30,7 @@ class GetChartOfAccountsTool(Tool):
         realm_id = self.runtime.credentials.get("realm_id")
 
         if not access_token or not realm_id:
-            yield self.create_text_message("QuickBooks API Access Token and Realm ID are required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks API Access Token and Realm ID are required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -65,7 +65,11 @@ class GetChartOfAccountsTool(Tool):
                 accounts = data.get("QueryResponse", {}).get("Account", [])
 
                 if not accounts:
-                    yield self.create_text_message("No accounts found.")
+                    yield self.create_json_message({
+                        "accounts": [],
+                        "count": 0,
+                        "message": "No accounts found."
+                    })
                     return
 
                 # Format accounts for output
@@ -91,21 +95,19 @@ class GetChartOfAccountsTool(Tool):
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                yield self.create_text_message(f"Invalid request: {error_msg}")
+                raise ValueError(f"Invalid request: {error_msg}")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your QuickBooks API access token."
                 )
 
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                yield self.create_text_message(
+                raise Exception(
                     f"Failed to retrieve accounts: {response.status_code} - {error_msg}"
                 )
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while fetching accounts: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while fetching accounts: {str(e)}") from e

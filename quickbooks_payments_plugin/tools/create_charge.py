@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class CreateChargeTool(Tool):
@@ -25,8 +26,7 @@ class CreateChargeTool(Tool):
         token = tool_parameters.get("token")
 
         if not amount or not token:
-            yield self.create_text_message("amount and token are required parameters")
-            return
+            raise ValueError("amount and token are required parameters")
 
         # Get optional parameters
         currency = tool_parameters.get("currency", "USD")
@@ -37,8 +37,7 @@ class CreateChargeTool(Tool):
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("QuickBooks Payments API Access Token is required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks Payments API Access Token is required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -108,26 +107,22 @@ class CreateChargeTool(Tool):
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(f"Invalid request: {error_msg}")
+                raise ValueError(f"Invalid request: {error_msg}")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your QuickBooks Payments API access token."
                 )
 
             elif response.status_code == 402:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", "Payment declined")
-                yield self.create_text_message(f"Payment declined: {error_msg}")
+                raise Exception(f"Payment declined: {error_msg}")
 
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to create charge: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to create charge: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while creating charge: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while creating charge: {str(e)}") from e

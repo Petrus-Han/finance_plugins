@@ -22,6 +22,86 @@ parameters:
     llm_description: Mercury recipient ID (e.g., recipient_xxx)
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Recipient ID
+    name:
+      type: string
+      description: Recipient name
+    status:
+      type: string
+      description: Recipient status
+    emails:
+      type: array
+      description: Contact emails
+      items:
+        type: string
+    payment_method:
+      type: string
+      description: Payment method
+    created_at:
+      type: string
+      description: Creation timestamp
+    electronic_routing_info:
+      type: object
+      description: Electronic routing information
+      properties:
+        account_number:
+          type: string
+          description: Account number
+        routing_number:
+          type: string
+          description: Routing number
+        bank_name:
+          type: string
+          description: Bank name
+        account_type:
+          type: string
+          description: Account type
+    address:
+      type: object
+      description: Recipient address
+      properties:
+        address1:
+          type: string
+          description: Street address line 1
+        address2:
+          type: string
+          description: Street address line 2
+        city:
+          type: string
+          description: City
+        region:
+          type: string
+          description: State/Region
+        postal_code:
+          type: string
+          description: Postal code
+        country:
+          type: string
+          description: Country
+    attachments:
+      type: array
+      description: Recipient attachments
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Attachment ID
+          file_name:
+            type: string
+            description: File name
+          tax_form_type:
+            type: string
+            description: Tax form type
+          uploaded_at:
+            type: string
+            description: Upload timestamp
+
 extra:
   python:
     source: tools/get_recipient.py

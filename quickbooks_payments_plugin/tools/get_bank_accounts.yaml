@@ -10,20 +10,47 @@ description:
     en_US: List all bank accounts for a customer.
     zh_Hans: 列出客户的所有银行账户。
   llm: This tool retrieves all bank accounts saved for a specific customer.
-
 parameters:
-  - name: customer_id
-    type: string
-    required: true
-    label:
-      en_US: Customer ID
-      zh_Hans: 客户 ID
-    human_description:
-      en_US: QuickBooks customer ID
-      zh_Hans: QuickBooks 客户 ID
-    llm_description: The customer ID in QuickBooks system
-    form: form
-
+- name: customer_id
+  type: string
+  required: true
+  label:
+    en_US: Customer ID
+    zh_Hans: 客户 ID
+  human_description:
+    en_US: QuickBooks customer ID
+    zh_Hans: QuickBooks 客户 ID
+  llm_description: The customer ID in QuickBooks system
+  form: form
+output_schema:
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier for the bank account
+      name:
+        type: string
+        description: Name on the bank account
+      routingNumber:
+        type: string
+        description: Bank routing number (masked)
+      accountNumber:
+        type: string
+        description: Bank account number (masked)
+      accountType:
+        type: string
+        description: Type of bank account (PERSONAL_CHECKING, PERSONAL_SAVINGS, etc.)
+      phone:
+        type: string
+        description: Phone number associated with the account
+      updated:
+        type: string
+        description: Timestamp when the bank account was last updated
+      created:
+        type: string
+        description: Timestamp when the bank account was created
 extra:
   python:
     source: tools/get_bank_accounts.py

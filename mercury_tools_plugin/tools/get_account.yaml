@@ -25,6 +25,43 @@ parameters:
     llm_description: The unique identifier (ID) of the Mercury account to retrieve detailed information for
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Account ID
+    name:
+      type: string
+      description: Account name
+    type:
+      type: string
+      description: Account type
+    status:
+      type: string
+      description: Account status (active/closed)
+    current_balance:
+      type: number
+      description: Current balance
+    available_balance:
+      type: number
+      description: Available balance
+    currency:
+      type: string
+      description: Currency code (USD)
+    routing_number:
+      type: string
+      description: Bank routing number
+    account_number:
+      type: string
+      description: Account number
+    created_at:
+      type: string
+      description: Account creation timestamp
+    legal_business_name:
+      type: string
+      description: Legal business name
+
 extra:
   python:
     source: tools/get_account.py

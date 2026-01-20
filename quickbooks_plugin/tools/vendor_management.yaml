@@ -4,47 +4,96 @@ identity:
   label:
     en_US: Vendor Management
     zh_Hans: 供应商管理
-
 description:
   human:
     en_US: Search or create vendors in QuickBooks.
     zh_Hans: 在 QuickBooks 中搜索或创建供应商。
-  llm: Search for existing vendors in QuickBooks by name, or create a new vendor if one doesn't exist. Returns vendor ID and details.
-
+  llm: Search for existing vendors in QuickBooks by name, or create a new vendor if
+    one doesn't exist. Returns vendor ID and details.
 extra:
   python:
     source: tools/vendor_management.py
-
 parameters:
-  - name: action
-    form: form
-    type: select
-    required: true
+- name: action
+  form: form
+  type: select
+  required: true
+  label:
+    en_US: Action
+    zh_Hans: 操作
+  human_description:
+    en_US: What operation to perform (search or create)
+    zh_Hans: 要执行的操作（搜索或创建）
+  options:
+  - value: search
     label:
-      en_US: Action
-      zh_Hans: 操作
-    human_description:
-      en_US: What operation to perform (search or create)
-      zh_Hans: 要执行的操作（搜索或创建）
-    options:
-      - value: search
-        label:
-          en_US: Search
-          zh_Hans: 搜索
-      - value: create
-        label:
-          en_US: Create
-          zh_Hans: 创建
-  - name: name
-    form: form
-    type: string
-    required: true
+      en_US: Search
+      zh_Hans: 搜索
+  - value: create
     label:
-      en_US: Vendor Name
-      zh_Hans: 供应商名称
-    human_description:
-      en_US: The vendor name to search for or create
-      zh_Hans: 要搜索或创建的供应商名称
-
+      en_US: Create
+      zh_Hans: 创建
+- name: name
+  form: form
+  type: string
+  required: true
+  label:
+    en_US: Vendor Name
+    zh_Hans: 供应商名称
+  human_description:
+    en_US: The vendor name to search for or create
+    zh_Hans: 要搜索或创建的供应商名称
 output_schema:
   type: object
+  properties:
+    vendors:
+      type: array
+      description: List of vendors (for search action)
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Vendor ID
+          display_name:
+            type: string
+            description: Vendor display name
+          company_name:
+            type: string
+            description: Company name
+          active:
+            type: boolean
+            description: Whether the vendor is active
+          balance:
+            type: number
+            description: Vendor balance
+          print_on_check_name:
+            type: string
+            description: Name to print on checks
+          sync_token:
+            type: string
+            description: QuickBooks sync token
+    count:
+      type: integer
+      description: Total number of vendors returned (for search action)
+    id:
+      type: string
+      description: Created vendor ID (for create action)
+    display_name:
+      type: string
+      description: Created vendor display name (for create action)
+    company_name:
+      type: string
+      description: Created vendor company name (for create action)
+    active:
+      type: boolean
+      description: Whether the created vendor is active (for create action)
+    balance:
+      type: number
+      description: Created vendor balance (for create action)
+    sync_token:
+      type: string
+      description: QuickBooks sync token (for create action)
+    meta_data:
+      type: object
+      description: Metadata including creation and update timestamps (for create action)

@@ -8,67 +8,104 @@ description:
   human:
     en_US: Create a transfer between two QuickBooks bank accounts.
     zh_Hans: 在两个 QuickBooks 银行账户之间创建转账。
-  llm: Creates a transfer transaction to move money between bank accounts. Used for internal account transfers.
+  llm: Creates a transfer transaction to move money between bank accounts. Used for
+    internal account transfers.
 parameters:
-  - name: from_account_id
-    type: string
-    required: true
-    label:
-      en_US: From Account ID
-      zh_Hans: 转出账户 ID
-    human_description:
-      en_US: The source account ID
-      zh_Hans: 转出的账户 ID
-    llm_description: QuickBooks account ID for the source account
-    form: llm
-
-  - name: to_account_id
-    type: string
-    required: true
-    label:
-      en_US: To Account ID
-      zh_Hans: 转入账户 ID
-    human_description:
-      en_US: The destination account ID
-      zh_Hans: 转入的账户 ID
-    llm_description: QuickBooks account ID for the destination account
-    form: llm
-
-  - name: amount
-    type: number
-    required: true
-    label:
-      en_US: Amount
-      zh_Hans: 金额
-    human_description:
-      en_US: Transfer amount
-      zh_Hans: 转账金额
-    llm_description: Amount to transfer (positive number)
-    form: llm
-
-  - name: txn_date
-    type: string
-    required: false
-    label:
-      en_US: Transaction Date
-      zh_Hans: 交易日期
-    human_description:
-      en_US: Date of the transfer (YYYY-MM-DD format, defaults to today)
-      zh_Hans: 转账日期（YYYY-MM-DD 格式，默认为今天）
-    llm_description: Transaction date in YYYY-MM-DD format
-    form: llm
-
-  - name: note
-    type: string
-    required: false
-    label:
-      en_US: Private Note
-      zh_Hans: 私人备注
-    human_description:
-      en_US: Internal note for this transfer
-      zh_Hans: 此转账的内部备注
-    form: llm
-
+- name: from_account_id
+  type: string
+  required: true
+  label:
+    en_US: From Account ID
+    zh_Hans: 转出账户 ID
+  human_description:
+    en_US: The source account ID
+    zh_Hans: 转出的账户 ID
+  llm_description: QuickBooks account ID for the source account
+  form: llm
+- name: to_account_id
+  type: string
+  required: true
+  label:
+    en_US: To Account ID
+    zh_Hans: 转入账户 ID
+  human_description:
+    en_US: The destination account ID
+    zh_Hans: 转入的账户 ID
+  llm_description: QuickBooks account ID for the destination account
+  form: llm
+- name: amount
+  type: number
+  required: true
+  label:
+    en_US: Amount
+    zh_Hans: 金额
+  human_description:
+    en_US: Transfer amount
+    zh_Hans: 转账金额
+  llm_description: Amount to transfer (positive number)
+  form: llm
+- name: txn_date
+  type: string
+  required: false
+  label:
+    en_US: Transaction Date
+    zh_Hans: 交易日期
+  human_description:
+    en_US: Date of the transfer (YYYY-MM-DD format, defaults to today)
+    zh_Hans: 转账日期（YYYY-MM-DD 格式，默认为今天）
+  llm_description: Transaction date in YYYY-MM-DD format
+  form: llm
+- name: note
+  type: string
+  required: false
+  label:
+    en_US: Private Note
+    zh_Hans: 私人备注
+  human_description:
+    en_US: Internal note for this transfer
+    zh_Hans: 此转账的内部备注
+  form: llm
 extra:
   python:
     source: tools/create_transfer.py
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description: The unique identifier of the created transfer
+    txn_date:
+      type: string
+      description: The transaction date of the transfer
+    amount:
+      type: number
+      description: The transfer amount
+    from_account:
+      type: object
+      description: The source account information
+      properties:
+        id:
+          type: string
+          description: Source account ID
+        name:
+          type: string
+          description: Source account name
+    to_account:
+      type: object
+      description: The destination account information
+      properties:
+        id:
+          type: string
+          description: Destination account ID
+        name:
+          type: string
+          description: Destination account name
+    private_note:
+      type: string
+      description: Private note for the transfer
+    sync_token:
+      type: string
+      description: QuickBooks sync token for the record
+    meta_data:
+      type: object
+      description: Metadata including creation and update timestamps

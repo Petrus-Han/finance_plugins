@@ -23,6 +23,61 @@ parameters:
     llm_description: Maximum number of recipients to return in a single request
     form: form
 
+output_schema:
+  type: object
+  properties:
+    recipients:
+      type: array
+      description: List of recipients
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Recipient ID
+          name:
+            type: string
+            description: Recipient name
+          status:
+            type: string
+            description: Recipient status
+          emails:
+            type: array
+            description: Contact emails
+            items:
+              type: string
+          payment_method:
+            type: string
+            description: Payment method
+          created_at:
+            type: string
+            description: Creation timestamp
+          bank_name:
+            type: string
+            description: Bank name
+          account_number_masked:
+            type: string
+            description: Masked account number
+          address:
+            type: object
+            description: Recipient address
+            properties:
+              city:
+                type: string
+                description: City
+              region:
+                type: string
+                description: State/Region
+              country:
+                type: string
+                description: Country
+    count:
+      type: number
+      description: Number of recipients returned
+    has_more:
+      type: boolean
+      description: Whether more results are available
+
 extra:
   python:
     source: tools/get_recipients.py

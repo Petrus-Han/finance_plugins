@@ -4,107 +4,139 @@ identity:
   label:
     en_US: Create Purchase
     zh_Hans: 创建采购
-
 description:
   human:
     en_US: Record a new purchase (expense) in QuickBooks.
     zh_Hans: 在 QuickBooks 中记录新的采购（费用）。
-  llm: Create a purchase transaction in QuickBooks to record business expenses paid from a bank account to a vendor.
-
+  llm: Create a purchase transaction in QuickBooks to record business expenses paid
+    from a bank account to a vendor.
 extra:
   python:
     source: tools/create_purchase.py
-
 parameters:
-  - name: bank_account_id
-    form: llm
-    type: string
-    required: true
-    label:
-      en_US: Bank Account ID
-      zh_Hans: 银行账户 ID
-    human_description:
-      en_US: The QuickBooks bank account ID
-      zh_Hans: QuickBooks 银行账户 ID
-    llm_description: The QuickBooks account ID for the bank account used for payment
-  - name: expense_account_id
-    form: llm
-    type: string
-    required: true
-    label:
-      en_US: Expense Account ID
-      zh_Hans: 费用账户 ID
-    human_description:
-      en_US: The QuickBooks expense account ID
-      zh_Hans: QuickBooks 费用账户 ID
-    llm_description: The QuickBooks account ID for the expense category
-  - name: amount
-    form: llm
-    type: number
-    required: true
-    label:
-      en_US: Amount
-      zh_Hans: 金额
-    human_description:
-      en_US: Purchase amount
-      zh_Hans: 采购金额
-    llm_description: The purchase amount (positive number)
-  - name: txn_date
-    form: llm
-    type: string
-    required: false
-    label:
-      en_US: Transaction Date
-      zh_Hans: 交易日期
-    human_description:
-      en_US: Transaction date (YYYY-MM-DD format)
-      zh_Hans: 交易日期（YYYY-MM-DD 格式）
-    llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
-  - name: vendor_id
-    form: llm
-    type: string
-    required: false
-    label:
-      en_US: Vendor ID
-      zh_Hans: 供应商 ID
-    human_description:
-      en_US: Optional vendor ID
-      zh_Hans: 可选的供应商 ID
-    llm_description: QuickBooks vendor ID if this purchase is from a vendor
-  - name: description
-    form: llm
-    type: string
-    required: false
-    label:
-      en_US: Description
-      zh_Hans: 描述
-    human_description:
-      en_US: Purchase description
-      zh_Hans: 采购描述
-    llm_description: Description of the purchase
-  - name: note
-    form: llm
-    type: string
-    required: false
-    label:
-      en_US: Note
-      zh_Hans: 备注
-    human_description:
-      en_US: Private note
-      zh_Hans: 私人备注
-    llm_description: Internal note for this purchase
-  - name: payment_type
-    form: llm
-    type: string
-    required: false
-    default: CreditCard
-    label:
-      en_US: Payment Type
-      zh_Hans: 付款类型
-    human_description:
-      en_US: Payment type (Cash, Check, CreditCard)
-      zh_Hans: 付款类型（现金、支票、信用卡）
-    llm_description: Payment method (Cash, Check, or CreditCard)
-
+- name: bank_account_id
+  form: llm
+  type: string
+  required: true
+  label:
+    en_US: Bank Account ID
+    zh_Hans: 银行账户 ID
+  human_description:
+    en_US: The QuickBooks bank account ID
+    zh_Hans: QuickBooks 银行账户 ID
+  llm_description: The QuickBooks account ID for the bank account used for payment
+- name: expense_account_id
+  form: llm
+  type: string
+  required: true
+  label:
+    en_US: Expense Account ID
+    zh_Hans: 费用账户 ID
+  human_description:
+    en_US: The QuickBooks expense account ID
+    zh_Hans: QuickBooks 费用账户 ID
+  llm_description: The QuickBooks account ID for the expense category
+- name: amount
+  form: llm
+  type: number
+  required: true
+  label:
+    en_US: Amount
+    zh_Hans: 金额
+  human_description:
+    en_US: Purchase amount
+    zh_Hans: 采购金额
+  llm_description: The purchase amount (positive number)
+- name: txn_date
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Transaction Date
+    zh_Hans: 交易日期
+  human_description:
+    en_US: Transaction date (YYYY-MM-DD format)
+    zh_Hans: 交易日期（YYYY-MM-DD 格式）
+  llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
+- name: vendor_id
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Vendor ID
+    zh_Hans: 供应商 ID
+  human_description:
+    en_US: Optional vendor ID
+    zh_Hans: 可选的供应商 ID
+  llm_description: QuickBooks vendor ID if this purchase is from a vendor
+- name: description
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Description
+    zh_Hans: 描述
+  human_description:
+    en_US: Purchase description
+    zh_Hans: 采购描述
+  llm_description: Description of the purchase
+- name: note
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Note
+    zh_Hans: 备注
+  human_description:
+    en_US: Private note
+    zh_Hans: 私人备注
+  llm_description: Internal note for this purchase
+- name: payment_type
+  form: llm
+  type: string
+  required: false
+  default: CreditCard
+  label:
+    en_US: Payment Type
+    zh_Hans: 付款类型
+  human_description:
+    en_US: Payment type (Cash, Check, CreditCard)
+    zh_Hans: 付款类型（现金、支票、信用卡）
+  llm_description: Payment method (Cash, Check, or CreditCard)
 output_schema:
   type: object
+  properties:
+    id:
+      type: string
+      description: The unique identifier of the created purchase
+    txn_date:
+      type: string
+      description: The transaction date of the purchase
+    total_amount:
+      type: number
+      description: The total amount of the purchase
+    payment_type:
+      type: string
+      description: The payment type (Cash, Check, CreditCard)
+    account:
+      type: string
+      description: The bank account name used for payment
+    private_note:
+      type: string
+      description: Private note for the purchase
+    sync_token:
+      type: string
+      description: QuickBooks sync token for the record
+    meta_data:
+      type: object
+      description: Metadata including creation and update timestamps
+    entity:
+      type: object
+      description: Vendor/entity information if applicable
+      properties:
+        name:
+          type: string
+          description: Entity name
+        type:
+          type: string
+          description: Entity type (e.g., Vendor)

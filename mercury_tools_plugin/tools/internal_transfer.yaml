@@ -70,6 +70,34 @@ parameters:
     llm_description: Optional unique key for request deduplication
     form: form
 
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    transaction_id:
+      type: string
+      description: Transaction ID
+    status:
+      type: string
+      description: Transfer status
+    amount:
+      type: number
+      description: Amount transferred
+    from_account_id:
+      type: string
+      description: Source account ID
+    to_account_id:
+      type: string
+      description: Destination account ID
+    created_at:
+      type: string
+      description: Creation timestamp
+    message:
+      type: string
+      description: Status message
+
 extra:
   python:
     source: tools/internal_transfer.py

@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class SendMoneyTool(Tool):
@@ -36,16 +37,13 @@ class SendMoneyTool(Tool):
         amount = tool_parameters.get("amount")
 
         if not account_id:
-            yield self.create_text_message("account_id is required.")
-            return
+            raise ValueError("account_id is required.")
 
         if not recipient_id:
-            yield self.create_text_message("recipient_id is required.")
-            return
+            raise ValueError("recipient_id is required.")
 
         if not amount or float(amount) <= 0:
-            yield self.create_text_message("amount must be a positive number.")
-            return
+            raise ValueError("amount must be a positive number.")
 
         # Get optional parameters
         payment_method = tool_parameters.get("payment_method", "ach")
@@ -56,8 +54,7 @@ class SendMoneyTool(Tool):
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("Mercury API Access Token is required.")
-            return
+            raise ValueError("Mercury API Access Token is required.")
 
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
@@ -121,36 +118,30 @@ class SendMoneyTool(Tool):
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", "Invalid request")
-                yield self.create_text_message(f"Failed to send money: {error_msg}")
+                raise Exception(f"Failed to send money: {error_msg}")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your Mercury API access token."
                 )
 
             elif response.status_code == 403:
-                yield self.create_text_message(
+                raise Exception(
                     "Permission denied. Your API token may not have permission to send money."
                 )
 
             elif response.status_code == 404:
-                yield self.create_text_message(
-                    "Account or recipient not found. Please verify the IDs."
-                )
+                raise ValueError("Account or recipient not found. Please verify the IDs.")
 
             elif response.status_code == 422:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", "Validation error")
-                yield self.create_text_message(f"Validation error: {error_msg}")
+                raise Exception(f"Validation error: {error_msg}")
 
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to send money: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to send money: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while sending money: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while sending money: {str(e)}") from e
