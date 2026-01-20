@@ -7,99 +7,134 @@ identity:
   icon: icon.svg
 description:
   human:
-    en_US: Process a payment using a payment token. The charge will be captured immediately unless capture is set to false.
+    en_US: Process a payment using a payment token. The charge will be captured immediately
+      unless capture is set to false.
     zh_Hans: 使用支付令牌处理支付。除非将 capture 设置为 false，否则支付将立即被捕获。
-  llm: This tool processes a payment transaction using a payment token created with the create_token tool. The payment can be captured immediately or authorized for later capture.
-
+  llm: This tool processes a payment transaction using a payment token created with
+    the create_token tool. The payment can be captured immediately or authorized for
+    later capture.
 parameters:
-  - name: amount
-    type: string
-    required: true
+- name: amount
+  type: string
+  required: true
+  label:
+    en_US: Amount
+    zh_Hans: 金额
+  human_description:
+    en_US: Amount to charge (e.g., "10.50")
+    zh_Hans: 支付金额（例如 "10.50"）
+  llm_description: The amount to charge as a decimal string (e.g., "10.50" for $10.50)
+  form: form
+- name: token
+  type: string
+  required: true
+  label:
+    en_US: Payment Token
+    zh_Hans: 支付令牌
+  human_description:
+    en_US: Payment token from create_token tool
+    zh_Hans: 来自 create_token 工具的支付令牌
+  llm_description: The payment token value returned by the create_token tool
+  form: form
+- name: currency
+  type: select
+  required: false
+  default: USD
+  options:
+  - value: USD
     label:
-      en_US: Amount
-      zh_Hans: 金额
-    human_description:
-      en_US: Amount to charge (e.g., "10.50")
-      zh_Hans: 支付金额（例如 "10.50"）
-    llm_description: The amount to charge as a decimal string (e.g., "10.50" for $10.50)
-    form: form
-
-  - name: token
-    type: string
-    required: true
+      en_US: USD
+      zh_Hans: 美元
+  label:
+    en_US: Currency
+    zh_Hans: 货币
+  human_description:
+    en_US: Currency code (only USD supported for US payments)
+    zh_Hans: 货币代码（美国支付仅支持 USD）
+  llm_description: Currency code, currently only USD is supported
+  form: form
+- name: capture
+  type: select
+  required: false
+  default: 'true'
+  options:
+  - value: 'true'
     label:
-      en_US: Payment Token
-      zh_Hans: 支付令牌
-    human_description:
-      en_US: Payment token from create_token tool
-      zh_Hans: 来自 create_token 工具的支付令牌
-    llm_description: The payment token value returned by the create_token tool
-    form: form
-
-  - name: currency
-    type: select
-    required: false
-    default: USD
-    options:
-      - value: USD
-        label:
-          en_US: USD
-          zh_Hans: 美元
+      en_US: Capture Immediately
+      zh_Hans: 立即捕获
+  - value: 'false'
     label:
-      en_US: Currency
-      zh_Hans: 货币
-    human_description:
-      en_US: Currency code (only USD supported for US payments)
-      zh_Hans: 货币代码（美国支付仅支持 USD）
-    llm_description: Currency code, currently only USD is supported
-    form: form
-
-  - name: capture
-    type: select
-    required: false
-    default: "true"
-    options:
-      - value: "true"
-        label:
-          en_US: Capture Immediately
-          zh_Hans: 立即捕获
-      - value: "false"
-        label:
-          en_US: Authorize Only
-          zh_Hans: 仅授权
-    label:
-      en_US: Capture
-      zh_Hans: 捕获
-    human_description:
-      en_US: Whether to capture the payment immediately (true) or just authorize it (false)
-      zh_Hans: 是否立即捕获支付（true）还是仅授权（false）
-    llm_description: Set to true to capture payment immediately, or false to only authorize for later capture
-    form: form
-
-  - name: description
-    type: string
-    required: false
-    label:
-      en_US: Description
-      zh_Hans: 描述
-    human_description:
-      en_US: Optional description for the charge (e.g., "Payment for Invoice #1234")
-      zh_Hans: 支付的可选描述（例如 "Invoice #1234 的支付"）
-    llm_description: Optional description or note about this payment transaction
-    form: form
-
-  - name: customer_id
-    type: string
-    required: false
-    label:
-      en_US: Customer ID
-      zh_Hans: 客户 ID
-    human_description:
-      en_US: Optional QuickBooks customer ID
-      zh_Hans: 可选的 QuickBooks 客户 ID
-    llm_description: Optional customer identifier in QuickBooks system
-    form: form
-
+      en_US: Authorize Only
+      zh_Hans: 仅授权
+  label:
+    en_US: Capture
+    zh_Hans: 捕获
+  human_description:
+    en_US: Whether to capture the payment immediately (true) or just authorize it
+      (false)
+    zh_Hans: 是否立即捕获支付（true）还是仅授权（false）
+  llm_description: Set to true to capture payment immediately, or false to only authorize
+    for later capture
+  form: form
+- name: description
+  type: string
+  required: false
+  label:
+    en_US: Description
+    zh_Hans: 描述
+  human_description:
+    en_US: Optional description for the charge (e.g., "Payment for Invoice
+    zh_Hans: 支付的可选描述（例如 "Invoice
+  llm_description: Optional description or note about this payment transaction
+  form: form
+- name: customer_id
+  type: string
+  required: false
+  label:
+    en_US: Customer ID
+    zh_Hans: 客户 ID
+  human_description:
+    en_US: Optional QuickBooks customer ID
+    zh_Hans: 可选的 QuickBooks 客户 ID
+  llm_description: Optional customer identifier in QuickBooks system
+  form: form
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Unique identifier for the charge
+    status:
+      type: string
+      description: Current status of the charge (CAPTURED, AUTHORIZED, etc.)
+    amount:
+      type: string
+      description: Amount charged
+    currency:
+      type: string
+      description: Currency code of the charge
+    created:
+      type: string
+      description: Timestamp when the charge was created
+    auth_code:
+      type: string
+      description: Authorization code from the payment processor
+    captured:
+      type: boolean
+      description: Whether the payment was captured immediately
+    card:
+      type: object
+      description: Card details used for the charge (if card payment)
+      properties:
+        number:
+          type: string
+          description: Masked card number
+        card_type:
+          type: string
+          description: Type of card (VISA, MASTERCARD, etc.)
+        name:
+          type: string
+          description: Name on the card
 extra:
   python:
     source: tools/create_charge.py

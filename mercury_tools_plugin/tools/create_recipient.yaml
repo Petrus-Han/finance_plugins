@@ -160,6 +160,31 @@ parameters:
       zh_Hans: 国家代码（ISO 3166-1，默认 US）
     form: form
 
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    id:
+      type: string
+      description: Created recipient ID
+    name:
+      type: string
+      description: Recipient name
+    status:
+      type: string
+      description: Recipient status
+    payment_method:
+      type: string
+      description: Payment method
+    created_at:
+      type: string
+      description: Creation timestamp
+    message:
+      type: string
+      description: Status message
+
 extra:
   python:
     source: tools/create_recipient.py

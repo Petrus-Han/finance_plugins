@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class UpdateTransactionTool(Tool):
@@ -26,22 +27,19 @@ class UpdateTransactionTool(Tool):
         # Get parameters
         transaction_id = tool_parameters.get("transaction_id", "")
         if not transaction_id:
-            yield self.create_text_message("Transaction ID is required.")
-            return
+            raise ValueError("Transaction ID is required.")
 
         note = tool_parameters.get("note")
         category_id = tool_parameters.get("category_id")
 
         # Check if there's anything to update
         if note is None and category_id is None:
-            yield self.create_text_message("At least one field (note or category_id) must be provided to update.")
-            return
+            raise ValueError("At least one field (note or category_id) must be provided to update.")
 
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("Mercury API Access Token is required.")
-            return
+            raise ValueError("Mercury API Access Token is required.")
 
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
@@ -88,31 +86,23 @@ class UpdateTransactionTool(Tool):
                 yield self.create_json_message(result)
 
             elif response.status_code == 404:
-                yield self.create_text_message(
-                    f"Transaction with ID '{transaction_id}' not found."
-                )
+                raise ValueError(f"Transaction with ID '{transaction_id}' not found.")
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", "Invalid request")
-                yield self.create_text_message(
-                    f"Failed to update transaction: {error_msg}"
-                )
+                raise Exception(f"Failed to update transaction: {error_msg}")
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your Mercury API access token."
                 )
             elif response.status_code == 403:
-                yield self.create_text_message(
+                raise Exception(
                     "Permission denied. Your API token may not have permission to update transactions."
                 )
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to update transaction: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to update transaction: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while updating transaction: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while updating transaction: {str(e)}") from e

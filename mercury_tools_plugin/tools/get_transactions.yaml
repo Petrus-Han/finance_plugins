@@ -75,6 +75,58 @@ parameters:
     llm_description: Number of transactions to skip for pagination (default 0)
     form: llm
 
+output_schema:
+  type: object
+  properties:
+    transactions:
+      type: array
+      description: List of transactions
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Transaction ID
+          amount:
+            type: number
+            description: Transaction amount
+          posted_at:
+            type: string
+            description: Posted timestamp
+          status:
+            type: string
+            description: Transaction status
+          counterparty_name:
+            type: string
+            description: Counterparty name
+          bank_description:
+            type: string
+            description: Bank description
+          note:
+            type: string
+            description: Internal note
+          category:
+            type: string
+            description: Transaction category
+          type:
+            type: string
+            description: Transaction type
+          account_id:
+            type: string
+            description: Account ID
+    count:
+      type: number
+      description: Number of transactions returned
+    total:
+      type: number
+      description: Total number of transactions matching criteria
+    offset:
+      type: number
+      description: Current offset for pagination
+    limit:
+      type: number
+      description: Maximum results per page
+
 extra:
   python:
     source: tools/get_transactions.py

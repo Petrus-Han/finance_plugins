@@ -7,157 +7,165 @@ identity:
   icon: icon.svg
 description:
   human:
-    en_US: Tokenize credit card or bank account information for secure payment processing. Tokens are single-use and expire after 15 minutes.
+    en_US: Tokenize credit card or bank account information for secure payment processing.
+      Tokens are single-use and expire after 15 minutes.
     zh_Hans: 为安全支付处理对信用卡或银行账户信息进行令牌化。令牌仅可使用一次且在 15 分钟后过期。
-  llm: This tool creates a secure payment token from credit card or bank account information. The token can be used once for charging payments and expires after 15 minutes if not used.
-
+  llm: This tool creates a secure payment token from credit card or bank account information.
+    The token can be used once for charging payments and expires after 15 minutes
+    if not used.
 parameters:
-  - name: payment_type
-    type: select
-    required: true
-    form: form
-    options:
-      - value: card
-        label:
-          en_US: Credit/Debit Card
-          zh_Hans: 信用卡/借记卡
-      - value: bank_account
-        label:
-          en_US: Bank Account (ACH)
-          zh_Hans: 银行账户 (ACH)
+- name: payment_type
+  type: select
+  required: true
+  form: form
+  options:
+  - value: card
     label:
-      en_US: Payment Type
-      zh_Hans: 支付类型
-    human_description:
-      en_US: Type of payment method to tokenize
-      zh_Hans: 要令牌化的支付方式类型
-    llm_description: Select whether to tokenize a credit/debit card or a bank account for ACH payments
-
-  - name: card_number
-    type: string
-    required: false
+      en_US: Credit/Debit Card
+      zh_Hans: 信用卡/借记卡
+  - value: bank_account
     label:
-      en_US: Card Number
-      zh_Hans: 卡号
-    human_description:
-      en_US: Credit/debit card number (required if payment_type is card)
-      zh_Hans: 信用卡/借记卡号（如果 payment_type 是 card 则必填）
-    llm_description: 16-digit card number without spaces or dashes
-    form: form
-
-  - name: card_exp_month
-    type: string
-    required: false
+      en_US: Bank Account (ACH)
+      zh_Hans: 银行账户 (ACH)
+  label:
+    en_US: Payment Type
+    zh_Hans: 支付类型
+  human_description:
+    en_US: Type of payment method to tokenize
+    zh_Hans: 要令牌化的支付方式类型
+  llm_description: Select whether to tokenize a credit/debit card or a bank account
+    for ACH payments
+- name: card_number
+  type: string
+  required: false
+  label:
+    en_US: Card Number
+    zh_Hans: 卡号
+  human_description:
+    en_US: Credit/debit card number (required if payment_type is card)
+    zh_Hans: 信用卡/借记卡号（如果 payment_type 是 card 则必填）
+  llm_description: 16-digit card number without spaces or dashes
+  form: form
+- name: card_exp_month
+  type: string
+  required: false
+  label:
+    en_US: Expiration Month
+    zh_Hans: 过期月份
+  human_description:
+    en_US: Card expiration month (MM format, required if payment_type is card)
+    zh_Hans: 卡过期月份（MM 格式，如果 payment_type 是 card 则必填）
+  llm_description: Two-digit expiration month (01-12)
+  form: form
+- name: card_exp_year
+  type: string
+  required: false
+  label:
+    en_US: Expiration Year
+    zh_Hans: 过期年份
+  human_description:
+    en_US: Card expiration year (YYYY format, required if payment_type is card)
+    zh_Hans: 卡过期年份（YYYY 格式，如果 payment_type 是 card 则必填）
+  llm_description: Four-digit expiration year
+  form: form
+- name: card_cvc
+  type: string
+  required: false
+  label:
+    en_US: CVC/CVV
+    zh_Hans: CVC/CVV
+  human_description:
+    en_US: Card security code (required if payment_type is card)
+    zh_Hans: 卡安全码（如果 payment_type 是 card 则必填）
+  llm_description: 3 or 4 digit card security code on the back of the card
+  form: form
+- name: card_name
+  type: string
+  required: false
+  label:
+    en_US: Cardholder Name
+    zh_Hans: 持卡人姓名
+  human_description:
+    en_US: Name on the card (required if payment_type is card)
+    zh_Hans: 卡上的姓名（如果 payment_type 是 card 则必填）
+  llm_description: Full name as it appears on the card
+  form: form
+- name: bank_routing_number
+  type: string
+  required: false
+  label:
+    en_US: Routing Number
+    zh_Hans: 路由号码
+  human_description:
+    en_US: Bank routing number (required if payment_type is bank_account)
+    zh_Hans: 银行路由号码（如果 payment_type 是 bank_account 则必填）
+  llm_description: 9-digit bank routing number
+  form: form
+- name: bank_account_number
+  type: string
+  required: false
+  label:
+    en_US: Account Number
+    zh_Hans: 账户号码
+  human_description:
+    en_US: Bank account number (required if payment_type is bank_account)
+    zh_Hans: 银行账户号码（如果 payment_type 是 bank_account 则必填）
+  llm_description: Bank account number
+  form: form
+- name: bank_account_type
+  type: select
+  required: false
+  form: form
+  options:
+  - value: PERSONAL_CHECKING
     label:
-      en_US: Expiration Month
-      zh_Hans: 过期月份
-    human_description:
-      en_US: Card expiration month (MM format, required if payment_type is card)
-      zh_Hans: 卡过期月份（MM 格式，如果 payment_type 是 card 则必填）
-    llm_description: Two-digit expiration month (01-12)
-    form: form
-
-  - name: card_exp_year
-    type: string
-    required: false
+      en_US: Personal Checking
+      zh_Hans: 个人支票账户
+  - value: PERSONAL_SAVINGS
     label:
-      en_US: Expiration Year
-      zh_Hans: 过期年份
-    human_description:
-      en_US: Card expiration year (YYYY format, required if payment_type is card)
-      zh_Hans: 卡过期年份（YYYY 格式，如果 payment_type 是 card 则必填）
-    llm_description: Four-digit expiration year
-    form: form
-
-  - name: card_cvc
-    type: string
-    required: false
+      en_US: Personal Savings
+      zh_Hans: 个人储蓄账户
+  - value: BUSINESS_CHECKING
     label:
-      en_US: CVC/CVV
-      zh_Hans: CVC/CVV
-    human_description:
-      en_US: Card security code (required if payment_type is card)
-      zh_Hans: 卡安全码（如果 payment_type 是 card 则必填）
-    llm_description: 3 or 4 digit card security code on the back of the card
-    form: form
-
-  - name: card_name
-    type: string
-    required: false
+      en_US: Business Checking
+      zh_Hans: 企业支票账户
+  - value: BUSINESS_SAVINGS
     label:
-      en_US: Cardholder Name
-      zh_Hans: 持卡人姓名
-    human_description:
-      en_US: Name on the card (required if payment_type is card)
-      zh_Hans: 卡上的姓名（如果 payment_type 是 card 则必填）
-    llm_description: Full name as it appears on the card
-    form: form
-
-  - name: bank_routing_number
-    type: string
-    required: false
-    label:
-      en_US: Routing Number
-      zh_Hans: 路由号码
-    human_description:
-      en_US: Bank routing number (required if payment_type is bank_account)
-      zh_Hans: 银行路由号码（如果 payment_type 是 bank_account 则必填）
-    llm_description: 9-digit bank routing number
-    form: form
-
-  - name: bank_account_number
-    type: string
-    required: false
-    label:
-      en_US: Account Number
-      zh_Hans: 账户号码
-    human_description:
-      en_US: Bank account number (required if payment_type is bank_account)
-      zh_Hans: 银行账户号码（如果 payment_type 是 bank_account 则必填）
-    llm_description: Bank account number
-    form: form
-
-  - name: bank_account_type
-    type: select
-    required: false
-    form: form
-    options:
-      - value: PERSONAL_CHECKING
-        label:
-          en_US: Personal Checking
-          zh_Hans: 个人支票账户
-      - value: PERSONAL_SAVINGS
-        label:
-          en_US: Personal Savings
-          zh_Hans: 个人储蓄账户
-      - value: BUSINESS_CHECKING
-        label:
-          en_US: Business Checking
-          zh_Hans: 企业支票账户
-      - value: BUSINESS_SAVINGS
-        label:
-          en_US: Business Savings
-          zh_Hans: 企业储蓄账户
-    label:
-      en_US: Account Type
-      zh_Hans: 账户类型
-    human_description:
-      en_US: Type of bank account (required if payment_type is bank_account)
-      zh_Hans: 银行账户类型（如果 payment_type 是 bank_account 则必填）
-    llm_description: Select the type of bank account
-
-  - name: bank_account_name
-    type: string
-    required: false
-    label:
-      en_US: Account Holder Name
-      zh_Hans: 账户持有人姓名
-    human_description:
-      en_US: Name on the bank account (required if payment_type is bank_account)
-      zh_Hans: 银行账户上的姓名（如果 payment_type 是 bank_account 则必填）
-    llm_description: Full name of the account holder
-    form: form
-
+      en_US: Business Savings
+      zh_Hans: 企业储蓄账户
+  label:
+    en_US: Account Type
+    zh_Hans: 账户类型
+  human_description:
+    en_US: Type of bank account (required if payment_type is bank_account)
+    zh_Hans: 银行账户类型（如果 payment_type 是 bank_account 则必填）
+  llm_description: Select the type of bank account
+- name: bank_account_name
+  type: string
+  required: false
+  label:
+    en_US: Account Holder Name
+    zh_Hans: 账户持有人姓名
+  human_description:
+    en_US: Name on the bank account (required if payment_type is bank_account)
+    zh_Hans: 银行账户上的姓名（如果 payment_type 是 bank_account 则必填）
+  llm_description: Full name of the account holder
+  form: form
+output_schema:
+  type: object
+  properties:
+    token:
+      type: string
+      description: The generated payment token value for use in charges
+    created_at:
+      type: string
+      description: Timestamp when the token was created
+    payment_type:
+      type: string
+      description: Type of payment method tokenized (card or bank_account)
+    note:
+      type: string
+      description: Additional information about token usage and expiration
 extra:
   python:
     source: tools/create_token.py

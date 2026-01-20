@@ -108,6 +108,37 @@ parameters:
     llm_description: Optional unique key for request deduplication
     form: form
 
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    request_id:
+      type: string
+      description: Send money request ID
+    status:
+      type: string
+      description: Request status
+    amount:
+      type: number
+      description: Amount sent
+    recipient_id:
+      type: string
+      description: Recipient ID
+    payment_method:
+      type: string
+      description: Payment method used
+    created_at:
+      type: string
+      description: Creation timestamp
+    transaction_id:
+      type: string
+      description: Transaction ID (if immediately processed)
+    message:
+      type: string
+      description: Status message
+
 extra:
   python:
     source: tools/send_money.py
