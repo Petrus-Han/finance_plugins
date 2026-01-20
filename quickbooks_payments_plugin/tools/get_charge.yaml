@@ -9,81 +9,57 @@ description:
   human:
     en_US: Retrieve details of a specific payment charge by ID.
     zh_Hans: 通过 ID 检索特定支付的详细信息。
-  llm: This tool retrieves the details of a specific payment charge including its status, amount, and other transaction information.
-
+  llm: This tool retrieves the details of a specific payment charge including its
+    status, amount, and other transaction information.
 parameters:
-  - name: charge_id
-    type: string
-    required: true
-    label:
-      en_US: Charge ID
-      zh_Hans: 支付 ID
-    human_description:
-      en_US: The ID of the charge to retrieve
-      zh_Hans: 要检索的支付 ID
-    llm_description: The unique identifier of the charge returned by create_charge
-    form: form
-
+- name: charge_id
+  type: string
+  required: true
+  label:
+    en_US: Charge ID
+    zh_Hans: 支付 ID
+  human_description:
+    en_US: The ID of the charge to retrieve
+    zh_Hans: 要检索的支付 ID
+  llm_description: The unique identifier of the charge returned by create_charge
+  form: form
 output_schema:
   type: object
   properties:
     id:
       type: string
-      description:
-        en_US: Unique identifier for the charge
-        zh_Hans: 支付的唯一标识符
+      description: Unique identifier for the charge
     status:
       type: string
-      description:
-        en_US: Current status of the charge (CAPTURED, AUTHORIZED, DECLINED, etc.)
-        zh_Hans: 支付的当前状态（CAPTURED、AUTHORIZED、DECLINED 等）
+      description: Current status of the charge (CAPTURED, AUTHORIZED, DECLINED, etc.)
     amount:
       type: string
-      description:
-        en_US: Amount of the charge
-        zh_Hans: 支付金额
+      description: Amount of the charge
     currency:
       type: string
-      description:
-        en_US: Currency code of the charge
-        zh_Hans: 支付的货币代码
+      description: Currency code of the charge
     created:
       type: string
-      description:
-        en_US: Timestamp when the charge was created
-        zh_Hans: 支付创建的时间戳
+      description: Timestamp when the charge was created
     authCode:
       type: string
-      description:
-        en_US: Authorization code from the payment processor
-        zh_Hans: 来自支付处理器的授权代码
+      description: Authorization code from the payment processor
     capture:
       type: boolean
-      description:
-        en_US: Whether the charge was captured
-        zh_Hans: 支付是否已被捕获
+      description: Whether the charge was captured
     card:
       type: object
-      description:
-        en_US: Card details used for the charge
-        zh_Hans: 用于支付的卡片详情
+      description: Card details used for the charge
       properties:
         number:
           type: string
-          description:
-            en_US: Masked card number
-            zh_Hans: 已屏蔽的卡号
+          description: Masked card number
         cardType:
           type: string
-          description:
-            en_US: Type of card (VISA, MASTERCARD, etc.)
-            zh_Hans: 卡片类型（VISA、MASTERCARD 等）
+          description: Type of card (VISA, MASTERCARD, etc.)
         name:
           type: string
-          description:
-            en_US: Name on the card
-            zh_Hans: 卡上的姓名
-
+          description: Name on the card
 extra:
   python:
     source: tools/get_charge.py

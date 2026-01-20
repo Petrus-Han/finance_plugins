@@ -4,131 +4,96 @@ identity:
   label:
     en_US: Vendor Management
     zh_Hans: 供应商管理
-
 description:
   human:
     en_US: Search or create vendors in QuickBooks.
     zh_Hans: 在 QuickBooks 中搜索或创建供应商。
-  llm: Search for existing vendors in QuickBooks by name, or create a new vendor if one doesn't exist. Returns vendor ID and details.
-
+  llm: Search for existing vendors in QuickBooks by name, or create a new vendor if
+    one doesn't exist. Returns vendor ID and details.
 extra:
   python:
     source: tools/vendor_management.py
-
 parameters:
-  - name: action
-    form: form
-    type: select
-    required: true
+- name: action
+  form: form
+  type: select
+  required: true
+  label:
+    en_US: Action
+    zh_Hans: 操作
+  human_description:
+    en_US: What operation to perform (search or create)
+    zh_Hans: 要执行的操作（搜索或创建）
+  options:
+  - value: search
     label:
-      en_US: Action
-      zh_Hans: 操作
-    human_description:
-      en_US: What operation to perform (search or create)
-      zh_Hans: 要执行的操作（搜索或创建）
-    options:
-      - value: search
-        label:
-          en_US: Search
-          zh_Hans: 搜索
-      - value: create
-        label:
-          en_US: Create
-          zh_Hans: 创建
-  - name: name
-    form: form
-    type: string
-    required: true
+      en_US: Search
+      zh_Hans: 搜索
+  - value: create
     label:
-      en_US: Vendor Name
-      zh_Hans: 供应商名称
-    human_description:
-      en_US: The vendor name to search for or create
-      zh_Hans: 要搜索或创建的供应商名称
-
+      en_US: Create
+      zh_Hans: 创建
+- name: name
+  form: form
+  type: string
+  required: true
+  label:
+    en_US: Vendor Name
+    zh_Hans: 供应商名称
+  human_description:
+    en_US: The vendor name to search for or create
+    zh_Hans: 要搜索或创建的供应商名称
 output_schema:
   type: object
   properties:
     vendors:
       type: array
-      description:
-        en_US: List of vendors (for search action)
-        zh_Hans: 供应商列表（用于搜索操作）
+      description: List of vendors (for search action)
       items:
         type: object
         properties:
           id:
             type: string
-            description:
-              en_US: Vendor ID
-              zh_Hans: 供应商 ID
+            description: Vendor ID
           display_name:
             type: string
-            description:
-              en_US: Vendor display name
-              zh_Hans: 供应商显示名称
+            description: Vendor display name
           company_name:
             type: string
-            description:
-              en_US: Company name
-              zh_Hans: 公司名称
+            description: Company name
           active:
             type: boolean
-            description:
-              en_US: Whether the vendor is active
-              zh_Hans: 供应商是否活跃
+            description: Whether the vendor is active
           balance:
             type: number
-            description:
-              en_US: Vendor balance
-              zh_Hans: 供应商余额
+            description: Vendor balance
           print_on_check_name:
             type: string
-            description:
-              en_US: Name to print on checks
-              zh_Hans: 支票上打印的名称
+            description: Name to print on checks
           sync_token:
             type: string
-            description:
-              en_US: QuickBooks sync token
-              zh_Hans: QuickBooks 同步令牌
+            description: QuickBooks sync token
     count:
       type: integer
-      description:
-        en_US: Total number of vendors returned (for search action)
-        zh_Hans: 返回的供应商总数（用于搜索操作）
+      description: Total number of vendors returned (for search action)
     id:
       type: string
-      description:
-        en_US: Created vendor ID (for create action)
-        zh_Hans: 创建的供应商 ID（用于创建操作）
+      description: Created vendor ID (for create action)
     display_name:
       type: string
-      description:
-        en_US: Created vendor display name (for create action)
-        zh_Hans: 创建的供应商显示名称（用于创建操作）
+      description: Created vendor display name (for create action)
     company_name:
       type: string
-      description:
-        en_US: Created vendor company name (for create action)
-        zh_Hans: 创建的供应商公司名称（用于创建操作）
+      description: Created vendor company name (for create action)
     active:
       type: boolean
-      description:
-        en_US: Whether the created vendor is active (for create action)
-        zh_Hans: 创建的供应商是否活跃（用于创建操作）
+      description: Whether the created vendor is active (for create action)
     balance:
       type: number
-      description:
-        en_US: Created vendor balance (for create action)
-        zh_Hans: 创建的供应商余额（用于创建操作）
+      description: Created vendor balance (for create action)
     sync_token:
       type: string
-      description:
-        en_US: QuickBooks sync token (for create action)
-        zh_Hans: QuickBooks 同步令牌（用于创建操作）
+      description: QuickBooks sync token (for create action)
     meta_data:
       type: object
-      description:
-        en_US: Metadata including creation and update timestamps (for create action)
-        zh_Hans: 包含创建和更新时间戳的元数据（用于创建操作）
+      description: Metadata including creation and update timestamps (for create action)

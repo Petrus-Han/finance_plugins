@@ -113,49 +113,31 @@ output_schema:
   properties:
     success:
       type: boolean
-      description:
-        en_US: Whether the operation succeeded
-        zh_Hans: 操作是否成功
+      description: Whether the operation succeeded
     request_id:
       type: string
-      description:
-        en_US: Send money request ID
-        zh_Hans: 发送付款请求 ID
+      description: Send money request ID
     status:
       type: string
-      description:
-        en_US: Request status
-        zh_Hans: 请求状态
+      description: Request status
     amount:
       type: number
-      description:
-        en_US: Amount sent
-        zh_Hans: 发送金额
+      description: Amount sent
     recipient_id:
       type: string
-      description:
-        en_US: Recipient ID
-        zh_Hans: 收款人 ID
+      description: Recipient ID
     payment_method:
       type: string
-      description:
-        en_US: Payment method used
-        zh_Hans: 使用的付款方式
+      description: Payment method used
     created_at:
       type: string
-      description:
-        en_US: Creation timestamp
-        zh_Hans: 创建时间
+      description: Creation timestamp
     transaction_id:
       type: string
-      description:
-        en_US: Transaction ID (if immediately processed)
-        zh_Hans: 交易 ID（如果立即处理）
+      description: Transaction ID (if immediately processed)
     message:
       type: string
-      description:
-        en_US: Status message
-        zh_Hans: 状态消息
+      description: Status message
 
 extra:
   python:

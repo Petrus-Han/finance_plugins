@@ -80,82 +80,52 @@ output_schema:
   properties:
     transactions:
       type: array
-      description:
-        en_US: List of transactions
-        zh_Hans: 交易列表
+      description: List of transactions
       items:
         type: object
         properties:
           id:
             type: string
-            description:
-              en_US: Transaction ID
-              zh_Hans: 交易 ID
+            description: Transaction ID
           amount:
             type: number
-            description:
-              en_US: Transaction amount
-              zh_Hans: 交易金额
+            description: Transaction amount
           posted_at:
             type: string
-            description:
-              en_US: Posted timestamp
-              zh_Hans: 入账时间
+            description: Posted timestamp
           status:
             type: string
-            description:
-              en_US: Transaction status
-              zh_Hans: 交易状态
+            description: Transaction status
           counterparty_name:
             type: string
-            description:
-              en_US: Counterparty name
-              zh_Hans: 交易对手名称
+            description: Counterparty name
           bank_description:
             type: string
-            description:
-              en_US: Bank description
-              zh_Hans: 银行描述
+            description: Bank description
           note:
             type: string
-            description:
-              en_US: Internal note
-              zh_Hans: 内部备注
+            description: Internal note
           category:
             type: string
-            description:
-              en_US: Transaction category
-              zh_Hans: 交易分类
+            description: Transaction category
           type:
             type: string
-            description:
-              en_US: Transaction type
-              zh_Hans: 交易类型
+            description: Transaction type
           account_id:
             type: string
-            description:
-              en_US: Account ID
-              zh_Hans: 账户 ID
+            description: Account ID
     count:
       type: number
-      description:
-        en_US: Number of transactions returned
-        zh_Hans: 返回的交易数量
+      description: Number of transactions returned
     total:
       type: number
-      description:
-        en_US: Total number of transactions matching criteria
-        zh_Hans: 符合条件的交易总数
+      description: Total number of transactions matching criteria
     offset:
       type: number
-      description:
-        en_US: Current offset for pagination
-        zh_Hans: 当前分页偏移量
+      description: Current offset for pagination
     limit:
       type: number
-      description:
-        en_US: Maximum results per page
-        zh_Hans: 每页最大结果数
+      description: Maximum results per page
 
 extra:
   python:

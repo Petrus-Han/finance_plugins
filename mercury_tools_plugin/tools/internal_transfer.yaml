@@ -75,44 +75,28 @@ output_schema:
   properties:
     success:
       type: boolean
-      description:
-        en_US: Whether the operation succeeded
-        zh_Hans: 操作是否成功
+      description: Whether the operation succeeded
     transaction_id:
       type: string
-      description:
-        en_US: Transaction ID
-        zh_Hans: 交易 ID
+      description: Transaction ID
     status:
       type: string
-      description:
-        en_US: Transfer status
-        zh_Hans: 转账状态
+      description: Transfer status
     amount:
       type: number
-      description:
-        en_US: Amount transferred
-        zh_Hans: 转账金额
+      description: Amount transferred
     from_account_id:
       type: string
-      description:
-        en_US: Source account ID
-        zh_Hans: 源账户 ID
+      description: Source account ID
     to_account_id:
       type: string
-      description:
-        en_US: Destination account ID
-        zh_Hans: 目标账户 ID
+      description: Destination account ID
     created_at:
       type: string
-      description:
-        en_US: Creation timestamp
-        zh_Hans: 创建时间
+      description: Creation timestamp
     message:
       type: string
-      description:
-        en_US: Status message
-        zh_Hans: 状态消息
+      description: Status message
 
 extra:
   python:

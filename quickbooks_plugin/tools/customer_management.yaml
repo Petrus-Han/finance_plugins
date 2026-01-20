@@ -8,154 +8,121 @@ description:
   human:
     en_US: List, search, or create customers in QuickBooks Online.
     zh_Hans: 在 QuickBooks Online 中列出、搜索或创建客户。
-  llm: Manages QuickBooks customers. Can list all customers, search by name, or create new customers for tracking income sources.
+  llm: Manages QuickBooks customers. Can list all customers, search by name, or create
+    new customers for tracking income sources.
 parameters:
-  - name: action
-    type: select
-    required: true
+- name: action
+  type: select
+  required: true
+  label:
+    en_US: Action
+    zh_Hans: 操作
+  human_description:
+    en_US: What operation to perform
+    zh_Hans: 要执行的操作
+  options:
+  - value: list
     label:
-      en_US: Action
-      zh_Hans: 操作
-    human_description:
-      en_US: What operation to perform
-      zh_Hans: 要执行的操作
-    options:
-      - value: list
-        label:
-          en_US: List Customers
-          zh_Hans: 列出客户
-      - value: search
-        label:
-          en_US: Search Customer
-          zh_Hans: 搜索客户
-      - value: create
-        label:
-          en_US: Create Customer
-          zh_Hans: 创建客户
-    form: form
-
-  - name: display_name
-    type: string
-    required: false
+      en_US: List Customers
+      zh_Hans: 列出客户
+  - value: search
     label:
-      en_US: Display Name
-      zh_Hans: 显示名称
-    human_description:
-      en_US: Customer display name (required for create, used for search)
-      zh_Hans: 客户显示名称（创建时必填，搜索时使用）
-    llm_description: The name to display for this customer
-    form: llm
-
-  - name: company_name
-    type: string
-    required: false
+      en_US: Search Customer
+      zh_Hans: 搜索客户
+  - value: create
     label:
-      en_US: Company Name
-      zh_Hans: 公司名称
-    human_description:
-      en_US: Company name (optional)
-      zh_Hans: 公司名称（可选）
-    form: llm
-
-  - name: email
-    type: string
-    required: false
-    label:
-      en_US: Email
-      zh_Hans: 电子邮件
-    human_description:
-      en_US: Primary email address
-      zh_Hans: 主要电子邮件地址
-    form: llm
-
-  - name: phone
-    type: string
-    required: false
-    label:
-      en_US: Phone
-      zh_Hans: 电话
-    human_description:
-      en_US: Primary phone number
-      zh_Hans: 主要电话号码
-    form: llm
-
+      en_US: Create Customer
+      zh_Hans: 创建客户
+  form: form
+- name: display_name
+  type: string
+  required: false
+  label:
+    en_US: Display Name
+    zh_Hans: 显示名称
+  human_description:
+    en_US: Customer display name (required for create, used for search)
+    zh_Hans: 客户显示名称（创建时必填，搜索时使用）
+  llm_description: The name to display for this customer
+  form: llm
+- name: company_name
+  type: string
+  required: false
+  label:
+    en_US: Company Name
+    zh_Hans: 公司名称
+  human_description:
+    en_US: Company name (optional)
+    zh_Hans: 公司名称（可选）
+  form: llm
+- name: email
+  type: string
+  required: false
+  label:
+    en_US: Email
+    zh_Hans: 电子邮件
+  human_description:
+    en_US: Primary email address
+    zh_Hans: 主要电子邮件地址
+  form: llm
+- name: phone
+  type: string
+  required: false
+  label:
+    en_US: Phone
+    zh_Hans: 电话
+  human_description:
+    en_US: Primary phone number
+    zh_Hans: 主要电话号码
+  form: llm
 extra:
   python:
     source: tools/customer_management.py
-
 output_schema:
   type: object
   properties:
     customers:
       type: array
-      description:
-        en_US: List of customers (for list and search actions)
-        zh_Hans: 客户列表（用于列出和搜索操作）
+      description: List of customers (for list and search actions)
       items:
         type: object
         properties:
           id:
             type: string
-            description:
-              en_US: Customer ID
-              zh_Hans: 客户 ID
+            description: Customer ID
           display_name:
             type: string
-            description:
-              en_US: Customer display name
-              zh_Hans: 客户显示名称
+            description: Customer display name
           company_name:
             type: string
-            description:
-              en_US: Company name
-              zh_Hans: 公司名称
+            description: Company name
           email:
             type: string
-            description:
-              en_US: Primary email address
-              zh_Hans: 主要电子邮件地址
+            description: Primary email address
           phone:
             type: string
-            description:
-              en_US: Primary phone number
-              zh_Hans: 主要电话号码
+            description: Primary phone number
           balance:
             type: number
-            description:
-              en_US: Customer balance
-              zh_Hans: 客户余额
+            description: Customer balance
           active:
             type: boolean
-            description:
-              en_US: Whether the customer is active
-              zh_Hans: 客户是否活跃
+            description: Whether the customer is active
     count:
       type: integer
-      description:
-        en_US: Total number of customers returned
-        zh_Hans: 返回的客户总数
+      description: Total number of customers returned
     id:
       type: string
-      description:
-        en_US: Created customer ID (for create action)
-        zh_Hans: 创建的客户 ID（用于创建操作）
+      description: Created customer ID (for create action)
     display_name:
       type: string
-      description:
-        en_US: Created customer display name (for create action)
-        zh_Hans: 创建的客户显示名称（用于创建操作）
+      description: Created customer display name (for create action)
     company_name:
       type: string
-      description:
-        en_US: Created customer company name (for create action)
-        zh_Hans: 创建的客户公司名称（用于创建操作）
+      description: Created customer company name (for create action)
     sync_token:
       type: string
-      description:
-        en_US: QuickBooks sync token (for create action)
-        zh_Hans: QuickBooks 同步令牌（用于创建操作）
+      description: QuickBooks sync token (for create action)
     message:
       type: string
-      description:
-        en_US: Success message (for create action)
-        zh_Hans: 成功消息（用于创建操作）
+      description: Success message (for create action)

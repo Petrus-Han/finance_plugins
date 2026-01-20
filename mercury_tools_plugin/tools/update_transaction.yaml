@@ -51,29 +51,19 @@ output_schema:
   properties:
     success:
       type: boolean
-      description:
-        en_US: Whether the operation succeeded
-        zh_Hans: 操作是否成功
+      description: Whether the operation succeeded
     id:
       type: string
-      description:
-        en_US: Transaction ID
-        zh_Hans: 交易 ID
+      description: Transaction ID
     note:
       type: string
-      description:
-        en_US: Updated note
-        zh_Hans: 更新后的备注
+      description: Updated note
     status:
       type: string
-      description:
-        en_US: Transaction status
-        zh_Hans: 交易状态
+      description: Transaction status
     message:
       type: string
-      description:
-        en_US: Status message
-        zh_Hans: 状态消息
+      description: Status message
 
 extra:
   python:
