@@ -6,6 +6,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class VendorManagementTool(Tool):
@@ -26,20 +27,17 @@ class VendorManagementTool(Tool):
         name = tool_parameters.get("name")
 
         if not action or not name:
-            yield self.create_text_message("action and name are required parameters")
-            return
+            raise ValueError("action and name are required parameters")
 
         if action not in ["search", "create"]:
-            yield self.create_text_message("action must be 'search' or 'create'")
-            return
+            raise ValueError("action must be 'search' or 'create'")
 
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         realm_id = self.runtime.credentials.get("realm_id")
 
         if not access_token or not realm_id:
-            yield self.create_text_message("QuickBooks API Access Token and Realm ID are required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks API Access Token and Realm ID are required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -73,8 +71,7 @@ class VendorManagementTool(Tool):
                     vendors = data.get("QueryResponse", {}).get("Vendor", [])
 
                     if not vendors:
-                        yield self.create_text_message(f"No vendors found matching '{name}'")
-                        return
+                        raise ValueError(f"No vendors found matching '{name}'")
 
                     # Format vendors for output
                     output = []
@@ -98,17 +95,17 @@ class VendorManagementTool(Tool):
                 elif response.status_code == 400:
                     error_detail = response.json() if response.content else {}
                     error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                    yield self.create_text_message(f"Invalid request: {error_msg}")
+                    raise ValueError(f"Invalid request: {error_msg}")
 
                 elif response.status_code == 401:
-                    yield self.create_text_message(
+                    raise ToolProviderCredentialValidationError(
                         "Authentication failed. Please check your QuickBooks API access token."
                     )
 
                 else:
                     error_detail = response.json() if response.content else {}
                     error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                    yield self.create_text_message(
+                    raise Exception(
                         f"Failed to search vendors: {response.status_code} - {error_msg}"
                     )
 
@@ -146,21 +143,19 @@ class VendorManagementTool(Tool):
                 elif response.status_code == 400:
                     error_detail = response.json() if response.content else {}
                     error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                    yield self.create_text_message(f"Invalid request: {error_msg}")
+                    raise ValueError(f"Invalid request: {error_msg}")
 
                 elif response.status_code == 401:
-                    yield self.create_text_message(
+                    raise ToolProviderCredentialValidationError(
                         "Authentication failed. Please check your QuickBooks API access token."
                     )
 
                 else:
                     error_detail = response.json() if response.content else {}
                     error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-                    yield self.create_text_message(
+                    raise Exception(
                         f"Failed to create vendor: {response.status_code} - {error_msg}"
                     )
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while managing vendors: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while managing vendors: {str(e)}") from e

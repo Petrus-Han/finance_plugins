@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class CreateRecipientTool(Tool):
@@ -30,8 +31,7 @@ class CreateRecipientTool(Tool):
         # Get required parameters
         name = tool_parameters.get("name", "").strip()
         if not name:
-            yield self.create_text_message("Recipient name is required.")
-            return
+            raise ValueError("Recipient name is required.")
 
         payment_method = tool_parameters.get("payment_method", "ach")
 
@@ -40,16 +40,14 @@ class CreateRecipientTool(Tool):
             account_number = tool_parameters.get("account_number", "").strip()
             routing_number = tool_parameters.get("routing_number", "").strip()
             if not account_number or not routing_number:
-                yield self.create_text_message(
+                raise ValueError(
                     f"Account number and routing number are required for {payment_method.upper()} payments."
                 )
-                return
 
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("Mercury API Access Token is required.")
-            return
+            raise ValueError("Mercury API Access Token is required.")
 
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
@@ -101,10 +99,7 @@ class CreateRecipientTool(Tool):
                 "country": country,
             }
         elif payment_method == "check":
-            yield self.create_text_message(
-                "Address (address1 and city) is required for check payments."
-            )
-            return
+            raise ValueError("Address (address1 and city) is required for check payments.")
 
         try:
             response = httpx.post(
@@ -132,25 +127,19 @@ class CreateRecipientTool(Tool):
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", "Invalid request")
-                yield self.create_text_message(
-                    f"Failed to create recipient: {error_msg}"
-                )
+                raise Exception(f"Failed to create recipient: {error_msg}")
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your Mercury API access token."
                 )
             elif response.status_code == 403:
-                yield self.create_text_message(
+                raise Exception(
                     "Permission denied. Your API token may not have permission to create recipients."
                 )
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to create recipient: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to create recipient: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while creating recipient: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while creating recipient: {str(e)}") from e

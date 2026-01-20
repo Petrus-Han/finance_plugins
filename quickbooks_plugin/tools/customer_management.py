@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class CustomerManagementTool(Tool):
@@ -32,8 +33,7 @@ class CustomerManagementTool(Tool):
         realm_id = self.runtime.credentials.get("realm_id")
 
         if not access_token or not realm_id:
-            yield self.create_text_message("QuickBooks API Access Token and Realm ID are required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks API Access Token and Realm ID are required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -54,14 +54,12 @@ class CustomerManagementTool(Tool):
             elif action == "search":
                 display_name = tool_parameters.get("display_name", "")
                 if not display_name:
-                    yield self.create_text_message("display_name is required for search")
-                    return
+                    raise ValueError("display_name is required for search")
                 yield from self._search_customer(api_base_url, realm_id, headers, display_name)
             elif action == "create":
                 display_name = tool_parameters.get("display_name", "")
                 if not display_name:
-                    yield self.create_text_message("display_name is required for create")
-                    return
+                    raise ValueError("display_name is required for create")
                 yield from self._create_customer(
                     api_base_url, realm_id, headers,
                     display_name,
@@ -70,12 +68,10 @@ class CustomerManagementTool(Tool):
                     tool_parameters.get("phone")
                 )
             else:
-                yield self.create_text_message(f"Unknown action: {action}")
+                raise ValueError(f"Unknown action: {action}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error: {str(e)}") from e
 
     def _list_customers(self, api_base_url: str, realm_id: str, headers: dict) -> Generator[ToolInvokeMessage, None, None]:
         """List all active customers."""
@@ -108,10 +104,16 @@ class CustomerManagementTool(Tool):
                 "customers": result,
                 "count": len(result)
             })
+
+        elif response.status_code == 401:
+            raise ToolProviderCredentialValidationError(
+                "Authentication failed. Please check your QuickBooks API access token."
+            )
+
         else:
             error_detail = response.json() if response.content else {}
             error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-            yield self.create_text_message(f"Failed to list customers: {error_msg}")
+            raise Exception(f"Failed to list customers: {error_msg}")
 
     def _search_customer(self, api_base_url: str, realm_id: str, headers: dict, display_name: str) -> Generator[ToolInvokeMessage, None, None]:
         """Search for customer by name."""
@@ -131,8 +133,7 @@ class CustomerManagementTool(Tool):
             customers = data.get("QueryResponse", {}).get("Customer", [])
 
             if not customers:
-                yield self.create_text_message(f"No customers found matching '{display_name}'")
-                return
+                raise ValueError(f"No customers found matching '{display_name}'")
 
             result = []
             for cust in customers:
@@ -149,10 +150,16 @@ class CustomerManagementTool(Tool):
                 "customers": result,
                 "count": len(result)
             })
+
+        elif response.status_code == 401:
+            raise ToolProviderCredentialValidationError(
+                "Authentication failed. Please check your QuickBooks API access token."
+            )
+
         else:
             error_detail = response.json() if response.content else {}
             error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-            yield self.create_text_message(f"Failed to search customers: {error_msg}")
+            raise Exception(f"Failed to search customers: {error_msg}")
 
     def _create_customer(self, api_base_url: str, realm_id: str, headers: dict,
                         display_name: str, company_name: str = None,
@@ -193,16 +200,16 @@ class CustomerManagementTool(Tool):
         elif response.status_code == 400:
             error_detail = response.json() if response.content else {}
             error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-            yield self.create_text_message(f"Invalid request: {error_msg}")
+            raise ValueError(f"Invalid request: {error_msg}")
 
         elif response.status_code == 401:
-            yield self.create_text_message(
+            raise ToolProviderCredentialValidationError(
                 "Authentication failed. Please check your QuickBooks API access token."
             )
 
         else:
             error_detail = response.json() if response.content else {}
             error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
-            yield self.create_text_message(
+            raise Exception(
                 f"Failed to create customer: {response.status_code} - {error_msg}"
             )

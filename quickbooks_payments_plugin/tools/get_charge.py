@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class GetChargeTool(Tool):
@@ -22,14 +23,12 @@ class GetChargeTool(Tool):
         """
         charge_id = tool_parameters.get("charge_id")
         if not charge_id:
-            yield self.create_text_message("charge_id is required")
-            return
+            raise ValueError("charge_id is required")
 
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("QuickBooks Payments API Access Token is required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks Payments API Access Token is required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -55,21 +54,17 @@ class GetChargeTool(Tool):
                 yield self.create_json_message(data)
 
             elif response.status_code == 404:
-                yield self.create_text_message(f"Charge with ID '{charge_id}' not found.")
+                raise ValueError(f"Charge with ID '{charge_id}' not found.")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your QuickBooks Payments API access token."
                 )
 
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to retrieve charge: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to retrieve charge: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error: {str(e)}") from e

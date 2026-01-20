@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class CreateInvoiceTool(Tool):
@@ -33,12 +34,10 @@ class CreateInvoiceTool(Tool):
         line_items_str = tool_parameters.get("line_items", "")
 
         if not customer_id:
-            yield self.create_text_message("customer_id is required.")
-            return
+            raise ValueError("customer_id is required.")
 
         if not line_items_str:
-            yield self.create_text_message("line_items is required. Provide a JSON array of line items.")
-            return
+            raise ValueError("line_items is required. Provide a JSON array of line items.")
 
         # Parse line items
         import json
@@ -48,12 +47,10 @@ class CreateInvoiceTool(Tool):
             else:
                 line_items = line_items_str
         except json.JSONDecodeError:
-            yield self.create_text_message("line_items must be a valid JSON array.")
-            return
+            raise ValueError("line_items must be a valid JSON array.")
 
         if not isinstance(line_items, list) or len(line_items) == 0:
-            yield self.create_text_message("line_items must be a non-empty array.")
-            return
+            raise ValueError("line_items must be a non-empty array.")
 
         # Get optional parameters
         txn_date = tool_parameters.get("txn_date", "").strip()
@@ -68,8 +65,7 @@ class CreateInvoiceTool(Tool):
         realm_id = self.runtime.credentials.get("realm_id")
 
         if not access_token or not realm_id:
-            yield self.create_text_message("QuickBooks API Access Token and Realm ID are required.")
-            return
+            raise ToolProviderCredentialValidationError("QuickBooks API Access Token and Realm ID are required.")
 
         # Get API base URL
         environment = self.runtime.credentials.get("environment", "sandbox")
@@ -169,10 +165,10 @@ class CreateInvoiceTool(Tool):
                 error_detail = response.json() if response.content else {}
                 errors = error_detail.get("Fault", {}).get("Error", [])
                 error_msg = errors[0].get("Message", response.text) if errors else response.text
-                yield self.create_text_message(f"Invalid request: {error_msg}")
+                raise ValueError(f"Invalid request: {error_msg}")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your QuickBooks API access token."
                 )
 
@@ -180,11 +176,9 @@ class CreateInvoiceTool(Tool):
                 error_detail = response.json() if response.content else {}
                 errors = error_detail.get("Fault", {}).get("Error", [])
                 error_msg = errors[0].get("Message", response.text) if errors else response.text
-                yield self.create_text_message(
+                raise Exception(
                     f"Failed to create invoice: {response.status_code} - {error_msg}"
                 )
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while creating invoice: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while creating invoice: {str(e)}") from e

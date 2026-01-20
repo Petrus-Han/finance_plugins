@@ -85,3 +85,39 @@ parameters:
 
 output_schema:
   type: object
+  properties:
+    id:
+      type: string
+      description:
+        en_US: The unique identifier of the created deposit
+        zh_Hans: 创建的存款唯一标识符
+    txn_date:
+      type: string
+      description:
+        en_US: The transaction date of the deposit
+        zh_Hans: 存款的交易日期
+    total_amount:
+      type: number
+      description:
+        en_US: The total amount of the deposit
+        zh_Hans: 存款总金额
+    deposit_to_account:
+      type: string
+      description:
+        en_US: The bank account name where the deposit was made
+        zh_Hans: 存款存入的银行账户名称
+    private_note:
+      type: string
+      description:
+        en_US: Private note for the deposit
+        zh_Hans: 存款的私人备注
+    sync_token:
+      type: string
+      description:
+        en_US: QuickBooks sync token for the record
+        zh_Hans: 记录的 QuickBooks 同步令牌
+    meta_data:
+      type: object
+      description:
+        en_US: Metadata including creation and update timestamps
+        zh_Hans: 包含创建和更新时间戳的元数据

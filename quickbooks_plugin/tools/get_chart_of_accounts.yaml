@@ -30,17 +30,58 @@ parameters:
       en_US: e.g., Expense, Bank, Income
 
 output_schema:
-  type: array
-  items:
-    type: object
-    properties:
-      Id:
-        type: string
-      Name:
-        type: string
-      Type:
-        type: string
-      SubType:
-        type: string
-      Active:
-        type: boolean
+  type: object
+  properties:
+    accounts:
+      type: array
+      description:
+        en_US: List of accounts from the Chart of Accounts
+        zh_Hans: 会计科目表中的账户列表
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description:
+              en_US: Account ID
+              zh_Hans: 账户 ID
+          name:
+            type: string
+            description:
+              en_US: Account name
+              zh_Hans: 账户名称
+          type:
+            type: string
+            description:
+              en_US: Account type (e.g., Expense, Bank, Income)
+              zh_Hans: 账户类型（如：费用、银行、收入）
+          sub_type:
+            type: string
+            description:
+              en_US: Account subtype
+              zh_Hans: 账户子类型
+          active:
+            type: boolean
+            description:
+              en_US: Whether the account is active
+              zh_Hans: 账户是否活跃
+          current_balance:
+            type: number
+            description:
+              en_US: Current balance of the account
+              zh_Hans: 账户当前余额
+          classification:
+            type: string
+            description:
+              en_US: Account classification
+              zh_Hans: 账户分类
+          fully_qualified_name:
+            type: string
+            description:
+              en_US: Fully qualified name including parent accounts
+              zh_Hans: 包含父账户的完全限定名称
+    count:
+      type: integer
+      description:
+        en_US: Total number of accounts returned
+        zh_Hans: 返回的账户总数

@@ -116,3 +116,67 @@ parameters:
 extra:
   python:
     source: tools/create_invoice.py
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description:
+        en_US: Whether the invoice was created successfully
+        zh_Hans: 发票是否创建成功
+    id:
+      type: string
+      description:
+        en_US: The unique identifier of the created invoice
+        zh_Hans: 创建的发票唯一标识符
+    doc_number:
+      type: string
+      description:
+        en_US: The invoice document number
+        zh_Hans: 发票文档编号
+    txn_date:
+      type: string
+      description:
+        en_US: The transaction date of the invoice
+        zh_Hans: 发票的交易日期
+    due_date:
+      type: string
+      description:
+        en_US: The payment due date
+        zh_Hans: 付款到期日期
+    total_amount:
+      type: number
+      description:
+        en_US: The total amount of the invoice
+        zh_Hans: 发票总金额
+    balance:
+      type: number
+      description:
+        en_US: The remaining balance on the invoice
+        zh_Hans: 发票剩余余额
+    customer:
+      type: string
+      description:
+        en_US: The customer name
+        zh_Hans: 客户名称
+    email_status:
+      type: string
+      description:
+        en_US: The email delivery status
+        zh_Hans: 电子邮件发送状态
+    sync_token:
+      type: string
+      description:
+        en_US: QuickBooks sync token for the record
+        zh_Hans: 记录的 QuickBooks 同步令牌
+    invoice_link:
+      type: string
+      description:
+        en_US: Link to view the invoice online
+        zh_Hans: 在线查看发票的链接
+    message:
+      type: string
+      description:
+        en_US: Success message with invoice details
+        zh_Hans: 包含发票详情的成功消息

@@ -24,6 +24,52 @@ parameters:
     llm_description: The customer ID in QuickBooks system
     form: form
 
+output_schema:
+  type: array
+  items:
+    type: object
+    properties:
+      id:
+        type: string
+        description:
+          en_US: Unique identifier for the bank account
+          zh_Hans: 银行账户的唯一标识符
+      name:
+        type: string
+        description:
+          en_US: Name on the bank account
+          zh_Hans: 银行账户上的姓名
+      routingNumber:
+        type: string
+        description:
+          en_US: Bank routing number (masked)
+          zh_Hans: 银行路由号码（已屏蔽）
+      accountNumber:
+        type: string
+        description:
+          en_US: Bank account number (masked)
+          zh_Hans: 银行账户号码（已屏蔽）
+      accountType:
+        type: string
+        description:
+          en_US: Type of bank account (PERSONAL_CHECKING, PERSONAL_SAVINGS, etc.)
+          zh_Hans: 银行账户类型（PERSONAL_CHECKING、PERSONAL_SAVINGS 等）
+      phone:
+        type: string
+        description:
+          en_US: Phone number associated with the account
+          zh_Hans: 与账户关联的电话号码
+      updated:
+        type: string
+        description:
+          en_US: Timestamp when the bank account was last updated
+          zh_Hans: 银行账户最后更新的时间戳
+      created:
+        type: string
+        description:
+          en_US: Timestamp when the bank account was created
+          zh_Hans: 银行账户创建的时间戳
+
 extra:
   python:
     source: tools/get_bank_accounts.py

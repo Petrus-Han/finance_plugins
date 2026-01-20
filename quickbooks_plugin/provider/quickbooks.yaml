@@ -64,6 +64,14 @@ oauth_schema:
       label:
         en_US: "Access Token"
         zh_Hans: "访问令牌"
+    - name: "realm_id"
+      type: "text-input"
+      label:
+        en_US: "Realm ID (Company ID)"
+        zh_Hans: "Realm ID（公司 ID）"
+      help:
+        en_US: "The QuickBooks company ID returned during OAuth authorization"
+        zh_Hans: "OAuth 授权时返回的 QuickBooks 公司 ID"
 
 extra:
   python:

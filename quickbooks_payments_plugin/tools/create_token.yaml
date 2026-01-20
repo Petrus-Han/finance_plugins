@@ -158,6 +158,30 @@ parameters:
     llm_description: Full name of the account holder
     form: form
 
+output_schema:
+  type: object
+  properties:
+    token:
+      type: string
+      description:
+        en_US: The generated payment token value for use in charges
+        zh_Hans: 生成的支付令牌值，用于支付
+    created_at:
+      type: string
+      description:
+        en_US: Timestamp when the token was created
+        zh_Hans: 令牌创建的时间戳
+    payment_type:
+      type: string
+      description:
+        en_US: Type of payment method tokenized (card or bank_account)
+        zh_Hans: 令牌化的支付方式类型（card 或 bank_account）
+    note:
+      type: string
+      description:
+        en_US: Additional information about token usage and expiration
+        zh_Hans: 关于令牌使用和过期的附加信息
+
 extra:
   python:
     source: tools/create_token.py

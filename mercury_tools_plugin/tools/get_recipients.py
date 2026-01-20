@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class GetRecipientsTool(Tool):
@@ -27,8 +28,7 @@ class GetRecipientsTool(Tool):
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("Mercury API Access Token is required.")
-            return
+            raise ValueError("Mercury API Access Token is required.")
 
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
@@ -98,17 +98,13 @@ class GetRecipientsTool(Tool):
                 })
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your Mercury API access token."
                 )
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to retrieve recipients: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to retrieve recipients: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while fetching recipients: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while fetching recipients: {str(e)}") from e

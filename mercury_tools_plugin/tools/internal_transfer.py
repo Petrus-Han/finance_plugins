@@ -5,6 +5,7 @@ import httpx
 
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 
 
 class InternalTransferTool(Tool):
@@ -31,20 +32,16 @@ class InternalTransferTool(Tool):
         amount = tool_parameters.get("amount")
 
         if not from_account_id:
-            yield self.create_text_message("from_account_id is required.")
-            return
+            raise ValueError("from_account_id is required.")
 
         if not to_account_id:
-            yield self.create_text_message("to_account_id is required.")
-            return
+            raise ValueError("to_account_id is required.")
 
         if from_account_id == to_account_id:
-            yield self.create_text_message("Source and destination accounts must be different.")
-            return
+            raise ValueError("Source and destination accounts must be different.")
 
         if not amount or float(amount) <= 0:
-            yield self.create_text_message("amount must be a positive number.")
-            return
+            raise ValueError("amount must be a positive number.")
 
         # Get optional parameters
         idempotency_key = tool_parameters.get("idempotency_key", "").strip()
@@ -53,8 +50,7 @@ class InternalTransferTool(Tool):
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
-            yield self.create_text_message("Mercury API Access Token is required.")
-            return
+            raise ValueError("Mercury API Access Token is required.")
 
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
@@ -111,36 +107,30 @@ class InternalTransferTool(Tool):
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", "Invalid request")
-                yield self.create_text_message(f"Failed to create transfer: {error_msg}")
+                raise Exception(f"Failed to create transfer: {error_msg}")
 
             elif response.status_code == 401:
-                yield self.create_text_message(
+                raise ToolProviderCredentialValidationError(
                     "Authentication failed. Please check your Mercury API access token."
                 )
 
             elif response.status_code == 403:
-                yield self.create_text_message(
+                raise Exception(
                     "Permission denied. Your API token may not have permission to create transfers."
                 )
 
             elif response.status_code == 404:
-                yield self.create_text_message(
-                    "Account not found. Please verify the account IDs."
-                )
+                raise ValueError("Account not found. Please verify the account IDs.")
 
             elif response.status_code == 422:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", "Validation error - possibly insufficient funds")
-                yield self.create_text_message(f"Transfer failed: {error_msg}")
+                raise Exception(f"Transfer failed: {error_msg}")
 
             else:
                 error_detail = response.json() if response.content else {}
                 error_msg = error_detail.get("message", response.text)
-                yield self.create_text_message(
-                    f"Failed to create transfer: {response.status_code} - {error_msg}"
-                )
+                raise Exception(f"Failed to create transfer: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
-            yield self.create_text_message(f"Network error while creating transfer: {str(e)}")
-        except Exception as e:
-            yield self.create_text_message(f"Unexpected error: {str(e)}")
+            raise Exception(f"Network error while creating transfer: {str(e)}") from e
