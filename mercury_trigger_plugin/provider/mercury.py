@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import base64
 import hmac
 import hashlib
 import json
@@ -105,12 +104,11 @@ class MercuryTrigger(Trigger):
 
             body = request.get_data(as_text=True)
             signed_payload = f"{timestamp}.{body}"
-            
-            try:
-                secret_bytes = base64.b64decode(secret)
-            except Exception:
-                secret_bytes = secret.encode()
-            
+
+            # Mercury uses the secret key directly (not base64 decoded)
+            # See: https://docs.mercury.com/reference/verifying-webhook-signatures
+            secret_bytes = secret.encode()
+
             expected = hmac.new(
                 secret_bytes,
                 signed_payload.encode(),

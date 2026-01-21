@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Customer Management
     zh_Hans: 客户管理
+  human_description:
+    en_US: Customer Management
+    zh_Hans: 客户管理
 description:
   human:
     en_US: List, search, or create customers in QuickBooks Online.
@@ -25,12 +28,21 @@ parameters:
     label:
       en_US: List Customers
       zh_Hans: 列出客户
+    human_description:
+      en_US: List Customers
+      zh_Hans: 列出客户
   - value: search
     label:
       en_US: Search Customer
       zh_Hans: 搜索客户
+    human_description:
+      en_US: Search Customer
+      zh_Hans: 搜索客户
   - value: create
     label:
+      en_US: Create Customer
+      zh_Hans: 创建客户
+    human_description:
       en_US: Create Customer
       zh_Hans: 创建客户
   form: form

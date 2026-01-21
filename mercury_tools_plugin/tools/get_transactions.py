@@ -1,3 +1,4 @@
+import logging
 from collections.abc import Generator
 from typing import Any
 
@@ -6,120 +7,159 @@ import httpx
 from dify_plugin import Tool
 from dify_plugin.entities.tool import ToolInvokeMessage
 from dify_plugin.errors.tool import ToolProviderCredentialValidationError
+from dify_plugin.config.logger_format import plugin_logger_handler
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+logger.addHandler(plugin_logger_handler)
 
 
 class GetTransactionsTool(Tool):
-    """Tool to retrieve transactions for a Mercury bank account."""
+    """Tool to retrieve transactions for Mercury bank accounts."""
 
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
         """
-        Invoke the get_transactions tool to fetch transactions for a Mercury account.
+        Invoke the get_transactions tool to fetch transactions.
 
         Args:
             tool_parameters: Dictionary containing:
-                - account_id: The Mercury account ID (required)
+                - account_id: The Mercury account ID (optional - fetches all if not provided)
                 - start_date: Start date for filtering (ISO 8601, optional)
                 - end_date: End date for filtering (ISO 8601, optional)
-                - limit: Max number of results (optional, default 100)
+                - limit: Max number of results per account (optional, default 100)
                 - offset: Pagination offset (optional, default 0)
 
         Returns:
             List of transactions with details
         """
-        # Get parameters
-        account_id = tool_parameters.get("account_id", "")
-        if not account_id:
-            raise ValueError("Account ID is required.")
-
-        start_date = tool_parameters.get("start_date")
-        end_date = tool_parameters.get("end_date")
-        limit = tool_parameters.get("limit", 100)
-        offset = tool_parameters.get("offset", 0)
+        logger.info("=== GetTransactionsTool._invoke called ===")
 
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
             raise ValueError("Mercury API Access Token is required.")
 
-        # Prepare request
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
-        
+        logger.info(f"API environment: {api_environment}")
+
         # Determine API base URL based on environment
         if api_environment == "sandbox":
             api_base_url = "https://api-sandbox.mercury.com/api/v1"
         else:
             api_base_url = "https://api.mercury.com/api/v1"
+
         headers = {
             "Authorization": f"Bearer {access_token}",
             "Accept": "application/json;charset=utf-8",
         }
+
+        # Get parameters
+        account_id = tool_parameters.get("account_id")
+        start_date = tool_parameters.get("start_date")
+        end_date = tool_parameters.get("end_date")
+        limit = tool_parameters.get("limit", 100)
+        offset = tool_parameters.get("offset", 0)
+
+        try:
+            if account_id:
+                # Fetch transactions for specific account
+                account_ids = [account_id]
+            else:
+                # Fetch all accounts first
+                logger.info("No account_id provided, fetching all accounts...")
+                account_ids = self._get_all_account_ids(api_base_url, headers)
+                if not account_ids:
+                    yield self.create_text_message("No accounts found.")
+                    return
+
+            # Fetch transactions for each account
+            all_transactions = []
+            for acc_id in account_ids:
+                transactions = self._get_transactions_for_account(
+                    api_base_url, headers, acc_id,
+                    start_date, end_date, limit, offset
+                )
+                all_transactions.extend(transactions)
+
+            logger.info(f"Found {len(all_transactions)} transactions total")
+
+            if not all_transactions:
+                yield self.create_text_message("No transactions found for the specified criteria.")
+                return
+
+            yield self.create_json_message({
+                "transactions": all_transactions,
+                "total_count": len(all_transactions),
+                "limit": limit,
+                "offset": offset
+            })
+
+        except httpx.HTTPError as e:
+            raise Exception(f"Network error while fetching transactions: {str(e)}") from e
+
+    def _get_all_account_ids(self, api_base_url: str, headers: dict) -> list[str]:
+        """Fetch all account IDs."""
+        response = httpx.get(f"{api_base_url}/accounts", headers=headers, timeout=15)
+
+        if response.status_code == 200:
+            data = response.json()
+            accounts = data.get("accounts", [])
+            return [acc.get("id") for acc in accounts if acc.get("id")]
+        elif response.status_code == 401:
+            raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
+        else:
+            raise Exception(f"Failed to fetch accounts: {response.status_code}")
+
+    def _get_transactions_for_account(
+        self, api_base_url: str, headers: dict, account_id: str,
+        start_date: str = None, end_date: str = None,
+        limit: int = 100, offset: int = 0
+    ) -> list[dict]:
+        """Fetch transactions for a specific account."""
+        url = f"{api_base_url}/account/{account_id}/transactions"
+        logger.info(f"Fetching transactions from: {url}")
 
         # Build query parameters
         params = {
             "limit": limit,
             "offset": offset,
         }
-
         if start_date:
             params["postedAtStart"] = start_date
         if end_date:
             params["postedAtEnd"] = end_date
 
-        try:
-            # Make API request
-            response = httpx.get(
-                f"{api_base_url}/account/{account_id}/transactions",
-                headers=headers,
-                params=params,
-                timeout=15
-            )
+        response = httpx.get(url, headers=headers, params=params, timeout=15)
 
-            if response.status_code == 200:
-                data = response.json()
-                transactions = data.get("transactions", [])
+        if response.status_code == 200:
+            data = response.json()
+            transactions = data.get("transactions", [])
 
-                if not transactions:
-                    yield self.create_text_message("No transactions found for the specified criteria.")
-                    return
+            # Format transactions for output
+            output = []
+            for txn in transactions:
+                transaction_info = {
+                    "account_id": account_id,
+                    "id": txn.get("id", ""),
+                    "amount": txn.get("amount", 0),
+                    "posted_at": txn.get("postedAt", ""),
+                    "status": txn.get("status", ""),
+                    "counterparty_name": txn.get("counterpartyName", ""),
+                    "bank_description": txn.get("bankDescription", ""),
+                    "note": txn.get("note", ""),
+                    "category": txn.get("category", ""),
+                    "type": txn.get("type", ""),
+                }
+                output.append(transaction_info)
 
-                # Format transactions for output
-                output = []
-                for txn in transactions:
-                    transaction_info = {
-                        "id": txn.get("id", ""),
-                        "amount": txn.get("amount", 0),
-                        "posted_at": txn.get("postedAt", ""),
-                        "status": txn.get("status", ""),
-                        "counterparty_name": txn.get("counterpartyName", ""),
-                        "bank_description": txn.get("bankDescription", ""),
-                        "note": txn.get("note", ""),
-                        "category": txn.get("category", ""),
-                        "type": txn.get("type", ""),
-                        "account_id": txn.get("accountId", ""),
-                    }
-                    output.append(transaction_info)
+            return output
 
-                # Return JSON data with metadata
-                total_count = data.get("total", len(transactions))
-                yield self.create_json_message({
-                    "transactions": output,
-                    "count": len(transactions),
-                    "total": total_count,
-                    "offset": offset,
-                    "limit": limit
-                })
-
-            elif response.status_code == 404:
-                raise ValueError(f"Account with ID '{account_id}' not found.")
-            elif response.status_code == 401:
-                raise ToolProviderCredentialValidationError(
-                    "Authentication failed. Please check your Mercury API access token."
-                )
-            else:
-                error_detail = response.json() if response.content else {}
-                error_msg = error_detail.get("message", response.text)
-                raise Exception(f"Failed to retrieve transactions: {response.status_code} - {error_msg}")
-
-        except httpx.HTTPError as e:
-            raise Exception(f"Network error while fetching transactions: {str(e)}") from e
+        elif response.status_code == 401:
+            raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
+        elif response.status_code == 404:
+            logger.warning(f"Account not found: {account_id}")
+            return []
+        else:
+            logger.warning(f"Failed to fetch transactions for account {account_id}: {response.status_code}")
+            return []

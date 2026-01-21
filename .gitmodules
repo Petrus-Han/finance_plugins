@@ -1,9 +1,12 @@
 [submodule "ref/dify-official-plugins"]
 	path = ref/dify-official-plugins
-	url = https://github.com/langgenius/dify-official-plugins.git
+	url = https://github.com/langgenius/dify-official-plugins
 [submodule "ref/dify-plugin-sdks"]
 	path = ref/dify-plugin-sdks
-	url = https://github.com/langgenius/dify-plugin-sdks.git
+	url = https://github.com/langgenius/dify-plugin-sdks
 [submodule "ref/dify-docs"]
 	path = ref/dify-docs
-	url = https://github.com/langgenius/dify-docs.git
+	url = https://github.com/langgenius/dify-docs
+[submodule "ref/dify-plugin-daemon"]
+	path = ref/dify-plugin-daemon
+	url = https://github.com/langgenius/dify-plugin-daemon

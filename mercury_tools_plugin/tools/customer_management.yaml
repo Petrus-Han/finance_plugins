@@ -1,0 +1,191 @@
+identity:
+  name: customer_management
+  author: petrus
+  label:
+    en_US: Customer Management
+    zh_Hans: 客户管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, update, or delete customers for Accounts Receivable
+    zh_Hans: 创建、读取、更新或删除应收账款客户
+  llm: A tool to manage AR customers - supports list all, get by ID, create, update, and delete operations
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    human_description:
+      en_US: The operation to perform
+      zh_Hans: 要执行的操作
+    llm_description: "Operation type: list, get, create, update, or delete"
+    form: llm
+    options:
+      - value: list
+        label:
+          en_US: List All Customers
+          zh_Hans: 列出所有客户
+      - value: get
+        label:
+          en_US: Get Customer
+          zh_Hans: 获取客户
+      - value: create
+        label:
+          en_US: Create Customer
+          zh_Hans: 创建客户
+      - value: update
+        label:
+          en_US: Update Customer
+          zh_Hans: 更新客户
+      - value: delete
+        label:
+          en_US: Delete Customer
+          zh_Hans: 删除客户
+
+  - name: customer_id
+    type: string
+    required: false
+    label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    human_description:
+      en_US: Customer ID (required for get, update, delete)
+      zh_Hans: 客户 ID（获取、更新、删除时必填）
+    llm_description: The UUID of the customer. Required for get, update, and delete operations.
+    form: llm
+
+  - name: name
+    type: string
+    required: false
+    label:
+      en_US: Customer Name
+      zh_Hans: 客户名称
+    human_description:
+      en_US: Customer name (required for create/update)
+      zh_Hans: 客户名称（创建/更新时必填）
+    llm_description: The name of the customer. Required for create and update operations.
+    form: llm
+
+  - name: email
+    type: string
+    required: false
+    label:
+      en_US: Email
+      zh_Hans: 邮箱
+    human_description:
+      en_US: Customer email (required for create/update)
+      zh_Hans: 客户邮箱（创建/更新时必填）
+    llm_description: The email address of the customer. Required for create and update operations.
+    form: llm
+
+  - name: address1
+    type: string
+    required: false
+    label:
+      en_US: Address Line 1
+      zh_Hans: 地址行 1
+    human_description:
+      en_US: Primary street address
+      zh_Hans: 主要街道地址
+    llm_description: Primary street address line
+    form: llm
+
+  - name: address2
+    type: string
+    required: false
+    label:
+      en_US: Address Line 2
+      zh_Hans: 地址行 2
+    human_description:
+      en_US: Secondary street address (optional)
+      zh_Hans: 次要街道地址（可选）
+    llm_description: Secondary street address line (optional)
+    form: llm
+
+  - name: city
+    type: string
+    required: false
+    label:
+      en_US: City
+      zh_Hans: 城市
+    human_description:
+      en_US: City name
+      zh_Hans: 城市名称
+    llm_description: City name for the address
+    form: llm
+
+  - name: region
+    type: string
+    required: false
+    label:
+      en_US: State/Region
+      zh_Hans: 州/地区
+    human_description:
+      en_US: State, province, or region
+      zh_Hans: 州、省或地区
+    llm_description: State, province, or region code
+    form: llm
+
+  - name: postal_code
+    type: string
+    required: false
+    label:
+      en_US: Postal Code
+      zh_Hans: 邮政编码
+    human_description:
+      en_US: Postal or ZIP code
+      zh_Hans: 邮政编码
+    llm_description: Postal or ZIP code
+    form: llm
+
+  - name: country
+    type: string
+    required: false
+    label:
+      en_US: Country Code
+      zh_Hans: 国家代码
+    human_description:
+      en_US: ISO 3166-1 alpha-2 country code (e.g., US)
+      zh_Hans: ISO 3166-1 alpha-2 国家代码（如 US）
+    llm_description: Country code in ISO 3166-1 alpha-2 format (e.g., US, CA, GB)
+    form: llm
+
+  - name: resend_open_invoices
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Resend Open Invoices
+      zh_Hans: 重发未付发票
+    human_description:
+      en_US: Whether to resend open invoices after update
+      zh_Hans: 更新后是否重发未付发票
+    llm_description: Whether to resend open invoices to the customer after updating their information. Only used for update operation.
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    operation:
+      type: string
+      description: The operation that was performed
+    customer:
+      type: object
+      description: Customer data (for get/create/update)
+    customers:
+      type: array
+      description: List of customers (for list operation)
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/customer_management.py

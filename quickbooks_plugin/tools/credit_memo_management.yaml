@@ -1,0 +1,168 @@
+identity:
+  name: credit_memo_management
+  author: petrus
+  label:
+    en_US: Credit Memo Management
+    zh_Hans: 贷项通知单管理
+  human_description:
+    en_US: Credit Memo Management
+    zh_Hans: 贷项通知单管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, or delete credit memos (refunds/credits)
+    zh_Hans: 创建、读取或删除贷项通知单（退款/贷记）
+  llm: A tool to manage credit memos in QuickBooks - for issuing credits or refunds to customers
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    human_description:
+      en_US: Operation
+      zh_Hans: 操作
+    llm_description: "Operation type: create, read, delete, or query"
+    form: llm
+    options:
+      - value: create
+        label:
+          en_US: Create Credit Memo
+          zh_Hans: 创建贷项通知单
+        human_description:
+          en_US: Create Credit Memo
+          zh_Hans: 创建贷项通知单
+      - value: read
+        label:
+          en_US: Read Credit Memo
+          zh_Hans: 读取贷项通知单
+        human_description:
+          en_US: Read Credit Memo
+          zh_Hans: 读取贷项通知单
+      - value: delete
+        label:
+          en_US: Delete Credit Memo
+          zh_Hans: 删除贷项通知单
+        human_description:
+          en_US: Delete Credit Memo
+          zh_Hans: 删除贷项通知单
+      - value: query
+        label:
+          en_US: Query Credit Memos
+          zh_Hans: 查询贷项通知单
+
+        human_description:
+          en_US: Query Credit Memos
+          zh_Hans: 查询贷项通知单
+  - name: credit_memo_id
+    type: string
+    required: false
+    label:
+      en_US: Credit Memo ID
+      zh_Hans: 贷项通知单 ID
+    human_description:
+      en_US: Credit Memo ID
+      zh_Hans: 贷项通知单 ID
+    llm_description: Required for read and delete operations.
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: false
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    llm_description: Required for delete operation.
+    form: llm
+
+  - name: customer_id
+    type: string
+    required: false
+    label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    human_description:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    llm_description: Required for create operation.
+    form: llm
+
+  - name: lines_json
+    type: string
+    required: false
+    label:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
+    human_description:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
+    llm_description: "JSON array: [{\"ItemRef\": {\"value\": \"1\"}, \"Qty\": 1, \"UnitPrice\": 100, \"Amount\": 100}]"
+    form: llm
+
+  - name: txn_date
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    form: llm
+
+  - name: customer_memo
+    type: string
+    required: false
+    label:
+      en_US: Customer Memo
+      zh_Hans: 客户备注
+    human_description:
+      en_US: Customer Memo
+      zh_Hans: 客户备注
+    form: llm
+
+  - name: private_note
+    type: string
+    required: false
+    label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    human_description:
+      en_US: Query String
+      zh_Hans: 查询条件
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+    operation:
+      type: string
+    credit_memo:
+      type: object
+    credit_memos:
+      type: array
+    message:
+      type: string
+
+extra:
+  python:
+    source: tools/credit_memo_management.py

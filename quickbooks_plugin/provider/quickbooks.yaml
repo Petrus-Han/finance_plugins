@@ -86,3 +86,17 @@ tools:
   - tools/create_transfer.yaml
   - tools/create_invoice.yaml
   - tools/create_bill.yaml
+  - tools/payment_management.yaml
+  - tools/bill_payment_management.yaml
+  - tools/journal_entry_management.yaml
+  - tools/item_management.yaml
+  - tools/attachable_management.yaml
+  - tools/estimate_management.yaml
+  - tools/sales_receipt_management.yaml
+  - tools/credit_memo_management.yaml
+  - tools/refund_receipt_management.yaml
+  - tools/purchase_order_management.yaml
+  - tools/employee_management.yaml
+  - tools/class_management.yaml
+  - tools/department_management.yaml
+  - tools/query_entities.yaml

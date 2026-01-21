@@ -1,0 +1,264 @@
+identity:
+  name: query_entities
+  author: petrus
+  label:
+    en_US: Query Entities
+    zh_Hans: 查询实体
+  human_description:
+    en_US: Query Entities
+    zh_Hans: 查询实体
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Run custom SQL-like queries against any QuickBooks entity
+    zh_Hans: 对任何 QuickBooks 实体运行自定义类 SQL 查询
+  llm: A flexible tool to query any QuickBooks entity using SQL-like syntax
+
+parameters:
+  - name: entity_type
+    type: select
+    required: false
+    label:
+      en_US: Entity Type
+      zh_Hans: 实体类型
+    human_description:
+      en_US: Entity Type
+      zh_Hans: 实体类型
+    llm_description: The type of entity to query. Required if not using custom_query.
+    form: llm
+    options:
+      - value: Account
+        label:
+          en_US: Account
+          zh_Hans: 账户
+        human_description:
+          en_US: Account
+          zh_Hans: 账户
+      - value: Bill
+        label:
+          en_US: Bill
+          zh_Hans: 账单
+        human_description:
+          en_US: Bill
+          zh_Hans: 账单
+      - value: BillPayment
+        label:
+          en_US: Bill Payment
+          zh_Hans: 账单付款
+        human_description:
+          en_US: Bill Payment
+          zh_Hans: 账单付款
+      - value: Class
+        label:
+          en_US: Class
+          zh_Hans: 类别
+        human_description:
+          en_US: Class
+          zh_Hans: 类别
+      - value: CompanyInfo
+        label:
+          en_US: Company Info
+          zh_Hans: 公司信息
+        human_description:
+          en_US: Company Info
+          zh_Hans: 公司信息
+      - value: CreditMemo
+        label:
+          en_US: Credit Memo
+          zh_Hans: 贷项通知单
+        human_description:
+          en_US: Credit Memo
+          zh_Hans: 贷项通知单
+      - value: Customer
+        label:
+          en_US: Customer
+          zh_Hans: 客户
+        human_description:
+          en_US: Customer
+          zh_Hans: 客户
+      - value: Department
+        label:
+          en_US: Department
+          zh_Hans: 部门
+        human_description:
+          en_US: Department
+          zh_Hans: 部门
+      - value: Deposit
+        label:
+          en_US: Deposit
+          zh_Hans: 存款
+        human_description:
+          en_US: Deposit
+          zh_Hans: 存款
+      - value: Employee
+        label:
+          en_US: Employee
+          zh_Hans: 员工
+        human_description:
+          en_US: Employee
+          zh_Hans: 员工
+      - value: Estimate
+        label:
+          en_US: Estimate
+          zh_Hans: 报价单
+        human_description:
+          en_US: Estimate
+          zh_Hans: 报价单
+      - value: Invoice
+        label:
+          en_US: Invoice
+          zh_Hans: 发票
+        human_description:
+          en_US: Invoice
+          zh_Hans: 发票
+      - value: Item
+        label:
+          en_US: Item
+          zh_Hans: 项目
+        human_description:
+          en_US: Item
+          zh_Hans: 项目
+      - value: JournalEntry
+        label:
+          en_US: Journal Entry
+          zh_Hans: 日记账分录
+        human_description:
+          en_US: Journal Entry
+          zh_Hans: 日记账分录
+      - value: Payment
+        label:
+          en_US: Payment
+          zh_Hans: 付款
+        human_description:
+          en_US: Payment
+          zh_Hans: 付款
+      - value: PaymentMethod
+        label:
+          en_US: Payment Method
+          zh_Hans: 付款方式
+        human_description:
+          en_US: Payment Method
+          zh_Hans: 付款方式
+      - value: Purchase
+        label:
+          en_US: Purchase
+          zh_Hans: 采购
+        human_description:
+          en_US: Purchase
+          zh_Hans: 采购
+      - value: PurchaseOrder
+        label:
+          en_US: Purchase Order
+          zh_Hans: 采购订单
+        human_description:
+          en_US: Purchase Order
+          zh_Hans: 采购订单
+      - value: RefundReceipt
+        label:
+          en_US: Refund Receipt
+          zh_Hans: 退款收据
+        human_description:
+          en_US: Refund Receipt
+          zh_Hans: 退款收据
+      - value: SalesReceipt
+        label:
+          en_US: Sales Receipt
+          zh_Hans: 销售收据
+        human_description:
+          en_US: Sales Receipt
+          zh_Hans: 销售收据
+      - value: TaxCode
+        label:
+          en_US: Tax Code
+          zh_Hans: 税码
+        human_description:
+          en_US: Tax Code
+          zh_Hans: 税码
+      - value: TaxRate
+        label:
+          en_US: Tax Rate
+          zh_Hans: 税率
+        human_description:
+          en_US: Tax Rate
+          zh_Hans: 税率
+      - value: Term
+        label:
+          en_US: Term
+          zh_Hans: 条款
+        human_description:
+          en_US: Term
+          zh_Hans: 条款
+      - value: Vendor
+        label:
+          en_US: Vendor
+          zh_Hans: 供应商
+        human_description:
+          en_US: Vendor
+          zh_Hans: 供应商
+      - value: VendorCredit
+        label:
+          en_US: Vendor Credit
+          zh_Hans: 供应商贷项
+
+        human_description:
+          en_US: Vendor Credit
+          zh_Hans: 供应商贷项
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: WHERE Clause
+      zh_Hans: WHERE 子句
+    human_description:
+      en_US: WHERE Clause
+      zh_Hans: WHERE 子句
+    llm_description: "Optional WHERE clause conditions, e.g., \"DisplayName LIKE '%John%'\" or \"TxnDate > '2024-01-01'\""
+    form: llm
+
+  - name: custom_query
+    type: string
+    required: false
+    label:
+      en_US: Custom Query
+      zh_Hans: 自定义查询
+    human_description:
+      en_US: Custom Query
+      zh_Hans: 自定义查询
+    llm_description: "Full custom query string, e.g., \"SELECT Id, DisplayName FROM Customer WHERE Active = true\""
+    form: llm
+
+  - name: max_results
+    type: number
+    required: false
+    label:
+      en_US: Max Results
+      zh_Hans: 最大结果数
+    human_description:
+      en_US: Max Results
+      zh_Hans: 最大结果数
+    llm_description: Maximum number of results to return (default 100).
+    form: llm
+    default: 100
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+    entity_type:
+      type: string
+    results:
+      type: array
+    count:
+      type: integer
+    total_count:
+      type: integer
+    query:
+      type: string
+    message:
+      type: string
+
+extra:
+  python:
+    source: tools/query_entities.py

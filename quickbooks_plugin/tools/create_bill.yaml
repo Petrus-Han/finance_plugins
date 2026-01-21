@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Create Bill
     zh_Hans: 创建账单
+  human_description:
+    en_US: Create Bill
+    zh_Hans: 创建账单
 description:
   human:
     en_US: Create a new bill (accounts payable) in QuickBooks Online from a vendor.

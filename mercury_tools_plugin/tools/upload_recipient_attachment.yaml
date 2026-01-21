@@ -1,0 +1,55 @@
+identity:
+  name: upload_recipient_attachment
+  author: petrus
+  label:
+    en_US: Upload Recipient Attachment
+    zh_Hans: 上传收款人附件
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Upload an attachment to a recipient
+    zh_Hans: 上传附件到收款人
+  llm: A tool to upload a file attachment to a Mercury recipient for documentation purposes
+
+parameters:
+  - name: recipient_id
+    type: string
+    required: true
+    label:
+      en_US: Recipient ID
+      zh_Hans: 收款人 ID
+    human_description:
+      en_US: The recipient ID to attach the file to
+      zh_Hans: 要附加文件的收款人 ID
+    llm_description: The UUID of the recipient to attach the file to
+    form: llm
+
+  - name: file
+    type: file
+    required: true
+    label:
+      en_US: File
+      zh_Hans: 文件
+    human_description:
+      en_US: The file to upload
+      zh_Hans: 要上传的文件
+    llm_description: The file to upload as an attachment
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the upload succeeded
+    attachment:
+      type: object
+      description: Attachment details
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/upload_recipient_attachment.py

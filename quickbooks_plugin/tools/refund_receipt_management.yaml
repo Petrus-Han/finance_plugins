@@ -1,0 +1,190 @@
+identity:
+  name: refund_receipt_management
+  author: petrus
+  label:
+    en_US: Refund Receipt Management
+    zh_Hans: 退款收据管理
+  human_description:
+    en_US: Refund Receipt Management
+    zh_Hans: 退款收据管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, or delete refund receipts
+    zh_Hans: 创建、读取或删除退款收据
+  llm: A tool to manage refund receipts in QuickBooks - for processing customer refunds
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    human_description:
+      en_US: Operation
+      zh_Hans: 操作
+    llm_description: "Operation type: create, read, delete, or query"
+    form: llm
+    options:
+      - value: create
+        label:
+          en_US: Create Refund Receipt
+          zh_Hans: 创建退款收据
+        human_description:
+          en_US: Create Refund Receipt
+          zh_Hans: 创建退款收据
+      - value: read
+        label:
+          en_US: Read Refund Receipt
+          zh_Hans: 读取退款收据
+        human_description:
+          en_US: Read Refund Receipt
+          zh_Hans: 读取退款收据
+      - value: delete
+        label:
+          en_US: Delete Refund Receipt
+          zh_Hans: 删除退款收据
+        human_description:
+          en_US: Delete Refund Receipt
+          zh_Hans: 删除退款收据
+      - value: query
+        label:
+          en_US: Query Refund Receipts
+          zh_Hans: 查询退款收据
+
+        human_description:
+          en_US: Query Refund Receipts
+          zh_Hans: 查询退款收据
+  - name: refund_receipt_id
+    type: string
+    required: false
+    label:
+      en_US: Refund Receipt ID
+      zh_Hans: 退款收据 ID
+    human_description:
+      en_US: Refund Receipt ID
+      zh_Hans: 退款收据 ID
+    llm_description: Required for read and delete operations.
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: false
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    llm_description: Required for delete operation.
+    form: llm
+
+  - name: deposit_to_account_id
+    type: string
+    required: false
+    label:
+      en_US: Deposit To Account ID
+      zh_Hans: 来源账户 ID
+    human_description:
+      en_US: Deposit To Account ID
+      zh_Hans: 来源账户 ID
+    llm_description: Required for create - the account from which refund is issued.
+    form: llm
+
+  - name: customer_id
+    type: string
+    required: false
+    label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    human_description:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    form: llm
+
+  - name: lines_json
+    type: string
+    required: false
+    label:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
+    human_description:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
+    llm_description: "JSON array: [{\"ItemRef\": {\"value\": \"1\"}, \"Qty\": 1, \"UnitPrice\": 100, \"Amount\": 100}]"
+    form: llm
+
+  - name: payment_method_id
+    type: string
+    required: false
+    label:
+      en_US: Payment Method ID
+      zh_Hans: 付款方式 ID
+    human_description:
+      en_US: Payment Method ID
+      zh_Hans: 付款方式 ID
+    form: llm
+
+  - name: txn_date
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    form: llm
+
+  - name: customer_memo
+    type: string
+    required: false
+    label:
+      en_US: Customer Memo
+      zh_Hans: 客户备注
+    human_description:
+      en_US: Customer Memo
+      zh_Hans: 客户备注
+    form: llm
+
+  - name: private_note
+    type: string
+    required: false
+    label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    human_description:
+      en_US: Query String
+      zh_Hans: 查询条件
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+    operation:
+      type: string
+    refund_receipt:
+      type: object
+    refund_receipts:
+      type: array
+    message:
+      type: string
+
+extra:
+  python:
+    source: tools/refund_receipt_management.py
