@@ -24,7 +24,8 @@
       "Bash(git init:*)",
       "Bash(xargs:*)",
       "Bash(git checkout:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(wc:*)"
     ]
   }
 }

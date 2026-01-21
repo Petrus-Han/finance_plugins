@@ -51,3 +51,6 @@ htmlcov/
 
 # Local files
 plan.md
+
+# Credentials
+.credentials
