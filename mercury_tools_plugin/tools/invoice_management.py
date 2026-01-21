@@ -230,9 +230,9 @@ class InvoiceManagementTool(Tool):
             errors = error_detail.get("errors", {})
             if "subscriptions" in errors:
                 raise Exception(
-                    "此功能需要 Mercury AR (Accounts Receivable) 订阅。"
-                    "请在 Mercury Dashboard 的 Plan & Billing 中订阅 AR 服务。"
-                    "了解更多: https://mercury.com/pricing"
+                    "This feature requires a Mercury AR (Accounts Receivable) subscription. "
+                    "Please subscribe to AR in your Mercury Dashboard under Plan & Billing. "
+                    "Learn more: https://mercury.com/pricing"
                 )
 
         error_msg = error_detail.get("message", response.text)
