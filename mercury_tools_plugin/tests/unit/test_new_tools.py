@@ -107,13 +107,34 @@ class TestGetCardsTool:
         assert len(results) == 1
         assert "No cards found" in get_message_text(results[0])
 
-    def test_get_cards_missing_account_id(self):
-        """Test error when account_id is missing."""
+    @patch('httpx.get')
+    def test_get_cards_all_accounts(self, mock_get):
+        """Test fetching cards for all accounts when account_id is not provided."""
         from tools.get_cards import GetCardsTool
 
+        # First call returns accounts, second call returns cards for that account
+        accounts_response = MagicMock()
+        accounts_response.status_code = 200
+        accounts_response.json.return_value = {
+            "accounts": [{"id": "acc_123", "name": "Checking"}]
+        }
+
+        cards_response = MagicMock()
+        cards_response.status_code = 200
+        cards_response.json.return_value = {
+            "cards": [{"cardId": "card_456", "lastFourDigits": "1234", "status": "active"}]
+        }
+
+        mock_get.side_effect = [accounts_response, cards_response]
+
         tool = GetCardsTool(runtime=create_mock_runtime(), session=create_mock_session())
-        with pytest.raises(ValueError, match="account_id is required"):
-            list(tool._invoke({}))
+        results = list(tool._invoke({}))
+
+        assert len(results) == 1
+        data = get_json_data(results[0])
+        assert "cards" in data
+        assert len(data["cards"]) == 1
+        assert data["cards"][0]["account_id"] == "acc_123"
 
     def test_get_cards_missing_token(self):
         """Test error when token is missing."""
@@ -159,13 +180,34 @@ class TestGetStatementsTool:
         assert "statements" in data
         assert len(data["statements"]) == 1
 
-    def test_get_statements_missing_account_id(self):
-        """Test error when account_id is missing."""
+    @patch('httpx.get')
+    def test_get_statements_all_accounts(self, mock_get):
+        """Test fetching statements for all accounts when account_id is not provided."""
         from tools.get_statements import GetStatementsTool
 
+        # First call returns accounts, second call returns statements for that account
+        accounts_response = MagicMock()
+        accounts_response.status_code = 200
+        accounts_response.json.return_value = {
+            "accounts": [{"id": "acc_123", "name": "Checking"}]
+        }
+
+        statements_response = MagicMock()
+        statements_response.status_code = 200
+        statements_response.json.return_value = {
+            "statements": [{"id": "stmt_456", "startDate": "2024-01-01", "endDate": "2024-01-31"}]
+        }
+
+        mock_get.side_effect = [accounts_response, statements_response]
+
         tool = GetStatementsTool(runtime=create_mock_runtime(), session=create_mock_session())
-        with pytest.raises(ValueError, match="account_id is required"):
-            list(tool._invoke({}))
+        results = list(tool._invoke({}))
+
+        assert len(results) == 1
+        data = get_json_data(results[0])
+        assert "statements" in data
+        assert len(data["statements"]) == 1
+        assert data["statements"][0]["account_id"] == "acc_123"
 
 
 # =============================================================================
