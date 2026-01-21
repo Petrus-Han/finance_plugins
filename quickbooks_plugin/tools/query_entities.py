@@ -1,0 +1,98 @@
+import urllib.parse
+from collections.abc import Generator
+from typing import Any
+
+import httpx
+
+from dify_plugin import Tool
+from dify_plugin.entities.tool import ToolInvokeMessage
+from dify_plugin.errors.tool import ToolProviderCredentialValidationError
+
+
+class QueryEntitiesTool(Tool):
+    """Tool to run custom SQL-like queries against any QuickBooks entity."""
+
+    SUPPORTED_ENTITIES = [
+        "Account", "Bill", "BillPayment", "Budget", "Class", "CompanyInfo",
+        "CreditMemo", "Customer", "Department", "Deposit", "Employee",
+        "Estimate", "Invoice", "Item", "JournalEntry", "Payment",
+        "PaymentMethod", "Preferences", "Purchase", "PurchaseOrder",
+        "RefundReceipt", "SalesReceipt", "TaxCode", "TaxRate", "Term",
+        "TimeActivity", "Transfer", "Vendor", "VendorCredit"
+    ]
+
+    def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
+        access_token = self.runtime.credentials.get("access_token")
+        realm_id = self.runtime.credentials.get("realm_id")
+
+        if not access_token or not realm_id:
+            raise ToolProviderCredentialValidationError("QuickBooks credentials required.")
+
+        environment = self.runtime.credentials.get("environment", "sandbox")
+        api_base_url = f"https://{'sandbox-' if environment == 'sandbox' else ''}quickbooks.api.intuit.com/v3"
+
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
+
+        entity_type = tool_parameters.get("entity_type")
+        query_string = tool_parameters.get("query_string", "")
+        custom_query = tool_parameters.get("custom_query", "")
+        max_results = tool_parameters.get("max_results", 100)
+
+        try:
+            if custom_query:
+                # Use custom query directly
+                query = custom_query
+            elif entity_type:
+                if entity_type not in self.SUPPORTED_ENTITIES:
+                    raise ValueError(f"Unsupported entity type: {entity_type}. Supported: {', '.join(self.SUPPORTED_ENTITIES)}")
+
+                query = f"SELECT * FROM {entity_type}"
+                if query_string:
+                    query += f" WHERE {query_string}"
+                if max_results:
+                    query += f" MAXRESULTS {max_results}"
+            else:
+                raise ValueError("Either entity_type or custom_query is required")
+
+            encoded_query = urllib.parse.quote(query)
+            url = f"{api_base_url}/company/{realm_id}/query?query={encoded_query}&minorversion=65"
+            response = httpx.get(url, headers=headers, timeout=30)
+
+            if response.status_code == 200:
+                data = response.json()
+                query_response = data.get("QueryResponse", {})
+
+                # Find the entity key in response
+                result_key = None
+                results = []
+                for key in query_response:
+                    if key not in ["startPosition", "maxResults", "totalCount"]:
+                        result_key = key
+                        results = query_response[key]
+                        break
+
+                yield self.create_json_message({
+                    "success": True,
+                    "entity_type": result_key or entity_type,
+                    "results": results,
+                    "count": len(results),
+                    "total_count": query_response.get("totalCount"),
+                    "query": query,
+                    "message": f"Query executed successfully, found {len(results)} results"
+                })
+            else:
+                self._handle_error(response)
+
+        except httpx.HTTPError as e:
+            raise Exception(f"Network error: {str(e)}") from e
+
+    def _handle_error(self, response: httpx.Response) -> None:
+        if response.status_code == 401:
+            raise ToolProviderCredentialValidationError("Authentication failed.")
+        error_detail = response.json() if response.content else {}
+        error_msg = error_detail.get("Fault", {}).get("Error", [{}])[0].get("Message", response.text)
+        raise Exception(f"API error {response.status_code}: {error_msg}")

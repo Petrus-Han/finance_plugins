@@ -1,0 +1,55 @@
+identity:
+  name: upload_transaction_attachment
+  author: petrus
+  label:
+    en_US: Upload Transaction Attachment
+    zh_Hans: 上传交易附件
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Upload an attachment to a transaction
+    zh_Hans: 上传附件到交易
+  llm: A tool to upload a file attachment to a Mercury transaction for documentation purposes
+
+parameters:
+  - name: transaction_id
+    type: string
+    required: true
+    label:
+      en_US: Transaction ID
+      zh_Hans: 交易 ID
+    human_description:
+      en_US: The transaction ID to attach the file to
+      zh_Hans: 要附加文件的交易 ID
+    llm_description: The UUID of the transaction to attach the file to
+    form: llm
+
+  - name: file
+    type: file
+    required: true
+    label:
+      en_US: File
+      zh_Hans: 文件
+    human_description:
+      en_US: The file to upload
+      zh_Hans: 要上传的文件
+    llm_description: The file to upload as an attachment
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the upload succeeded
+    attachment:
+      type: object
+      description: Attachment details
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/upload_transaction_attachment.py

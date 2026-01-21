@@ -1,0 +1,43 @@
+identity:
+  name: download_statement
+  author: petrus
+  label:
+    en_US: Download Statement PDF
+    zh_Hans: 下载账单 PDF
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Download a Mercury account statement as PDF
+    zh_Hans: 下载 Mercury 银行账单 PDF 文件
+  llm: A tool to download a Mercury bank account statement as a PDF file. Use the statement_id from get_statements tool.
+
+parameters:
+  - name: statement_id
+    type: string
+    required: true
+    label:
+      en_US: Statement ID
+      zh_Hans: 账单 ID
+    human_description:
+      en_US: The statement ID to download (from get_statements)
+      zh_Hans: 要下载的账单 ID（从获取账单列表获得）
+    llm_description: The UUID of the statement to download as PDF. Get this from the get_statements tool response.
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the download was successful
+    filename:
+      type: string
+      description: Generated filename for the PDF
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/download_statement.py

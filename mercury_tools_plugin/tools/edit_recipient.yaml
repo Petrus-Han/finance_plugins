@@ -1,0 +1,136 @@
+identity:
+  name: edit_recipient
+  author: petrus
+  label:
+    en_US: Edit Recipient
+    zh_Hans: 编辑收款人
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Update an existing recipient's information
+    zh_Hans: 更新现有收款人的信息
+  llm: A tool to update recipient details including name, emails, and payment information
+
+parameters:
+  - name: recipient_id
+    type: string
+    required: true
+    label:
+      en_US: Recipient ID
+      zh_Hans: 收款人 ID
+    human_description:
+      en_US: The recipient ID to update
+      zh_Hans: 要更新的收款人 ID
+    llm_description: The UUID of the recipient to update
+    form: llm
+
+  - name: name
+    type: string
+    required: false
+    label:
+      en_US: Name
+      zh_Hans: 名称
+    human_description:
+      en_US: Recipient's name
+      zh_Hans: 收款人名称
+    llm_description: The recipient's name
+    form: llm
+
+  - name: nickname
+    type: string
+    required: false
+    label:
+      en_US: Nickname
+      zh_Hans: 昵称
+    human_description:
+      en_US: Nickname for the recipient
+      zh_Hans: 收款人昵称
+    llm_description: A nickname for the recipient
+    form: llm
+
+  - name: emails_json
+    type: string
+    required: false
+    label:
+      en_US: Emails (JSON)
+      zh_Hans: 邮箱列表 (JSON)
+    human_description:
+      en_US: "JSON array of email addresses: [\"email1@example.com\", \"email2@example.com\"]"
+      zh_Hans: "邮箱地址 JSON 数组: [\"email1@example.com\"]"
+    llm_description: JSON array of email addresses associated with the recipient
+    form: llm
+
+  - name: contact_email
+    type: string
+    required: false
+    label:
+      en_US: Contact Email
+      zh_Hans: 联系邮箱
+    human_description:
+      en_US: Primary contact email
+      zh_Hans: 主要联系邮箱
+    llm_description: Primary contact email address for the recipient
+    form: llm
+
+  - name: account_number
+    type: string
+    required: false
+    label:
+      en_US: Account Number
+      zh_Hans: 账户号码
+    human_description:
+      en_US: Bank account number for ACH/wire
+      zh_Hans: ACH/电汇的银行账户号码
+    llm_description: Bank account number for electronic payments
+    form: llm
+
+  - name: routing_number
+    type: string
+    required: false
+    label:
+      en_US: Routing Number
+      zh_Hans: 路由号码
+    human_description:
+      en_US: Bank routing number
+      zh_Hans: 银行路由号码
+    llm_description: Bank routing number for ACH/wire transfers
+    form: llm
+
+  - name: account_type
+    type: select
+    required: false
+    label:
+      en_US: Account Type
+      zh_Hans: 账户类型
+    human_description:
+      en_US: Type of bank account
+      zh_Hans: 银行账户类型
+    llm_description: Type of bank account (checking or savings)
+    form: llm
+    options:
+      - value: checking
+        label:
+          en_US: Checking
+          zh_Hans: 支票账户
+      - value: savings
+        label:
+          en_US: Savings
+          zh_Hans: 储蓄账户
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the update succeeded
+    recipient:
+      type: object
+      description: Updated recipient data
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/edit_recipient.py
