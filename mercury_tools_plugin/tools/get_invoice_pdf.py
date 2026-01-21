@@ -63,6 +63,20 @@ class GetInvoicePdfTool(Tool):
                     raise Exception(f"Unexpected content type: {content_type}")
             elif response.status_code == 401:
                 raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
+            elif response.status_code == 403:
+                # Check for AR subscription error
+                try:
+                    error_detail = response.json()
+                    errors = error_detail.get("errors", {})
+                    if "subscriptions" in errors:
+                        raise Exception(
+                            "此功能需要 Mercury AR (Accounts Receivable) 订阅。"
+                            "请在 Mercury Dashboard 的 Plan & Billing 中订阅 AR 服务。"
+                            "了解更多: https://mercury.com/pricing"
+                        )
+                except:
+                    pass
+                raise Exception(f"Access denied: {response.status_code} - {response.text}")
             elif response.status_code == 404:
                 raise ValueError(f"Invoice not found: {invoice_id}")
             else:

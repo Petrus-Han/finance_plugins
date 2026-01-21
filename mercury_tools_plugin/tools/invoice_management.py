@@ -222,6 +222,18 @@ class InvoiceManagementTool(Tool):
     def _handle_error(self, response: httpx.Response) -> None:
         if response.status_code == 401:
             raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
+
         error_detail = response.json() if response.content else {}
+
+        # Check for AR subscription error
+        if response.status_code == 403:
+            errors = error_detail.get("errors", {})
+            if "subscriptions" in errors:
+                raise Exception(
+                    "此功能需要 Mercury AR (Accounts Receivable) 订阅。"
+                    "请在 Mercury Dashboard 的 Plan & Billing 中订阅 AR 服务。"
+                    "了解更多: https://mercury.com/pricing"
+                )
+
         error_msg = error_detail.get("message", response.text)
         raise Exception(f"API error {response.status_code}: {error_msg}")
