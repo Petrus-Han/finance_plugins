@@ -85,9 +85,9 @@
 
 ---
 
-## 待改进功能
+## 待开发功能
 
-### 1. Vendor 列表功能
+### 1. Vendor 列表功能 (P1)
 
 **当前问题**: `vendor_management` 的 search 功能必须提供名称，无法列出所有供应商。
 
@@ -102,13 +102,130 @@
   - value: list    # 新增
 ```
 
-### 2. Journal Entry (日记账分录)
+---
 
-**当前状态**: 尚未实现
+### 2. Accounting & Ledgers (会计与分类账) (P1)
 
-**用途**: 手工调账、期末调整等场景
+#### 2.1 Journal Entry (日记账分录)
+
+**用途**: 手工调账、期末调整、跨账户调整
 
 **QuickBooks API**: `POST /v3/company/{realmId}/journalentry`
+
+**参数设计**:
+```yaml
+parameters:
+  - name: line_items      # 借贷方明细 (DebitAmount/CreditAmount)
+  - name: txn_date        # 交易日期
+  - name: doc_number      # 凭证号
+  - name: private_note    # 内部备注
+```
+
+**Line Item 结构**:
+```json
+[
+  {"account_id": "35", "amount": 1000, "posting_type": "Debit", "description": "银行存款增加"},
+  {"account_id": "1", "amount": 1000, "posting_type": "Credit", "description": "服务收入"}
+]
+```
+
+#### 2.2 General Ledger Query (总账查询)
+
+**用途**: 查询指定账户的明细记录
+
+**QuickBooks API**: `GET /v3/company/{realmId}/reports/GeneralLedger`
+
+---
+
+### 3. Employee & Payroll (员工与工资单) (P2)
+
+#### 3.1 Employee Management (员工管理)
+
+**QuickBooks API**:
+- `GET /v3/company/{realmId}/query?query=select * from Employee`
+- `POST /v3/company/{realmId}/employee`
+- `GET /v3/company/{realmId}/employee/{employeeId}`
+
+**功能**:
+| Action | 说明 |
+|--------|------|
+| list | 列出所有员工 |
+| search | 按名称搜索员工 |
+| create | 创建新员工 |
+| get | 获取员工详情 |
+
+#### 3.2 Payroll (工资单) - 需要 Payroll 订阅
+
+**注意**: QuickBooks Payroll API 需要额外订阅，基础版可能不支持。
+
+**QuickBooks API**:
+- `GET /v3/company/{realmId}/query?query=select * from PayrollItem`
+
+---
+
+### 4. Reporting (报表) (P2)
+
+#### 4.1 Profit and Loss (损益表)
+
+**QuickBooks API**: `GET /v3/company/{realmId}/reports/ProfitAndLoss`
+
+**参数**:
+```yaml
+parameters:
+  - name: start_date      # 开始日期
+  - name: end_date        # 结束日期
+  - name: accounting_method  # Cash / Accrual
+  - name: summarize_column_by  # Total / Month / Week
+```
+
+#### 4.2 Balance Sheet (资产负债表)
+
+**QuickBooks API**: `GET /v3/company/{realmId}/reports/BalanceSheet`
+
+**参数**:
+```yaml
+parameters:
+  - name: start_date
+  - name: end_date
+  - name: accounting_method
+```
+
+#### 4.3 Cash Flow (现金流量表)
+
+**QuickBooks API**: `GET /v3/company/{realmId}/reports/CashFlow`
+
+#### 4.4 Accounts Receivable Aging (应收账款账龄)
+
+**QuickBooks API**: `GET /v3/company/{realmId}/reports/AgedReceivables`
+
+#### 4.5 Accounts Payable Aging (应付账款账龄)
+
+**QuickBooks API**: `GET /v3/company/{realmId}/reports/AgedPayables`
+
+---
+
+### 5. Customer Management 增强 (P2)
+
+**现有功能**: list / search / create
+
+**待添加**:
+| 功能 | API | 说明 |
+|------|-----|------|
+| update | `POST /customer` | 更新客户信息 |
+| delete | `POST /customer` (Active=false) | 停用客户 |
+| get_balance | Query | 获取客户余额明细 |
+
+---
+
+## 开发优先级
+
+| 优先级 | 功能 | 原因 |
+|--------|------|------|
+| P1 | Vendor 列表 | 创建 Bill 的前置依赖 |
+| P1 | Journal Entry | 手工调账的核心功能 |
+| P2 | 报表功能 | 财务分析常用 |
+| P2 | 员工管理 | 工资相关场景 |
+| P3 | Payroll | 需要额外订阅 |
 
 ---
 
