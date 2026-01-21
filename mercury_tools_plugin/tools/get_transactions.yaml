@@ -8,21 +8,21 @@ identity:
 
 description:
   human:
-    en_US: Retrieve transaction history for a Mercury bank account with optional date filtering
+    en_US: Retrieve transaction history for Mercury bank accounts with optional date filtering
     zh_Hans: 获取 Mercury 银行账户的交易历史记录，支持日期过滤
-  llm: A tool to retrieve transactions for a Mercury bank account, optionally filtered by date range and with pagination support
+  llm: A tool to retrieve transactions for Mercury bank accounts. If account_id is not provided, fetches transactions for all accounts. Supports date range filtering and pagination.
 
 parameters:
   - name: account_id
     type: string
-    required: true
+    required: false
     label:
       en_US: Account ID
       zh_Hans: 账户 ID
     human_description:
-      en_US: The unique identifier of the Mercury account to retrieve transactions for
-      zh_Hans: 要检索交易的 Mercury 账户的唯一标识符
-    llm_description: The unique identifier (ID) of the Mercury account to retrieve transactions for
+      en_US: The Mercury account ID to retrieve transactions for. If not provided, fetches transactions for all accounts.
+      zh_Hans: 要检索交易的 Mercury 账户 ID。如果不提供，将获取所有账户的交易。
+    llm_description: The Mercury account ID to retrieve transactions for. If not provided, fetches transactions for all accounts.
     form: llm
 
   - name: start_date
