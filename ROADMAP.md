@@ -12,7 +12,7 @@
 
 | 插件 | 已实现 | 计划新增 |
 |------|--------|----------|
-| Mercury Tools | 10 tools | 10 tools |
+| Mercury Tools | 13 tools | 7 tools |
 | Mercury Trigger | webhook处理 | - |
 | QuickBooks | 8 tools | 14 tools |
 | QuickBooks Payments | 7 tools | - |
@@ -24,24 +24,24 @@
 ### Cards & Statements
 | Tool | API | 状态 |
 |------|-----|------|
-| `get_cards` | `GET /account/{id}/cards` | 待开发 |
-| `get_statements` | `GET /account/{id}/statements` | 待开发 |
-| `download_statement` | `GET /statement/{id}/pdf` | 待开发 |
+| `get_cards` | `GET /account/{id}/cards` | ✅ 已完成 |
+| `get_statements` | `GET /account/{id}/statements` | ✅ 已完成 |
+| `download_statement` | `GET /statement/{id}/pdf` | ✅ 已完成 |
 
 ### Accounts Receivable (AR)
 | Tool | API | 状态 |
 |------|-----|------|
-| `customer_management` | `/customers`, `/customer/{id}` | 待开发 |
-| `invoice_management` | `/invoices`, `/invoice/{id}` | 待开发 |
-| `get_invoice_pdf` | `GET /invoice/{id}/pdf` | 待开发 |
+| `customer_management` | `/customers`, `/customer/{id}` | ✅ 已完成 |
+| `invoice_management` | `/invoices`, `/invoice/{id}` | ✅ 已完成 |
+| `get_invoice_pdf` | `GET /invoice/{id}/pdf` | ✅ 已完成 |
 
 ### Recipients & Transactions 补充
 | Tool | API | 状态 |
 |------|-----|------|
-| `edit_recipient` | `POST /recipient/{id}` | 待开发 |
-| `get_events` | `GET /events`, `/event/{id}` | 待开发 |
-| `upload_transaction_attachment` | `POST /transactions/{id}/attachment` | 待开发 |
-| `upload_recipient_attachment` | `POST /recipient/{id}/attachment` | 待开发 |
+| `edit_recipient` | `POST /recipient/{id}` | ✅ 已完成 |
+| `get_events` | `GET /events`, `/event/{id}` | ✅ 已完成 |
+| `upload_transaction_attachment` | `POST /transactions/{id}/attachment` | ✅ 已完成 |
+| `upload_recipient_attachment` | `POST /recipient/{id}/attachment` | ✅ 已完成 |
 
 ---
 
@@ -50,36 +50,36 @@
 ### 核心交易 (T1)
 | Tool | Entity | 状态 |
 |------|--------|------|
-| `payment_management` | Payment | 待开发 |
-| `bill_payment_management` | BillPayment | 待开发 |
-| `journal_entry_management` | JournalEntry | 待开发 |
-| `item_management` | Item | 待开发 |
-| `attachable_management` | Attachable | 待开发 |
+| `payment_management` | Payment | ✅ 已完成 |
+| `bill_payment_management` | BillPayment | ✅ 已完成 |
+| `journal_entry_management` | JournalEntry | ✅ 已完成 |
+| `item_management` | Item | ✅ 已完成 |
+| `attachable_management` | Attachable | ✅ 已完成 |
 
 ### 销售流程 (T2)
 | Tool | Entity | 状态 |
 |------|--------|------|
-| `estimate_management` | Estimate | 待开发 |
-| `sales_receipt_management` | SalesReceipt | 待开发 |
-| `credit_memo_management` | CreditMemo | 待开发 |
-| `refund_receipt_management` | RefundReceipt | 待开发 |
+| `estimate_management` | Estimate | ✅ 已完成 |
+| `sales_receipt_management` | SalesReceipt | ✅ 已完成 |
+| `credit_memo_management` | CreditMemo | ✅ 已完成 |
+| `refund_receipt_management` | RefundReceipt | ✅ 已完成 |
 
 ### 采购流程 (T2)
 | Tool | Entity | 状态 |
 |------|--------|------|
-| `purchase_order_management` | PurchaseOrder | 待开发 |
+| `purchase_order_management` | PurchaseOrder | ✅ 已完成 |
 
 ### 组织管理 (T2)
 | Tool | Entity | 状态 |
 |------|--------|------|
-| `employee_management` | Employee | 待开发 |
-| `class_management` | Class | 待开发 |
-| `department_management` | Department | 待开发 |
+| `employee_management` | Employee | ✅ 已完成 |
+| `class_management` | Class | ✅ 已完成 |
+| `department_management` | Department | ✅ 已完成 |
 
 ### 通用查询 (T2)
 | Tool | 说明 | 状态 |
 |------|------|------|
-| `query_entities` | 支持任意实体的 Query 查询 | 待开发 |
+| `query_entities` | 支持任意实体的 Query 查询 | ✅ 已完成 |
 
 ---
 

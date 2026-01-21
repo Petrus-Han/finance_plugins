@@ -1,0 +1,75 @@
+identity:
+  name: get_events
+  author: petrus
+  label:
+    en_US: Get Events
+    zh_Hans: 获取事件
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Retrieve events tracking changes to Mercury resources
+    zh_Hans: 获取追踪 Mercury 资源变更的事件
+  llm: A tool to retrieve audit events showing how Mercury resources (transactions, etc.) have changed over time. Events are retained for 90 days.
+
+parameters:
+  - name: event_id
+    type: string
+    required: false
+    label:
+      en_US: Event ID
+      zh_Hans: 事件 ID
+    human_description:
+      en_US: Specific event ID to retrieve (optional, leave empty for all events)
+      zh_Hans: 要获取的特定事件 ID（可选，留空获取所有事件）
+    llm_description: Optional event ID to retrieve a specific event. If not provided, returns all events.
+    form: llm
+
+  - name: resource_type
+    type: select
+    required: false
+    label:
+      en_US: Resource Type
+      zh_Hans: 资源类型
+    human_description:
+      en_US: Filter by resource type
+      zh_Hans: 按资源类型筛选
+    llm_description: Filter events by resource type
+    form: llm
+    options:
+      - value: transaction
+        label:
+          en_US: Transaction
+          zh_Hans: 交易
+
+  - name: limit
+    type: number
+    required: false
+    label:
+      en_US: Limit
+      zh_Hans: 限制数量
+    human_description:
+      en_US: Maximum number of events to return
+      zh_Hans: 返回的最大事件数量
+    llm_description: Maximum number of events to return
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    event:
+      type: object
+      description: Single event (when event_id provided)
+    events:
+      type: array
+      description: List of events
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/get_events.py

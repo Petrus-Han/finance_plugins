@@ -97,3 +97,13 @@ tools:
   - tools/update_transaction.yaml
   - tools/send_money.yaml
   - tools/internal_transfer.yaml
+  - tools/get_cards.yaml
+  - tools/get_statements.yaml
+  - tools/download_statement.yaml
+  - tools/customer_management.yaml
+  - tools/invoice_management.yaml
+  - tools/get_invoice_pdf.yaml
+  - tools/edit_recipient.yaml
+  - tools/get_events.yaml
+  - tools/upload_transaction_attachment.yaml
+  - tools/upload_recipient_attachment.yaml

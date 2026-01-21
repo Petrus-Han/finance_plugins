@@ -1,0 +1,61 @@
+identity:
+  name: get_cards
+  author: petrus
+  label:
+    en_US: Get Cards
+    zh_Hans: 获取信用卡列表
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Retrieve all cards (credit/debit) for a Mercury bank account
+    zh_Hans: 获取 Mercury 银行账户的所有卡片（信用卡/借记卡）
+  llm: A tool to retrieve all cards associated with a Mercury bank account, including card status, last four digits, and cardholder name
+
+parameters:
+  - name: account_id
+    type: string
+    required: true
+    label:
+      en_US: Account ID
+      zh_Hans: 账户 ID
+    human_description:
+      en_US: The Mercury account ID to get cards for
+      zh_Hans: 要获取卡片的 Mercury 账户 ID
+    llm_description: The UUID of the Mercury account to retrieve cards for
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    cards:
+      type: array
+      description: List of cards for the account
+      items:
+        type: object
+        properties:
+          card_id:
+            type: string
+            description: Unique card identifier
+          created_at:
+            type: string
+            description: Card creation timestamp
+          last_four_digits:
+            type: string
+            description: Last 4 digits of card number
+          name_on_card:
+            type: string
+            description: Cardholder name
+          network:
+            type: string
+            description: Card network (visa/mastercard)
+          status:
+            type: string
+            description: Overall card status (active/frozen/cancelled/inactive/locked/expired)
+          physical_card_status:
+            type: string
+            description: Physical card status (active/inactive/locked)
+
+extra:
+  python:
+    source: tools/get_cards.py

@@ -1,0 +1,110 @@
+identity:
+  name: class_management
+  author: petrus
+  label:
+    en_US: Class Management
+    zh_Hans: 类别管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, update, or query classes for tracking business segments
+    zh_Hans: 创建、读取、更新或查询用于跟踪业务分部的类别
+  llm: A tool to manage classes in QuickBooks for tracking different business segments
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    llm_description: "Operation type: create, read, update, or query"
+    form: llm
+    options:
+      - value: create
+        label:
+          en_US: Create Class
+          zh_Hans: 创建类别
+      - value: read
+        label:
+          en_US: Read Class
+          zh_Hans: 读取类别
+      - value: update
+        label:
+          en_US: Update Class
+          zh_Hans: 更新类别
+      - value: query
+        label:
+          en_US: Query Classes
+          zh_Hans: 查询类别
+
+  - name: class_id
+    type: string
+    required: false
+    label:
+      en_US: Class ID
+      zh_Hans: 类别 ID
+    llm_description: Required for read and update operations.
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: false
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    llm_description: Required for update operation.
+    form: llm
+
+  - name: name
+    type: string
+    required: false
+    label:
+      en_US: Class Name
+      zh_Hans: 类别名称
+    llm_description: Required for create operation.
+    form: llm
+
+  - name: parent_id
+    type: string
+    required: false
+    label:
+      en_US: Parent Class ID
+      zh_Hans: 父类别 ID
+    llm_description: Optional - provide to create a subclass.
+    form: llm
+
+  - name: active
+    type: boolean
+    required: false
+    label:
+      en_US: Active
+      zh_Hans: 启用状态
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+    operation:
+      type: string
+    class:
+      type: object
+    classes:
+      type: array
+    message:
+      type: string
+
+extra:
+  python:
+    source: tools/class_management.py

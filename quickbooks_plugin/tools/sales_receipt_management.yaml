@@ -1,0 +1,130 @@
+identity:
+  name: sales_receipt_management
+  author: petrus
+  label:
+    en_US: Sales Receipt Management
+    zh_Hans: 销售收据管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, or delete sales receipts
+    zh_Hans: 创建、读取或删除销售收据
+  llm: A tool to manage sales receipts in QuickBooks - for immediate payment sales
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    llm_description: "Operation type: create, read, delete, or query"
+    form: llm
+    options:
+      - value: create
+        label:
+          en_US: Create Sales Receipt
+          zh_Hans: 创建销售收据
+      - value: read
+        label:
+          en_US: Read Sales Receipt
+          zh_Hans: 读取销售收据
+      - value: delete
+        label:
+          en_US: Delete Sales Receipt
+          zh_Hans: 删除销售收据
+      - value: query
+        label:
+          en_US: Query Sales Receipts
+          zh_Hans: 查询销售收据
+
+  - name: sales_receipt_id
+    type: string
+    required: false
+    label:
+      en_US: Sales Receipt ID
+      zh_Hans: 销售收据 ID
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: false
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    form: llm
+
+  - name: customer_id
+    type: string
+    required: false
+    label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    form: llm
+
+  - name: lines_json
+    type: string
+    required: false
+    label:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
+    form: llm
+
+  - name: deposit_to_account_id
+    type: string
+    required: false
+    label:
+      en_US: Deposit To Account ID
+      zh_Hans: 存入账户 ID
+    form: llm
+
+  - name: payment_method_id
+    type: string
+    required: false
+    label:
+      en_US: Payment Method ID
+      zh_Hans: 付款方式 ID
+    form: llm
+
+  - name: txn_date
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    form: llm
+
+  - name: private_note
+    type: string
+    required: false
+    label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+    operation:
+      type: string
+    sales_receipt:
+      type: object
+    sales_receipts:
+      type: array
+    message:
+      type: string
+
+extra:
+  python:
+    source: tools/sales_receipt_management.py

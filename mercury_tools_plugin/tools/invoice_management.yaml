@@ -1,0 +1,216 @@
+identity:
+  name: invoice_management
+  author: petrus
+  label:
+    en_US: Invoice Management
+    zh_Hans: 发票管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, update, or cancel invoices for Accounts Receivable
+    zh_Hans: 创建、读取、更新或取消应收账款发票
+  llm: A tool to manage AR invoices - supports list all, get by ID, create, update, and cancel operations
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    human_description:
+      en_US: The operation to perform
+      zh_Hans: 要执行的操作
+    llm_description: "Operation type: list, get, create, update, or cancel"
+    form: llm
+    options:
+      - value: list
+        label:
+          en_US: List All Invoices
+          zh_Hans: 列出所有发票
+      - value: get
+        label:
+          en_US: Get Invoice
+          zh_Hans: 获取发票
+      - value: create
+        label:
+          en_US: Create Invoice
+          zh_Hans: 创建发票
+      - value: update
+        label:
+          en_US: Update Invoice
+          zh_Hans: 更新发票
+      - value: cancel
+        label:
+          en_US: Cancel Invoice
+          zh_Hans: 取消发票
+
+  - name: invoice_id
+    type: string
+    required: false
+    label:
+      en_US: Invoice ID
+      zh_Hans: 发票 ID
+    human_description:
+      en_US: Invoice ID (required for get, update, cancel)
+      zh_Hans: 发票 ID（获取、更新、取消时必填）
+    llm_description: The UUID of the invoice. Required for get, update, and cancel operations.
+    form: llm
+
+  - name: customer_id
+    type: string
+    required: false
+    label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    human_description:
+      en_US: Customer ID (required for create)
+      zh_Hans: 客户 ID（创建时必填）
+    llm_description: The UUID of the customer receiving the invoice. Required for create.
+    form: llm
+
+  - name: destination_account_id
+    type: string
+    required: false
+    label:
+      en_US: Destination Account ID
+      zh_Hans: 目标账户 ID
+    human_description:
+      en_US: Mercury account ID for payment receipt (required for create)
+      zh_Hans: 接收付款的 Mercury 账户 ID（创建时必填）
+    llm_description: The Mercury account ID where payments will be received. Required for create.
+    form: llm
+
+  - name: invoice_date
+    type: string
+    required: false
+    label:
+      en_US: Invoice Date
+      zh_Hans: 发票日期
+    human_description:
+      en_US: Invoice date in YYYY-MM-DD format
+      zh_Hans: 发票日期，格式 YYYY-MM-DD
+    llm_description: The date of the invoice in YYYY-MM-DD format. Required for create.
+    form: llm
+
+  - name: due_date
+    type: string
+    required: false
+    label:
+      en_US: Due Date
+      zh_Hans: 到期日期
+    human_description:
+      en_US: Payment due date in YYYY-MM-DD format
+      zh_Hans: 付款到期日期，格式 YYYY-MM-DD
+    llm_description: The payment due date in YYYY-MM-DD format. Required for create.
+    form: llm
+
+  - name: line_items_json
+    type: string
+    required: false
+    label:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
+    human_description:
+      en_US: "JSON array of line items: [{\"name\": \"Service\", \"quantity\": 1, \"unitPrice\": 100}]"
+      zh_Hans: "行项目 JSON 数组: [{\"name\": \"服务\", \"quantity\": 1, \"unitPrice\": 100}]"
+    llm_description: "JSON array of line items. Each item: {name: string, quantity: number, unitPrice: number, salesTaxRate?: number}"
+    form: llm
+
+  - name: invoice_number
+    type: string
+    required: false
+    label:
+      en_US: Invoice Number
+      zh_Hans: 发票编号
+    human_description:
+      en_US: Custom invoice number for the payer
+      zh_Hans: 自定义发票编号
+    llm_description: Optional custom invoice number visible to the payer
+    form: llm
+
+  - name: po_number
+    type: string
+    required: false
+    label:
+      en_US: PO Number
+      zh_Hans: 采购订单号
+    human_description:
+      en_US: Purchase order reference number
+      zh_Hans: 采购订单参考号
+    llm_description: Optional purchase order reference number
+    form: llm
+
+  - name: payer_memo
+    type: string
+    required: false
+    label:
+      en_US: Payer Memo
+      zh_Hans: 付款人备注
+    human_description:
+      en_US: Note visible to the customer
+      zh_Hans: 客户可见的备注
+    llm_description: Optional note visible to the customer on the invoice
+    form: llm
+
+  - name: internal_note
+    type: string
+    required: false
+    label:
+      en_US: Internal Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Internal note (not visible to customer)
+      zh_Hans: 内部备注（客户不可见）
+    llm_description: Optional internal note not visible to the customer
+    form: llm
+
+  - name: credit_card_enabled
+    type: boolean
+    required: false
+    default: true
+    label:
+      en_US: Credit Card Enabled
+      zh_Hans: 启用信用卡
+    human_description:
+      en_US: Allow credit card payments
+      zh_Hans: 允许信用卡付款
+    llm_description: Whether to enable credit card payments for this invoice
+    form: llm
+
+  - name: ach_debit_enabled
+    type: boolean
+    required: false
+    default: true
+    label:
+      en_US: ACH Debit Enabled
+      zh_Hans: 启用 ACH
+    human_description:
+      en_US: Allow ACH debit payments
+      zh_Hans: 允许 ACH 借记付款
+    llm_description: Whether to enable ACH debit payments for this invoice
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    operation:
+      type: string
+      description: The operation that was performed
+    invoice:
+      type: object
+      description: Invoice data (for get/create/update)
+    invoices:
+      type: array
+      description: List of invoices (for list operation)
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/invoice_management.py

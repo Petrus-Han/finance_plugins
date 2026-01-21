@@ -1,0 +1,110 @@
+identity:
+  name: department_management
+  author: petrus
+  label:
+    en_US: Department Management
+    zh_Hans: 部门管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, update, or query departments for tracking locations
+    zh_Hans: 创建、读取、更新或查询用于跟踪位置的部门
+  llm: A tool to manage departments in QuickBooks for tracking physical locations like stores or regions
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    llm_description: "Operation type: create, read, update, or query"
+    form: llm
+    options:
+      - value: create
+        label:
+          en_US: Create Department
+          zh_Hans: 创建部门
+      - value: read
+        label:
+          en_US: Read Department
+          zh_Hans: 读取部门
+      - value: update
+        label:
+          en_US: Update Department
+          zh_Hans: 更新部门
+      - value: query
+        label:
+          en_US: Query Departments
+          zh_Hans: 查询部门
+
+  - name: department_id
+    type: string
+    required: false
+    label:
+      en_US: Department ID
+      zh_Hans: 部门 ID
+    llm_description: Required for read and update operations.
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: false
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    llm_description: Required for update operation.
+    form: llm
+
+  - name: name
+    type: string
+    required: false
+    label:
+      en_US: Department Name
+      zh_Hans: 部门名称
+    llm_description: Required for create operation.
+    form: llm
+
+  - name: parent_id
+    type: string
+    required: false
+    label:
+      en_US: Parent Department ID
+      zh_Hans: 父部门 ID
+    llm_description: Optional - provide to create a subdepartment.
+    form: llm
+
+  - name: active
+    type: boolean
+    required: false
+    label:
+      en_US: Active
+      zh_Hans: 启用状态
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+    operation:
+      type: string
+    department:
+      type: object
+    departments:
+      type: array
+    message:
+      type: string
+
+extra:
+  python:
+    source: tools/department_management.py

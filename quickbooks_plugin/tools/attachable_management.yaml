@@ -1,0 +1,135 @@
+identity:
+  name: attachable_management
+  author: petrus
+  label:
+    en_US: Attachable Management
+    zh_Hans: 附件管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, update, or delete attachments and notes
+    zh_Hans: 创建、读取、更新或删除附件和备注
+  llm: A tool to manage attachments (files and notes) linked to transactions in QuickBooks
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    llm_description: "Operation type: create_note, read, update, delete, download, or query"
+    form: llm
+    options:
+      - value: create_note
+        label:
+          en_US: Create Note
+          zh_Hans: 创建备注
+      - value: read
+        label:
+          en_US: Read Attachable
+          zh_Hans: 读取附件
+      - value: update
+        label:
+          en_US: Update Attachable
+          zh_Hans: 更新附件
+      - value: delete
+        label:
+          en_US: Delete Attachable
+          zh_Hans: 删除附件
+      - value: download
+        label:
+          en_US: Get Download URL
+          zh_Hans: 获取下载链接
+      - value: query
+        label:
+          en_US: Query Attachables
+          zh_Hans: 查询附件
+
+  - name: attachable_id
+    type: string
+    required: false
+    label:
+      en_US: Attachable ID
+      zh_Hans: 附件 ID
+    llm_description: Required for read, update, delete, download.
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: false
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    llm_description: Required for update and delete.
+    form: llm
+
+  - name: note
+    type: string
+    required: false
+    label:
+      en_US: Note
+      zh_Hans: 备注内容
+    llm_description: Note content. Required for create_note.
+    form: llm
+
+  - name: entity_type
+    type: string
+    required: false
+    label:
+      en_US: Entity Type
+      zh_Hans: 实体类型
+    human_description:
+      en_US: "Type of entity to attach to (Invoice, Bill, Purchase, etc.)"
+      zh_Hans: "要附加到的实体类型（Invoice、Bill、Purchase 等）"
+    llm_description: The entity type to link attachment to (e.g., Invoice, Bill, Purchase, Vendor, Customer)
+    form: llm
+
+  - name: entity_id
+    type: string
+    required: false
+    label:
+      en_US: Entity ID
+      zh_Hans: 实体 ID
+    llm_description: The entity ID to link attachment to.
+    form: llm
+
+  - name: include_on_send
+    type: boolean
+    required: false
+    default: false
+    label:
+      en_US: Include On Send
+      zh_Hans: 发送时包含
+    llm_description: Whether to include the attachment when sending the entity.
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    llm_description: "Example: AttachableRef.EntityRef.Type = 'Invoice' and AttachableRef.EntityRef.value = '123'"
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+    operation:
+      type: string
+    attachable:
+      type: object
+    attachables:
+      type: array
+    download_url:
+      type: string
+    message:
+      type: string
+
+extra:
+  python:
+    source: tools/attachable_management.py

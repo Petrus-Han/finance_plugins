@@ -1,0 +1,194 @@
+identity:
+  name: payment_management
+  author: petrus
+  label:
+    en_US: Payment Management
+    zh_Hans: 收款管理
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Create, read, update, delete, or void payments from customers
+    zh_Hans: 创建、读取、更新、删除或作废客户付款
+  llm: A tool to manage customer payments in QuickBooks - supports create, read, update, delete, void, and query operations
+
+parameters:
+  - name: operation
+    type: select
+    required: true
+    label:
+      en_US: Operation
+      zh_Hans: 操作
+    human_description:
+      en_US: The operation to perform
+      zh_Hans: 要执行的操作
+    llm_description: "Operation type: create, read, update, delete, void, or query"
+    form: llm
+    options:
+      - value: create
+        label:
+          en_US: Create Payment
+          zh_Hans: 创建付款
+      - value: read
+        label:
+          en_US: Read Payment
+          zh_Hans: 读取付款
+      - value: update
+        label:
+          en_US: Update Payment
+          zh_Hans: 更新付款
+      - value: delete
+        label:
+          en_US: Delete Payment
+          zh_Hans: 删除付款
+      - value: void
+        label:
+          en_US: Void Payment
+          zh_Hans: 作废付款
+      - value: query
+        label:
+          en_US: Query Payments
+          zh_Hans: 查询付款
+
+  - name: payment_id
+    type: string
+    required: false
+    label:
+      en_US: Payment ID
+      zh_Hans: 付款 ID
+    human_description:
+      en_US: Payment ID (required for read, update, delete, void)
+      zh_Hans: 付款 ID（读取、更新、删除、作废时必填）
+    llm_description: The QuickBooks Payment ID. Required for read, update, delete, and void operations.
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: false
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync token (required for update, delete, void)
+      zh_Hans: 同步令牌（更新、删除、作废时必填）
+    llm_description: The SyncToken for optimistic locking. Required for update, delete, and void.
+    form: llm
+
+  - name: customer_id
+    type: string
+    required: false
+    label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    human_description:
+      en_US: Customer ID (required for create)
+      zh_Hans: 客户 ID（创建时必填）
+    llm_description: The QuickBooks Customer ID. Required for create.
+    form: llm
+
+  - name: total_amount
+    type: number
+    required: false
+    label:
+      en_US: Total Amount
+      zh_Hans: 总金额
+    human_description:
+      en_US: Payment amount (required for create)
+      zh_Hans: 付款金额（创建时必填）
+    llm_description: The total payment amount. Required for create.
+    form: llm
+
+  - name: txn_date
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
+      en_US: Payment date in YYYY-MM-DD format
+      zh_Hans: 付款日期，格式 YYYY-MM-DD
+    llm_description: The payment date in YYYY-MM-DD format
+    form: llm
+
+  - name: deposit_to_account_id
+    type: string
+    required: false
+    label:
+      en_US: Deposit To Account ID
+      zh_Hans: 存入账户 ID
+    human_description:
+      en_US: Account ID to deposit payment into
+      zh_Hans: 存入付款的账户 ID
+    llm_description: The QuickBooks Account ID to deposit the payment into
+    form: llm
+
+  - name: payment_method_id
+    type: string
+    required: false
+    label:
+      en_US: Payment Method ID
+      zh_Hans: 付款方式 ID
+    human_description:
+      en_US: Payment method ID (Cash, Check, Credit Card, etc.)
+      zh_Hans: 付款方式 ID（现金、支票、信用卡等）
+    llm_description: The QuickBooks Payment Method ID
+    form: llm
+
+  - name: invoice_id
+    type: string
+    required: false
+    label:
+      en_US: Invoice ID
+      zh_Hans: 发票 ID
+    human_description:
+      en_US: Invoice ID to link payment to
+      zh_Hans: 要关联的发票 ID
+    llm_description: The Invoice ID to link this payment to
+    form: llm
+
+  - name: private_note
+    type: string
+    required: false
+    label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Internal note (not visible to customer)
+      zh_Hans: 内部备注（客户不可见）
+    llm_description: Private note for internal use
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    human_description:
+      en_US: "SQL-like query (e.g., TotalAmt > '100')"
+      zh_Hans: "类 SQL 查询条件（如 TotalAmt > '100'）"
+    llm_description: "SQL-like WHERE clause for query operation (e.g., TotalAmt > '100' or CustomerRef = '20')"
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether the operation succeeded
+    operation:
+      type: string
+      description: The operation performed
+    payment:
+      type: object
+      description: Payment data
+    payments:
+      type: array
+      description: List of payments (for query)
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/payment_management.py

@@ -1,0 +1,61 @@
+identity:
+  name: get_statements
+  author: petrus
+  label:
+    en_US: Get Statements
+    zh_Hans: 获取账单列表
+  icon: icon.svg
+
+description:
+  human:
+    en_US: Retrieve monthly statements for a Mercury bank account
+    zh_Hans: 获取 Mercury 银行账户的月度账单列表
+  llm: A tool to retrieve monthly account statements for a Mercury bank account, including statement period, ending balance, and download URL
+
+parameters:
+  - name: account_id
+    type: string
+    required: true
+    label:
+      en_US: Account ID
+      zh_Hans: 账户 ID
+    human_description:
+      en_US: The Mercury account ID to get statements for
+      zh_Hans: 要获取账单的 Mercury 账户 ID
+    llm_description: The UUID of the Mercury account to retrieve statements for
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    statements:
+      type: array
+      description: List of monthly statements
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Statement ID (used for downloading PDF)
+          start_date:
+            type: string
+            description: Statement period start date
+          end_date:
+            type: string
+            description: Statement period end date
+          ending_balance:
+            type: number
+            description: Account balance at end of statement period
+          company_legal_name:
+            type: string
+            description: Legal name of the company
+          download_url:
+            type: string
+            description: URL to download statement PDF
+          transaction_count:
+            type: integer
+            description: Number of transactions in the statement period
+
+extra:
+  python:
+    source: tools/get_statements.py
