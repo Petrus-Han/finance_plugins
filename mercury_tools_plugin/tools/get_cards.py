@@ -15,14 +15,14 @@ logger.addHandler(plugin_logger_handler)
 
 
 class GetCardsTool(Tool):
-    """Tool to retrieve all cards for a Mercury bank account."""
+    """Tool to retrieve all cards for Mercury bank accounts."""
 
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
         """
-        Invoke the get_cards tool to fetch all cards for a Mercury account.
+        Invoke the get_cards tool to fetch cards.
 
         Args:
-            tool_parameters: Must include 'account_id'
+            tool_parameters: Optional 'account_id'. If not provided, fetches cards for all accounts.
 
         Returns:
             List of cards with their details (card_id, status, last_four_digits, etc.)
@@ -44,58 +44,92 @@ class GetCardsTool(Tool):
         else:
             api_base_url = "https://api.mercury.com/api/v1"
 
-        # Get required parameter
-        account_id = tool_parameters.get("account_id")
-        if not account_id:
-            raise ValueError("account_id is required")
-
         headers = {
             "Authorization": f"Bearer {access_token}",
             "Accept": "application/json;charset=utf-8",
         }
 
+        # Get optional account_id parameter
+        account_id = tool_parameters.get("account_id")
+
         try:
-            url = f"{api_base_url}/account/{account_id}/cards"
-            logger.info(f"Making request to: {url}")
-
-            response = httpx.get(url, headers=headers, timeout=15)
-            logger.info(f"Response status: {response.status_code}")
-
-            if response.status_code == 200:
-                data = response.json()
-                cards_list = data.get("cards", [])
-                logger.info(f"Found {len(cards_list)} cards")
-
-                if not cards_list:
-                    yield self.create_text_message("No cards found for this account.")
+            if account_id:
+                # Fetch cards for specific account
+                account_ids = [account_id]
+            else:
+                # Fetch all accounts first
+                logger.info("No account_id provided, fetching all accounts...")
+                account_ids = self._get_all_account_ids(api_base_url, headers)
+                if not account_ids:
+                    yield self.create_text_message("No accounts found.")
                     return
 
-                # Format cards for output
-                output = []
-                for card in cards_list:
-                    card_info = {
-                        "card_id": card.get("cardId", ""),
-                        "created_at": card.get("createdAt", ""),
-                        "last_four_digits": card.get("lastFourDigits", ""),
-                        "name_on_card": card.get("nameOnCard", ""),
-                        "network": card.get("network", ""),
-                        "status": card.get("status", ""),
-                        "physical_card_status": card.get("physicalCardStatus", ""),
-                    }
-                    output.append(card_info)
+            # Fetch cards for each account
+            all_cards = []
+            for acc_id in account_ids:
+                cards = self._get_cards_for_account(api_base_url, headers, acc_id)
+                all_cards.extend(cards)
 
-                yield self.create_json_message({"cards": output})
+            logger.info(f"Found {len(all_cards)} cards total")
 
-            elif response.status_code == 401:
-                raise ToolProviderCredentialValidationError(
-                    f"Authentication failed. Please check your Mercury API access token and ensure it's for the '{api_environment}' environment."
-                )
-            elif response.status_code == 404:
-                raise ValueError(f"Account not found: {account_id}")
-            else:
-                error_detail = response.json() if response.content else {}
-                error_msg = error_detail.get("message", response.text)
-                raise Exception(f"Failed to retrieve cards: {response.status_code} - {error_msg}")
+            if not all_cards:
+                yield self.create_text_message("No cards found.")
+                return
+
+            yield self.create_json_message({
+                "cards": all_cards,
+                "total_count": len(all_cards)
+            })
 
         except httpx.HTTPError as e:
             raise Exception(f"Network error while fetching cards: {str(e)}") from e
+
+    def _get_all_account_ids(self, api_base_url: str, headers: dict) -> list[str]:
+        """Fetch all account IDs."""
+        response = httpx.get(f"{api_base_url}/accounts", headers=headers, timeout=15)
+
+        if response.status_code == 200:
+            data = response.json()
+            accounts = data.get("accounts", [])
+            return [acc.get("id") for acc in accounts if acc.get("id")]
+        elif response.status_code == 401:
+            raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
+        else:
+            raise Exception(f"Failed to fetch accounts: {response.status_code}")
+
+    def _get_cards_for_account(self, api_base_url: str, headers: dict, account_id: str) -> list[dict]:
+        """Fetch cards for a specific account."""
+        url = f"{api_base_url}/account/{account_id}/cards"
+        logger.info(f"Fetching cards from: {url}")
+
+        response = httpx.get(url, headers=headers, timeout=15)
+
+        if response.status_code == 200:
+            data = response.json()
+            cards_list = data.get("cards", [])
+
+            # Format cards for output
+            output = []
+            for card in cards_list:
+                card_info = {
+                    "account_id": account_id,
+                    "card_id": card.get("cardId", ""),
+                    "created_at": card.get("createdAt", ""),
+                    "last_four_digits": card.get("lastFourDigits", ""),
+                    "name_on_card": card.get("nameOnCard", ""),
+                    "network": card.get("network", ""),
+                    "status": card.get("status", ""),
+                    "physical_card_status": card.get("physicalCardStatus", ""),
+                }
+                output.append(card_info)
+
+            return output
+
+        elif response.status_code == 401:
+            raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
+        elif response.status_code == 404:
+            logger.warning(f"Account not found: {account_id}")
+            return []
+        else:
+            logger.warning(f"Failed to fetch cards for account {account_id}: {response.status_code}")
+            return []
