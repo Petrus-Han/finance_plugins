@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Create Purchase
     zh_Hans: 创建采购
+  human_description:
+    en_US: Create Purchase
+    zh_Hans: 创建采购
 description:
   human:
     en_US: Record a new purchase (expense) in QuickBooks.

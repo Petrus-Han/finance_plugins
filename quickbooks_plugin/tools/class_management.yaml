@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Class Management
     zh_Hans: 类别管理
+  human_description:
+    en_US: Class Management
+    zh_Hans: 类别管理
   icon: icon.svg
 
 description:
@@ -19,6 +22,9 @@ parameters:
     label:
       en_US: Operation
       zh_Hans: 操作
+    human_description:
+      en_US: Operation
+      zh_Hans: 操作
     llm_description: "Operation type: create, read, update, or query"
     form: llm
     options:
@@ -26,12 +32,21 @@ parameters:
         label:
           en_US: Create Class
           zh_Hans: 创建类别
+        human_description:
+          en_US: Create Class
+          zh_Hans: 创建类别
       - value: read
         label:
           en_US: Read Class
           zh_Hans: 读取类别
+        human_description:
+          en_US: Read Class
+          zh_Hans: 读取类别
       - value: update
         label:
+          en_US: Update Class
+          zh_Hans: 更新类别
+        human_description:
           en_US: Update Class
           zh_Hans: 更新类别
       - value: query
@@ -39,10 +54,16 @@ parameters:
           en_US: Query Classes
           zh_Hans: 查询类别
 
+        human_description:
+          en_US: Query Classes
+          zh_Hans: 查询类别
   - name: class_id
     type: string
     required: false
     label:
+      en_US: Class ID
+      zh_Hans: 类别 ID
+    human_description:
       en_US: Class ID
       zh_Hans: 类别 ID
     llm_description: Required for read and update operations.
@@ -54,6 +75,9 @@ parameters:
     label:
       en_US: Sync Token
       zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
     llm_description: Required for update operation.
     form: llm
 
@@ -61,6 +85,9 @@ parameters:
     type: string
     required: false
     label:
+      en_US: Class Name
+      zh_Hans: 类别名称
+    human_description:
       en_US: Class Name
       zh_Hans: 类别名称
     llm_description: Required for create operation.
@@ -72,6 +99,9 @@ parameters:
     label:
       en_US: Parent Class ID
       zh_Hans: 父类别 ID
+    human_description:
+      en_US: Parent Class ID
+      zh_Hans: 父类别 ID
     llm_description: Optional - provide to create a subclass.
     form: llm
 
@@ -81,12 +111,18 @@ parameters:
     label:
       en_US: Active
       zh_Hans: 启用状态
+    human_description:
+      en_US: Active
+      zh_Hans: 启用状态
     form: llm
 
   - name: query_string
     type: string
     required: false
     label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    human_description:
       en_US: Query String
       zh_Hans: 查询条件
     form: llm

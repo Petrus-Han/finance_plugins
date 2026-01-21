@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Get Chart of Accounts
     zh_Hans: 获取会计科目表
+  human_description:
+    en_US: Get Chart of Accounts
+    zh_Hans: 获取会计科目表
 description:
   human:
     en_US: Fetch your QuickBooks Chart of Accounts, optionally filtered by type.

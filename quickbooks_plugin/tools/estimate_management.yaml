@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Estimate Management
     zh_Hans: 报价单管理
+  human_description:
+    en_US: Estimate Management
+    zh_Hans: 报价单管理
   icon: icon.svg
 
 description:
@@ -19,6 +22,9 @@ parameters:
     label:
       en_US: Operation
       zh_Hans: 操作
+    human_description:
+      en_US: Operation
+      zh_Hans: 操作
     llm_description: "Operation type: create, read, update, delete, or query"
     form: llm
     options:
@@ -26,12 +32,21 @@ parameters:
         label:
           en_US: Create Estimate
           zh_Hans: 创建报价单
+        human_description:
+          en_US: Create Estimate
+          zh_Hans: 创建报价单
       - value: read
         label:
           en_US: Read Estimate
           zh_Hans: 读取报价单
+        human_description:
+          en_US: Read Estimate
+          zh_Hans: 读取报价单
       - value: delete
         label:
+          en_US: Delete Estimate
+          zh_Hans: 删除报价单
+        human_description:
           en_US: Delete Estimate
           zh_Hans: 删除报价单
       - value: query
@@ -39,10 +54,16 @@ parameters:
           en_US: Query Estimates
           zh_Hans: 查询报价单
 
+        human_description:
+          en_US: Query Estimates
+          zh_Hans: 查询报价单
   - name: estimate_id
     type: string
     required: false
     label:
+      en_US: Estimate ID
+      zh_Hans: 报价单 ID
+    human_description:
       en_US: Estimate ID
       zh_Hans: 报价单 ID
     llm_description: Required for read and delete.
@@ -54,6 +75,9 @@ parameters:
     label:
       en_US: Sync Token
       zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
     llm_description: Required for delete.
     form: llm
 
@@ -61,6 +85,9 @@ parameters:
     type: string
     required: false
     label:
+      en_US: Customer ID
+      zh_Hans: 客户 ID
+    human_description:
       en_US: Customer ID
       zh_Hans: 客户 ID
     llm_description: Required for create.
@@ -72,6 +99,9 @@ parameters:
     label:
       en_US: Line Items (JSON)
       zh_Hans: 行项目 (JSON)
+    human_description:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
     llm_description: "JSON array: [{\"ItemRef\": {\"value\": \"1\"}, \"Qty\": 1, \"UnitPrice\": 100, \"Amount\": 100}]"
     form: llm
 
@@ -79,6 +109,9 @@ parameters:
     type: string
     required: false
     label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
       en_US: Transaction Date
       zh_Hans: 交易日期
     form: llm
@@ -89,12 +122,18 @@ parameters:
     label:
       en_US: Expiration Date
       zh_Hans: 过期日期
+    human_description:
+      en_US: Expiration Date
+      zh_Hans: 过期日期
     form: llm
 
   - name: customer_memo
     type: string
     required: false
     label:
+      en_US: Customer Memo
+      zh_Hans: 客户备注
+    human_description:
       en_US: Customer Memo
       zh_Hans: 客户备注
     form: llm
@@ -105,12 +144,18 @@ parameters:
     label:
       en_US: Private Note
       zh_Hans: 内部备注
+    human_description:
+      en_US: Private Note
+      zh_Hans: 内部备注
     form: llm
 
   - name: query_string
     type: string
     required: false
     label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    human_description:
       en_US: Query String
       zh_Hans: 查询条件
     form: llm

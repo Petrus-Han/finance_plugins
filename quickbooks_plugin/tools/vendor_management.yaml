@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Vendor Management
     zh_Hans: 供应商管理
+  human_description:
+    en_US: Vendor Management
+    zh_Hans: 供应商管理
 description:
   human:
     en_US: Search or create vendors in QuickBooks.
@@ -29,8 +32,14 @@ parameters:
     label:
       en_US: Search
       zh_Hans: 搜索
+    human_description:
+      en_US: Search
+      zh_Hans: 搜索
   - value: create
     label:
+      en_US: Create
+      zh_Hans: 创建
+    human_description:
       en_US: Create
       zh_Hans: 创建
 - name: name
