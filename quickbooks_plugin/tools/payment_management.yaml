@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Payment Management
     zh_Hans: 收款管理
+  human_description:
+    en_US: Payment Management
+    zh_Hans: 收款管理
   icon: icon.svg
 
 description:
@@ -29,20 +32,35 @@ parameters:
         label:
           en_US: Create Payment
           zh_Hans: 创建付款
+        human_description:
+          en_US: Create Payment
+          zh_Hans: 创建付款
       - value: read
         label:
+          en_US: Read Payment
+          zh_Hans: 读取付款
+        human_description:
           en_US: Read Payment
           zh_Hans: 读取付款
       - value: update
         label:
           en_US: Update Payment
           zh_Hans: 更新付款
+        human_description:
+          en_US: Update Payment
+          zh_Hans: 更新付款
       - value: delete
         label:
           en_US: Delete Payment
           zh_Hans: 删除付款
+        human_description:
+          en_US: Delete Payment
+          zh_Hans: 删除付款
       - value: void
         label:
+          en_US: Void Payment
+          zh_Hans: 作废付款
+        human_description:
           en_US: Void Payment
           zh_Hans: 作废付款
       - value: query
@@ -50,6 +68,9 @@ parameters:
           en_US: Query Payments
           zh_Hans: 查询付款
 
+        human_description:
+          en_US: Query Payments
+          zh_Hans: 查询付款
   - name: payment_id
     type: string
     required: false
