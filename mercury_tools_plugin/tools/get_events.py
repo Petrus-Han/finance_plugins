@@ -15,7 +15,11 @@ logger.addHandler(plugin_logger_handler)
 
 
 class GetEventsTool(Tool):
-    """Tool to retrieve audit events tracking resource changes."""
+    """Tool to retrieve audit events tracking resource changes.
+
+    Supports polling mode with cursor pagination and time-based filtering
+    for incremental event synchronization.
+    """
 
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
         logger.info("=== GetEventsTool._invoke called ===")
@@ -39,60 +43,100 @@ class GetEventsTool(Tool):
 
         try:
             if event_id:
-                # Get specific event
-                url = f"{api_base_url}/event/{event_id}"
-                logger.info(f"Making request to: {url}")
-                response = httpx.get(url, headers=headers, timeout=15)
-
-                if response.status_code == 200:
-                    event = self._format_event(response.json())
-                    yield self.create_json_message({
-                        "success": True,
-                        "event": event,
-                        "message": "Event retrieved successfully"
-                    })
-                elif response.status_code == 404:
-                    raise ValueError(f"Event not found: {event_id}")
-                else:
-                    self._handle_error(response)
+                yield from self._get_single_event(api_base_url, headers, event_id)
             else:
-                # List all events
-                url = f"{api_base_url}/events"
-                params: dict[str, Any] = {}
-
-                if tool_parameters.get("resource_type"):
-                    params["resourceType"] = tool_parameters["resource_type"]
-                if tool_parameters.get("limit"):
-                    params["limit"] = int(tool_parameters["limit"])
-
-                logger.info(f"Making request to: {url} with params: {params}")
-                response = httpx.get(url, headers=headers, params=params, timeout=15)
-
-                if response.status_code == 200:
-                    data = response.json()
-                    events = [self._format_event(e) for e in data.get("events", [])]
-                    yield self.create_json_message({
-                        "success": True,
-                        "events": events,
-                        "message": f"Found {len(events)} events"
-                    })
-                else:
-                    self._handle_error(response)
+                yield from self._list_events(api_base_url, headers, tool_parameters)
 
         except httpx.HTTPError as e:
             raise Exception(f"Network error: {str(e)}") from e
 
+    def _get_single_event(self, api_base_url: str, headers: dict, event_id: str) -> Generator[ToolInvokeMessage, None, None]:
+        """Get a specific event by ID."""
+        url = f"{api_base_url}/event/{event_id}"
+        logger.info(f"Making request to: {url}")
+        response = httpx.get(url, headers=headers, timeout=15)
+
+        if response.status_code == 200:
+            event = self._format_event(response.json())
+            yield self.create_json_message({
+                "success": True,
+                "event": event,
+                "message": "Event retrieved successfully"
+            })
+        elif response.status_code == 404:
+            raise ValueError(f"Event not found: {event_id}")
+        else:
+            self._handle_error(response)
+
+    def _list_events(self, api_base_url: str, headers: dict, tool_parameters: dict) -> Generator[ToolInvokeMessage, None, None]:
+        """List events with filtering and pagination support."""
+        url = f"{api_base_url}/events"
+        params: dict[str, Any] = {}
+
+        # Resource type filter
+        if tool_parameters.get("resource_type"):
+            params["resourceType"] = tool_parameters["resource_type"]
+
+        # Event type filter (e.g., "transaction.created")
+        if tool_parameters.get("event_type"):
+            params["eventType"] = tool_parameters["event_type"]
+
+        # Pagination
+        if tool_parameters.get("limit"):
+            params["limit"] = int(tool_parameters["limit"])
+        if tool_parameters.get("start_after"):
+            params["start_after"] = tool_parameters["start_after"]
+        if tool_parameters.get("end_before"):
+            params["end_before"] = tool_parameters["end_before"]
+
+        # Time range filter (ISO 8601 format)
+        if tool_parameters.get("start_time"):
+            params["start"] = tool_parameters["start_time"]
+        if tool_parameters.get("end_time"):
+            params["end"] = tool_parameters["end_time"]
+
+        logger.info(f"Making request to: {url} with params: {params}")
+        response = httpx.get(url, headers=headers, params=params, timeout=30)
+
+        if response.status_code == 200:
+            data = response.json()
+            events = [self._format_event(e) for e in data.get("events", [])]
+
+            result = {
+                "success": True,
+                "events": events,
+                "count": len(events),
+                "message": f"Found {len(events)} events"
+            }
+
+            # Include pagination info for polling
+            if data.get("hasMore"):
+                result["has_more"] = True
+                result["next_cursor"] = data.get("nextCursor")
+            else:
+                result["has_more"] = False
+
+            yield self.create_json_message(result)
+        else:
+            self._handle_error(response)
+
     def _format_event(self, event: dict) -> dict:
+        """Format event data for output."""
+        # Extract data from different response formats
+        data = event.get("data", event.get("mergePatch", {}))
+        previous_data = event.get("previousData", event.get("previousValues"))
+
         return {
             "id": event.get("id", ""),
+            "type": event.get("type", ""),  # e.g., "transaction.created"
             "resource_type": event.get("resourceType", ""),
             "resource_id": event.get("resourceId", ""),
             "operation_type": event.get("operationType", ""),
+            "created_at": event.get("createdAt", event.get("occurredAt", "")),
             "resource_version": event.get("resourceVersion"),
-            "occurred_at": event.get("occurredAt", ""),
             "changed_paths": event.get("changedPaths", []),
-            "merge_patch": event.get("mergePatch", {}),
-            "previous_values": event.get("previousValues"),
+            "data": data,
+            "previous_data": previous_data,
         }
 
     def _handle_error(self, response: httpx.Response) -> None:
