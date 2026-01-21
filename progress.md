@@ -61,16 +61,19 @@
 
 ## Backlog
 
-- [ ] Mercury Trigger: 支持 polling 模式
+- [x] Mercury Trigger: 支持 polling 模式 ✅ (通过增强 get_events tool 实现)
+- [ ] QuickBooks 报表类 API（BalanceSheet, P&L, CashFlow 等）
+- [ ] QuickBooks 税务相关 API
 
 ---
 
 ## 已完成
 
-### 2025-01-21
-- Mercury Tools: 全部 10 个新 tools 开发完成
-- QuickBooks: 全部 14 个新 tools 开发完成
-
-### 待完成
-- [ ] 将新开发的 tools 添加到 git 并提交
-- [ ] 测试验证
+### 2026-01-21
+- Mercury Tools: 全部 10 个新 tools 开发完成并提交
+- QuickBooks: 全部 14 个新 tools 开发完成并提交
+- Mercury get_events: 增强支持 polling 模式
+  - 游标分页 (start_after, end_before)
+  - 时间范围过滤 (start_time, end_time)
+  - 事件类型过滤 (event_type)
+  - 分页信息 (has_more, next_cursor)

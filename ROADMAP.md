@@ -85,7 +85,7 @@
 
 ## 未来计划 (Backlog)
 
-- [ ] Mercury Trigger: 支持 polling 模式（替代 webhook 实时通知）
+- [x] Mercury Trigger: 支持 polling 模式 ✅ (通过增强 get_events tool 实现)
 - [ ] QuickBooks 报表类 API（BalanceSheet, P&L, CashFlow 等）
 - [ ] QuickBooks 税务相关 API
 
