@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Bill Payment Management
     zh_Hans: 账单付款管理
+  human_description:
+    en_US: Bill Payment Management
+    zh_Hans: 账单付款管理
   icon: icon.svg
 
 description:
@@ -29,16 +32,28 @@ parameters:
         label:
           en_US: Create Bill Payment
           zh_Hans: 创建账单付款
+        human_description:
+          en_US: Create Bill Payment
+          zh_Hans: 创建账单付款
       - value: read
         label:
+          en_US: Read Bill Payment
+          zh_Hans: 读取账单付款
+        human_description:
           en_US: Read Bill Payment
           zh_Hans: 读取账单付款
       - value: delete
         label:
           en_US: Delete Bill Payment
           zh_Hans: 删除账单付款
+        human_description:
+          en_US: Delete Bill Payment
+          zh_Hans: 删除账单付款
       - value: void
         label:
+          en_US: Void Bill Payment
+          zh_Hans: 作废账单付款
+        human_description:
           en_US: Void Bill Payment
           zh_Hans: 作废账单付款
       - value: query
@@ -46,12 +61,18 @@ parameters:
           en_US: Query Bill Payments
           zh_Hans: 查询账单付款
 
+        human_description:
+          en_US: Query Bill Payments
+          zh_Hans: 查询账单付款
   - name: bill_payment_id
     type: string
     required: false
     label:
       en_US: Bill Payment ID
       zh_Hans: 账单付款 ID
+    human_description:
+      en_US: The QuickBooks BillPayment ID
+      zh_Hans: QuickBooks 账单付款 ID
     llm_description: The QuickBooks BillPayment ID. Required for read, delete, and void.
     form: llm
 
@@ -61,6 +82,9 @@ parameters:
     label:
       en_US: Sync Token
       zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync token for concurrency control
+      zh_Hans: 并发控制的同步令牌
     llm_description: Required for delete and void operations.
     form: llm
 
@@ -70,6 +94,9 @@ parameters:
     label:
       en_US: Vendor ID
       zh_Hans: 供应商 ID
+    human_description:
+      en_US: The QuickBooks Vendor ID
+      zh_Hans: QuickBooks 供应商 ID
     llm_description: The QuickBooks Vendor ID. Required for create.
     form: llm
 
@@ -79,6 +106,9 @@ parameters:
     label:
       en_US: Total Amount
       zh_Hans: 总金额
+    human_description:
+      en_US: The total payment amount
+      zh_Hans: 总付款金额
     llm_description: The total payment amount. Required for create.
     form: llm
 
@@ -88,6 +118,9 @@ parameters:
     label:
       en_US: Payment Type
       zh_Hans: 付款类型
+    human_description:
+      en_US: Payment type (Check or CreditCard)
+      zh_Hans: 付款类型（支票或信用卡）
     llm_description: Payment type (Check or CreditCard). Required for create.
     form: llm
     options:
@@ -95,17 +128,26 @@ parameters:
         label:
           en_US: Check
           zh_Hans: 支票
+        human_description:
+          en_US: Check
+          zh_Hans: 支票
       - value: CreditCard
         label:
           en_US: Credit Card
           zh_Hans: 信用卡
 
+        human_description:
+          en_US: Credit Card
+          zh_Hans: 信用卡
   - name: bank_account_id
     type: string
     required: false
     label:
       en_US: Bank Account ID
       zh_Hans: 银行账户 ID
+    human_description:
+      en_US: Bank account ID for Check payments
+      zh_Hans: 支票付款的银行账户 ID
     llm_description: Bank account ID for Check payments. Required when pay_type is Check.
     form: llm
 
@@ -115,6 +157,9 @@ parameters:
     label:
       en_US: Credit Card Account ID
       zh_Hans: 信用卡账户 ID
+    human_description:
+      en_US: Credit card account ID for CreditCard payments
+      zh_Hans: 信用卡付款的账户 ID
     llm_description: Credit card account ID for CreditCard payments. Required when pay_type is CreditCard.
     form: llm
 
@@ -124,6 +169,9 @@ parameters:
     label:
       en_US: Bill ID
       zh_Hans: 账单 ID
+    human_description:
+      en_US: The Bill ID to pay
+      zh_Hans: 要支付的账单 ID
     llm_description: The Bill ID to pay
     form: llm
 
@@ -133,6 +181,9 @@ parameters:
     label:
       en_US: Transaction Date
       zh_Hans: 交易日期
+    human_description:
+      en_US: Payment date in YYYY-MM-DD format
+      zh_Hans: 付款日期（YYYY-MM-DD 格式）
     llm_description: Payment date in YYYY-MM-DD format
     form: llm
 
@@ -142,6 +193,9 @@ parameters:
     label:
       en_US: Private Note
       zh_Hans: 内部备注
+    human_description:
+      en_US: Private note for internal use
+      zh_Hans: 内部使用的备注
     llm_description: Private note for internal use
     form: llm
 
@@ -151,6 +205,9 @@ parameters:
     label:
       en_US: Query String
       zh_Hans: 查询条件
+    human_description:
+      en_US: SQL-like WHERE clause for query
+      zh_Hans: 类 SQL 的 WHERE 查询条件
     llm_description: "SQL-like WHERE clause for query"
     form: llm
 

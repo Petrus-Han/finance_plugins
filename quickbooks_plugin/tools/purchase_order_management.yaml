@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Purchase Order Management
     zh_Hans: 采购订单管理
+  human_description:
+    en_US: Purchase Order Management
+    zh_Hans: 采购订单管理
   icon: icon.svg
 
 description:
@@ -19,6 +22,9 @@ parameters:
     label:
       en_US: Operation
       zh_Hans: 操作
+    human_description:
+      en_US: Operation
+      zh_Hans: 操作
     llm_description: "Operation type: create, read, delete, or query"
     form: llm
     options:
@@ -26,12 +32,21 @@ parameters:
         label:
           en_US: Create Purchase Order
           zh_Hans: 创建采购订单
+        human_description:
+          en_US: Create Purchase Order
+          zh_Hans: 创建采购订单
       - value: read
         label:
           en_US: Read Purchase Order
           zh_Hans: 读取采购订单
+        human_description:
+          en_US: Read Purchase Order
+          zh_Hans: 读取采购订单
       - value: delete
         label:
+          en_US: Delete Purchase Order
+          zh_Hans: 删除采购订单
+        human_description:
           en_US: Delete Purchase Order
           zh_Hans: 删除采购订单
       - value: query
@@ -39,10 +54,16 @@ parameters:
           en_US: Query Purchase Orders
           zh_Hans: 查询采购订单
 
+        human_description:
+          en_US: Query Purchase Orders
+          zh_Hans: 查询采购订单
   - name: purchase_order_id
     type: string
     required: false
     label:
+      en_US: Purchase Order ID
+      zh_Hans: 采购订单 ID
+    human_description:
       en_US: Purchase Order ID
       zh_Hans: 采购订单 ID
     llm_description: Required for read and delete operations.
@@ -54,6 +75,9 @@ parameters:
     label:
       en_US: Sync Token
       zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
     llm_description: Required for delete operation.
     form: llm
 
@@ -61,6 +85,9 @@ parameters:
     type: string
     required: false
     label:
+      en_US: Vendor ID
+      zh_Hans: 供应商 ID
+    human_description:
       en_US: Vendor ID
       zh_Hans: 供应商 ID
     llm_description: Required for create operation.
@@ -72,6 +99,9 @@ parameters:
     label:
       en_US: AP Account ID
       zh_Hans: 应付账款账户 ID
+    human_description:
+      en_US: AP Account ID
+      zh_Hans: 应付账款账户 ID
     llm_description: Required for create - the Accounts Payable account.
     form: llm
 
@@ -79,6 +109,9 @@ parameters:
     type: string
     required: false
     label:
+      en_US: Line Items (JSON)
+      zh_Hans: 行项目 (JSON)
+    human_description:
       en_US: Line Items (JSON)
       zh_Hans: 行项目 (JSON)
     llm_description: "JSON array: [{\"ItemRef\": {\"value\": \"1\"}, \"Qty\": 1, \"UnitPrice\": 25, \"Amount\": 25}]"
@@ -90,12 +123,18 @@ parameters:
     label:
       en_US: Transaction Date
       zh_Hans: 交易日期
+    human_description:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
     form: llm
 
   - name: due_date
     type: string
     required: false
     label:
+      en_US: Due Date
+      zh_Hans: 到期日期
+    human_description:
       en_US: Due Date
       zh_Hans: 到期日期
     form: llm
@@ -106,12 +145,18 @@ parameters:
     label:
       en_US: Vendor Memo
       zh_Hans: 供应商备注
+    human_description:
+      en_US: Vendor Memo
+      zh_Hans: 供应商备注
     form: llm
 
   - name: private_note
     type: string
     required: false
     label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    human_description:
       en_US: Private Note
       zh_Hans: 内部备注
     form: llm
@@ -122,12 +167,18 @@ parameters:
     label:
       en_US: Ship To Customer ID
       zh_Hans: 收货客户 ID
+    human_description:
+      en_US: Ship To Customer ID
+      zh_Hans: 收货客户 ID
     form: llm
 
   - name: query_string
     type: string
     required: false
     label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    human_description:
       en_US: Query String
       zh_Hans: 查询条件
     form: llm

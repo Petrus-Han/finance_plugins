@@ -4,6 +4,9 @@ identity:
   label:
     en_US: Attachable Management
     zh_Hans: 附件管理
+  human_description:
+    en_US: Attachable Management
+    zh_Hans: 附件管理
   icon: icon.svg
 
 description:
@@ -19,6 +22,9 @@ parameters:
     label:
       en_US: Operation
       zh_Hans: 操作
+    human_description:
+      en_US: Operation
+      zh_Hans: 操作
     llm_description: "Operation type: create_note, read, update, delete, download, or query"
     form: llm
     options:
@@ -26,20 +32,35 @@ parameters:
         label:
           en_US: Create Note
           zh_Hans: 创建备注
+        human_description:
+          en_US: Create Note
+          zh_Hans: 创建备注
       - value: read
         label:
+          en_US: Read Attachable
+          zh_Hans: 读取附件
+        human_description:
           en_US: Read Attachable
           zh_Hans: 读取附件
       - value: update
         label:
           en_US: Update Attachable
           zh_Hans: 更新附件
+        human_description:
+          en_US: Update Attachable
+          zh_Hans: 更新附件
       - value: delete
         label:
           en_US: Delete Attachable
           zh_Hans: 删除附件
+        human_description:
+          en_US: Delete Attachable
+          zh_Hans: 删除附件
       - value: download
         label:
+          en_US: Get Download URL
+          zh_Hans: 获取下载链接
+        human_description:
           en_US: Get Download URL
           zh_Hans: 获取下载链接
       - value: query
@@ -47,10 +68,16 @@ parameters:
           en_US: Query Attachables
           zh_Hans: 查询附件
 
+        human_description:
+          en_US: Query Attachables
+          zh_Hans: 查询附件
   - name: attachable_id
     type: string
     required: false
     label:
+      en_US: Attachable ID
+      zh_Hans: 附件 ID
+    human_description:
       en_US: Attachable ID
       zh_Hans: 附件 ID
     llm_description: Required for read, update, delete, download.
@@ -62,6 +89,9 @@ parameters:
     label:
       en_US: Sync Token
       zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
     llm_description: Required for update and delete.
     form: llm
 
@@ -69,6 +99,9 @@ parameters:
     type: string
     required: false
     label:
+      en_US: Note
+      zh_Hans: 备注内容
+    human_description:
       en_US: Note
       zh_Hans: 备注内容
     llm_description: Note content. Required for create_note.
@@ -92,6 +125,9 @@ parameters:
     label:
       en_US: Entity ID
       zh_Hans: 实体 ID
+    human_description:
+      en_US: Entity ID
+      zh_Hans: 实体 ID
     llm_description: The entity ID to link attachment to.
     form: llm
 
@@ -102,6 +138,9 @@ parameters:
     label:
       en_US: Include On Send
       zh_Hans: 发送时包含
+    human_description:
+      en_US: Include On Send
+      zh_Hans: 发送时包含
     llm_description: Whether to include the attachment when sending the entity.
     form: llm
 
@@ -109,6 +148,9 @@ parameters:
     type: string
     required: false
     label:
+      en_US: Query String
+      zh_Hans: 查询条件
+    human_description:
       en_US: Query String
       zh_Hans: 查询条件
     llm_description: "Example: AttachableRef.EntityRef.Type = 'Invoice' and AttachableRef.EntityRef.value = '123'"
