@@ -4,9 +4,6 @@ identity:
   label:
     en_US: Item Management
     zh_Hans: 商品/服务管理
-  human_description:
-    en_US: Item Management
-    zh_Hans: 商品/服务管理
   icon: icon.svg
 
 description:
@@ -22,9 +19,6 @@ parameters:
     label:
       en_US: Operation
       zh_Hans: 操作
-    human_description:
-      en_US: Operation
-      zh_Hans: 操作
     llm_description: "Operation type: create, read, update, or query"
     form: llm
     options:
@@ -32,21 +26,12 @@ parameters:
         label:
           en_US: Create Item
           zh_Hans: 创建商品
-        human_description:
-          en_US: Create Item
-          zh_Hans: 创建商品
       - value: read
         label:
           en_US: Read Item
           zh_Hans: 读取商品
-        human_description:
-          en_US: Read Item
-          zh_Hans: 读取商品
       - value: update
         label:
-          en_US: Update Item
-          zh_Hans: 更新商品
-        human_description:
           en_US: Update Item
           zh_Hans: 更新商品
       - value: query
@@ -54,16 +39,10 @@ parameters:
           en_US: Query Items
           zh_Hans: 查询商品
 
-        human_description:
-          en_US: Query Items
-          zh_Hans: 查询商品
   - name: item_id
     type: string
     required: false
     label:
-      en_US: Item ID
-      zh_Hans: 商品 ID
-    human_description:
       en_US: Item ID
       zh_Hans: 商品 ID
     llm_description: Required for read and update.
@@ -75,9 +54,6 @@ parameters:
     label:
       en_US: Sync Token
       zh_Hans: 同步令牌
-    human_description:
-      en_US: Sync Token
-      zh_Hans: 同步令牌
     llm_description: Required for update.
     form: llm
 
@@ -85,9 +61,6 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Name
-      zh_Hans: 名称
-    human_description:
       en_US: Name
       zh_Hans: 名称
     llm_description: Item name (must be unique). Required for create.
@@ -99,9 +72,6 @@ parameters:
     label:
       en_US: Type
       zh_Hans: 类型
-    human_description:
-      en_US: Type
-      zh_Hans: 类型
     llm_description: Item type. Required for create.
     form: llm
     options:
@@ -109,21 +79,12 @@ parameters:
         label:
           en_US: Service
           zh_Hans: 服务
-        human_description:
-          en_US: Service
-          zh_Hans: 服务
       - value: Inventory
         label:
           en_US: Inventory
           zh_Hans: 库存
-        human_description:
-          en_US: Inventory
-          zh_Hans: 库存
       - value: NonInventory
         label:
-          en_US: Non-Inventory
-          zh_Hans: 非库存
-        human_description:
           en_US: Non-Inventory
           zh_Hans: 非库存
       - value: Category
@@ -131,16 +92,10 @@ parameters:
           en_US: Category
           zh_Hans: 分类
 
-        human_description:
-          en_US: Category
-          zh_Hans: 分类
   - name: income_account_id
     type: string
     required: false
     label:
-      en_US: Income Account ID
-      zh_Hans: 收入账户 ID
-    human_description:
       en_US: Income Account ID
       zh_Hans: 收入账户 ID
     llm_description: Income account for sales. Required for Service and Inventory.
@@ -152,9 +107,6 @@ parameters:
     label:
       en_US: Expense Account ID
       zh_Hans: 费用账户 ID
-    human_description:
-      en_US: Expense Account ID
-      zh_Hans: 费用账户 ID
     llm_description: Expense account for purchases.
     form: llm
 
@@ -162,9 +114,6 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Asset Account ID
-      zh_Hans: 资产账户 ID
-    human_description:
       en_US: Asset Account ID
       zh_Hans: 资产账户 ID
     llm_description: Inventory asset account. Required for Inventory type.
@@ -176,9 +125,6 @@ parameters:
     label:
       en_US: Unit Price
       zh_Hans: 单价
-    human_description:
-      en_US: Unit Price
-      zh_Hans: 单价
     llm_description: Sales price per unit.
     form: llm
 
@@ -186,9 +132,6 @@ parameters:
     type: number
     required: false
     label:
-      en_US: Purchase Cost
-      zh_Hans: 采购成本
-    human_description:
       en_US: Purchase Cost
       zh_Hans: 采购成本
     llm_description: Purchase cost per unit.
@@ -200,9 +143,6 @@ parameters:
     label:
       en_US: Quantity On Hand
       zh_Hans: 库存数量
-    human_description:
-      en_US: Quantity On Hand
-      zh_Hans: 库存数量
     llm_description: Initial quantity. Required for Inventory type.
     form: llm
 
@@ -212,18 +152,12 @@ parameters:
     label:
       en_US: Description
       zh_Hans: 描述
-    human_description:
-      en_US: Description
-      zh_Hans: 描述
     form: llm
 
   - name: sku
     type: string
     required: false
     label:
-      en_US: SKU
-      zh_Hans: 库存单位
-    human_description:
       en_US: SKU
       zh_Hans: 库存单位
     form: llm
@@ -235,18 +169,12 @@ parameters:
     label:
       en_US: Taxable
       zh_Hans: 应税
-    human_description:
-      en_US: Taxable
-      zh_Hans: 应税
     form: llm
 
   - name: query_string
     type: string
     required: false
     label:
-      en_US: Query String
-      zh_Hans: 查询条件
-    human_description:
       en_US: Query String
       zh_Hans: 查询条件
     form: llm

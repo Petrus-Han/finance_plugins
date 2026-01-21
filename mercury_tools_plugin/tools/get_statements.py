@@ -15,14 +15,14 @@ logger.addHandler(plugin_logger_handler)
 
 
 class GetStatementsTool(Tool):
-    """Tool to retrieve monthly statements for Mercury bank accounts."""
+    """Tool to retrieve monthly statements for a Mercury bank account."""
 
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
         """
-        Invoke the get_statements tool to fetch statements.
+        Invoke the get_statements tool to fetch all statements for a Mercury account.
 
         Args:
-            tool_parameters: Optional 'account_id'. If not provided, fetches statements for all accounts.
+            tool_parameters: Must include 'account_id'
 
         Returns:
             List of statements with their details (id, period, balance, etc.)
@@ -44,93 +44,59 @@ class GetStatementsTool(Tool):
         else:
             api_base_url = "https://api.mercury.com/api/v1"
 
+        # Get required parameter
+        account_id = tool_parameters.get("account_id")
+        if not account_id:
+            raise ValueError("account_id is required")
+
         headers = {
             "Authorization": f"Bearer {access_token}",
             "Accept": "application/json;charset=utf-8",
         }
 
-        # Get optional account_id parameter
-        account_id = tool_parameters.get("account_id")
-
         try:
-            if account_id:
-                # Fetch statements for specific account
-                account_ids = [account_id]
-            else:
-                # Fetch all accounts first
-                logger.info("No account_id provided, fetching all accounts...")
-                account_ids = self._get_all_account_ids(api_base_url, headers)
-                if not account_ids:
-                    yield self.create_text_message("No accounts found.")
+            url = f"{api_base_url}/account/{account_id}/statements"
+            logger.info(f"Making request to: {url}")
+
+            response = httpx.get(url, headers=headers, timeout=15)
+            logger.info(f"Response status: {response.status_code}")
+
+            if response.status_code == 200:
+                data = response.json()
+                statements_list = data.get("statements", [])
+                logger.info(f"Found {len(statements_list)} statements")
+
+                if not statements_list:
+                    yield self.create_text_message("No statements found for this account.")
                     return
 
-            # Fetch statements for each account
-            all_statements = []
-            for acc_id in account_ids:
-                statements = self._get_statements_for_account(api_base_url, headers, acc_id)
-                all_statements.extend(statements)
+                # Format statements for output
+                output = []
+                for stmt in statements_list:
+                    transactions = stmt.get("transactions", [])
+                    statement_info = {
+                        "id": stmt.get("id", ""),
+                        "start_date": stmt.get("startDate", ""),
+                        "end_date": stmt.get("endDate", ""),
+                        "ending_balance": stmt.get("endingBalance", 0),
+                        "company_legal_name": stmt.get("companyLegalName", ""),
+                        "download_url": stmt.get("downloadUrl", ""),
+                        "transaction_count": len(transactions) if isinstance(transactions, list) else 0,
+                    }
+                    output.append(statement_info)
 
-            logger.info(f"Found {len(all_statements)} statements total")
+                yield self.create_json_message({"statements": output})
 
-            if not all_statements:
-                yield self.create_text_message("No statements found.")
-                return
-
-            yield self.create_json_message({
-                "statements": all_statements,
-                "total_count": len(all_statements)
-            })
+            elif response.status_code == 401:
+                raise ToolProviderCredentialValidationError(
+                    f"Authentication failed. Please check your Mercury API access token and ensure it's for the '{api_environment}' environment."
+                )
+            elif response.status_code == 404:
+                raise ValueError(f"Account not found: {account_id}")
+            else:
+                error_detail = response.json() if response.content else {}
+                error_msg = error_detail.get("message", response.text)
+                raise Exception(f"Failed to retrieve statements: {response.status_code} - {error_msg}")
 
         except httpx.HTTPError as e:
             raise Exception(f"Network error while fetching statements: {str(e)}") from e
-
-    def _get_all_account_ids(self, api_base_url: str, headers: dict) -> list[str]:
-        """Fetch all account IDs."""
-        response = httpx.get(f"{api_base_url}/accounts", headers=headers, timeout=15)
-
-        if response.status_code == 200:
-            data = response.json()
-            accounts = data.get("accounts", [])
-            return [acc.get("id") for acc in accounts if acc.get("id")]
-        elif response.status_code == 401:
-            raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
-        else:
-            raise Exception(f"Failed to fetch accounts: {response.status_code}")
-
-    def _get_statements_for_account(self, api_base_url: str, headers: dict, account_id: str) -> list[dict]:
-        """Fetch statements for a specific account."""
-        url = f"{api_base_url}/account/{account_id}/statements"
-        logger.info(f"Fetching statements from: {url}")
-
-        response = httpx.get(url, headers=headers, timeout=15)
-
-        if response.status_code == 200:
-            data = response.json()
-            statements_list = data.get("statements", [])
-
-            # Format statements for output
-            output = []
-            for stmt in statements_list:
-                transactions = stmt.get("transactions", [])
-                statement_info = {
-                    "account_id": account_id,
-                    "id": stmt.get("id", ""),
-                    "start_date": stmt.get("startDate", ""),
-                    "end_date": stmt.get("endDate", ""),
-                    "ending_balance": stmt.get("endingBalance", 0),
-                    "company_legal_name": stmt.get("companyLegalName", ""),
-                    "download_url": stmt.get("downloadUrl", ""),
-                    "transaction_count": len(transactions) if isinstance(transactions, list) else 0,
-                }
-                output.append(statement_info)
-
-            return output
-
-        elif response.status_code == 401:
-            raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
-        elif response.status_code == 404:
-            logger.warning(f"Account not found: {account_id}")
-            return []
-        else:
-            logger.warning(f"Failed to fetch statements for account {account_id}: {response.status_code}")
-            return []

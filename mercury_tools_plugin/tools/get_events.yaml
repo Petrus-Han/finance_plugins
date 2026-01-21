@@ -2,15 +2,15 @@ identity:
   name: get_events
   author: petrus
   label:
-    en_US: Get Events (Polling)
-    zh_Hans: 获取事件（轮询）
+    en_US: Get Events
+    zh_Hans: 获取事件
   icon: icon.svg
 
 description:
   human:
-    en_US: Retrieve events tracking changes to Mercury resources. Supports cursor pagination and time-based filtering for polling mode.
-    zh_Hans: 获取追踪 Mercury 资源变更的事件。支持游标分页和时间过滤，适用于轮询模式。
-  llm: A tool to retrieve audit events showing how Mercury resources (transactions, etc.) have changed over time. Events are retained for 90 days. Supports cursor pagination (start_after/end_before) and time range filtering (start_time/end_time) for incremental polling.
+    en_US: Retrieve events tracking changes to Mercury resources
+    zh_Hans: 获取追踪 Mercury 资源变更的事件
+  llm: A tool to retrieve audit events showing how Mercury resources (transactions, etc.) have changed over time. Events are retained for 90 days.
 
 parameters:
   - name: event_id
@@ -20,9 +20,9 @@ parameters:
       en_US: Event ID
       zh_Hans: 事件 ID
     human_description:
-      en_US: Specific event ID to retrieve (optional, leave empty for list mode)
-      zh_Hans: 要获取的特定事件 ID（可选，留空进入列表模式）
-    llm_description: Optional event ID to retrieve a specific event. If not provided, returns events list with filtering.
+      en_US: Specific event ID to retrieve (optional, leave empty for all events)
+      zh_Hans: 要获取的特定事件 ID（可选，留空获取所有事件）
+    llm_description: Optional event ID to retrieve a specific event. If not provided, returns all events.
     form: llm
 
   - name: resource_type
@@ -34,7 +34,7 @@ parameters:
     human_description:
       en_US: Filter by resource type
       zh_Hans: 按资源类型筛选
-    llm_description: Filter events by resource type (e.g., transaction)
+    llm_description: Filter events by resource type
     form: llm
     options:
       - value: transaction
@@ -42,90 +42,16 @@ parameters:
           en_US: Transaction
           zh_Hans: 交易
 
-  - name: event_type
-    type: select
-    required: false
-    label:
-      en_US: Event Type
-      zh_Hans: 事件类型
-    human_description:
-      en_US: Filter by event type (e.g., transaction.created)
-      zh_Hans: 按事件类型筛选（如 transaction.created）
-    llm_description: Filter by specific event type
-    form: llm
-    options:
-      - value: transaction.created
-        label:
-          en_US: Transaction Created
-          zh_Hans: 交易创建
-      - value: transaction.updated
-        label:
-          en_US: Transaction Updated
-          zh_Hans: 交易更新
-      - value: transaction.deleted
-        label:
-          en_US: Transaction Deleted
-          zh_Hans: 交易删除
-
-  - name: start_time
-    type: string
-    required: false
-    label:
-      en_US: Start Time
-      zh_Hans: 开始时间
-    human_description:
-      en_US: Start timestamp in ISO 8601 format (e.g., 2025-01-01T00:00:00Z)
-      zh_Hans: ISO 8601 格式的开始时间戳（如 2025-01-01T00:00:00Z）
-    llm_description: Start timestamp (ISO 8601) for filtering events by time range
-    form: llm
-
-  - name: end_time
-    type: string
-    required: false
-    label:
-      en_US: End Time
-      zh_Hans: 结束时间
-    human_description:
-      en_US: End timestamp in ISO 8601 format (e.g., 2025-01-31T23:59:59Z)
-      zh_Hans: ISO 8601 格式的结束时间戳（如 2025-01-31T23:59:59Z）
-    llm_description: End timestamp (ISO 8601) for filtering events by time range
-    form: llm
-
-  - name: start_after
-    type: string
-    required: false
-    label:
-      en_US: Start After (Cursor)
-      zh_Hans: 游标起点
-    human_description:
-      en_US: Cursor for forward pagination - use next_cursor from previous response
-      zh_Hans: 向前分页的游标 - 使用上次响应的 next_cursor
-    llm_description: Cursor from previous response (next_cursor) for forward pagination in polling mode
-    form: llm
-
-  - name: end_before
-    type: string
-    required: false
-    label:
-      en_US: End Before (Cursor)
-      zh_Hans: 游标终点
-    human_description:
-      en_US: Cursor for backward pagination
-      zh_Hans: 向后分页的游标
-    llm_description: Cursor for backward pagination
-    form: llm
-
   - name: limit
     type: number
     required: false
-    default: 50
     label:
       en_US: Limit
       zh_Hans: 限制数量
     human_description:
-      en_US: Maximum number of events to return (default 50, max 100)
-      zh_Hans: 返回的最大事件数量（默认 50，最大 100）
-    llm_description: Maximum number of events to return per page (default 50)
+      en_US: Maximum number of events to return
+      zh_Hans: 返回的最大事件数量
+    llm_description: Maximum number of events to return
     form: llm
 
 output_schema:
@@ -139,16 +65,7 @@ output_schema:
       description: Single event (when event_id provided)
     events:
       type: array
-      description: List of events with data and previous_data
-    count:
-      type: integer
-      description: Number of events returned
-    has_more:
-      type: boolean
-      description: Whether there are more events to fetch
-    next_cursor:
-      type: string
-      description: Cursor for fetching next page (use as start_after)
+      description: List of events
     message:
       type: string
       description: Status message
