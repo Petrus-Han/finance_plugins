@@ -1,0 +1,413 @@
+app:
+  description: Automatically sync Mercury bank transactions to QuickBooks accounting entries (No Code Version)
+  icon: "\U0001F4B0"
+  icon_background: "#E6F7FF"
+  mode: workflow
+  name: Mercury to QuickBooks Sync (No Code)
+
+kind: app
+
+version: 0.1.2
+
+workflow:
+  conversation_variables: []
+  environment_variables:
+    - description: QuickBooks Bank Account ID for Mercury checking account
+      id: qb_bank_account_id
+      name: QB_BANK_ACCOUNT_ID
+      value_type: string
+      value: ""
+    - description: Default QuickBooks Expense Account ID
+      id: qb_expense_account_id
+      name: QB_EXPENSE_ACCOUNT_ID
+      value_type: string
+      value: ""
+    - description: Default QuickBooks Income Account ID
+      id: qb_income_account_id
+      name: QB_INCOME_ACCOUNT_ID
+      value_type: string
+      value: ""
+  features:
+    file_upload:
+      enabled: false
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+  graph:
+    edges:
+      # Trigger -> IF-ELSE (check if amount < 0)
+      - id: edge-trigger-to-ifelse
+        source: trigger-plugin-mercury
+        sourceHandle: success
+        target: ifelse-debit-or-credit
+        targetHandle: target
+
+      # IF amount < 0 (debit/expense) -> Template for Purchase
+      - id: edge-ifelse-to-template-purchase
+        source: ifelse-debit-or-credit
+        sourceHandle: "true"
+        target: template-purchase-data
+        targetHandle: target
+
+      # ELSE amount >= 0 (credit/income) -> Template for Deposit
+      - id: edge-ifelse-to-template-deposit
+        source: ifelse-debit-or-credit
+        sourceHandle: "false"
+        target: template-deposit-data
+        targetHandle: target
+
+      # Template Purchase -> Create Purchase
+      - id: edge-template-to-purchase
+        source: template-purchase-data
+        sourceHandle: success
+        target: tool-create-purchase
+        targetHandle: target
+
+      # Template Deposit -> Create Deposit
+      - id: edge-template-to-deposit
+        source: template-deposit-data
+        sourceHandle: success
+        target: tool-create-deposit
+        targetHandle: target
+
+      # Create Purchase -> End
+      - id: edge-purchase-to-end
+        source: tool-create-purchase
+        sourceHandle: success
+        target: end-success
+        targetHandle: target
+
+      # Create Deposit -> End
+      - id: edge-deposit-to-end
+        source: tool-create-deposit
+        sourceHandle: success
+        target: end-success
+        targetHandle: target
+
+    nodes:
+      # ========================================
+      # Node 1: Mercury Trigger (Start Point)
+      # ========================================
+      - data:
+          type: trigger-plugin
+          title: Mercury Transaction Trigger
+          desc: Receives transaction events from Mercury Banking via webhook
+          plugin_id: "mercury_trigger"
+          provider_id: "mercury_trigger"
+          event_name: "transaction"
+          plugin_credential_id: ""
+          event_parameters:
+            operation_filter: "all"
+          subscription_parameters:
+            event_types:
+              - "transaction.created"
+              - "transaction.updated"
+          outputs:
+            - value_selector:
+                - trigger-plugin-mercury
+                - event_id
+              variable: event_id
+            - value_selector:
+                - trigger-plugin-mercury
+                - transaction_id
+              variable: transaction_id
+            - value_selector:
+                - trigger-plugin-mercury
+                - operation_type
+              variable: operation_type
+            - value_selector:
+                - trigger-plugin-mercury
+                - account_id
+              variable: account_id
+            - value_selector:
+                - trigger-plugin-mercury
+                - amount
+              variable: amount
+            - value_selector:
+                - trigger-plugin-mercury
+                - status
+              variable: status
+            - value_selector:
+                - trigger-plugin-mercury
+                - posted_at
+              variable: posted_at
+            - value_selector:
+                - trigger-plugin-mercury
+                - counterparty_name
+              variable: counterparty_name
+            - value_selector:
+                - trigger-plugin-mercury
+                - bank_description
+              variable: bank_description
+            - value_selector:
+                - trigger-plugin-mercury
+                - note
+              variable: note
+            - value_selector:
+                - trigger-plugin-mercury
+                - category
+              variable: category
+            - value_selector:
+                - trigger-plugin-mercury
+                - transaction_type
+              variable: transaction_type
+        height: 200
+        id: trigger-plugin-mercury
+        position:
+          x: 100
+          y: 300
+        width: 244
+        type: custom
+
+      # ========================================
+      # Node 2: IF-ELSE - Check Amount < 0
+      # ========================================
+      - data:
+          type: if-else
+          title: Debit or Credit?
+          desc: Check if amount is negative (expense) or positive (income)
+          logical_operator: and
+          cases:
+            - case_id: case-is-debit
+              logical_operator: and
+              conditions:
+                - comparison_operator: "<"
+                  value: "0"
+                  value_type: number
+                  variable_selector:
+                    - trigger-plugin-mercury
+                    - amount
+        height: 150
+        id: ifelse-debit-or-credit
+        position:
+          x: 400
+          y: 300
+        width: 244
+        type: custom
+
+      # ========================================
+      # Node 3a: Template - Prepare Purchase Data
+      # ========================================
+      - data:
+          type: template-transform
+          title: Prepare Purchase Data
+          desc: Format data for QuickBooks Purchase (expense)
+          template: |
+            {%- set abs_amount = trigger-plugin-mercury.amount | abs -%}
+            {%- set txn_date = trigger-plugin-mercury.posted_at[:10] if trigger-plugin-mercury.posted_at else '' -%}
+            {%- set description = trigger-plugin-mercury.bank_description or trigger-plugin-mercury.counterparty_name or 'Mercury Transaction' -%}
+            {%- set memo = 'Mercury ' ~ trigger-plugin-mercury.transaction_type ~ ': ' ~ trigger-plugin-mercury.counterparty_name -%}
+            {{ abs_amount }}|||{{ txn_date }}|||{{ description[:500] }}|||{{ memo[:4000] }}
+          variables:
+            - value_selector:
+                - trigger-plugin-mercury
+                - amount
+              variable: amount
+            - value_selector:
+                - trigger-plugin-mercury
+                - posted_at
+              variable: posted_at
+            - value_selector:
+                - trigger-plugin-mercury
+                - counterparty_name
+              variable: counterparty_name
+            - value_selector:
+                - trigger-plugin-mercury
+                - bank_description
+              variable: bank_description
+            - value_selector:
+                - trigger-plugin-mercury
+                - transaction_type
+              variable: transaction_type
+        height: 150
+        id: template-purchase-data
+        position:
+          x: 700
+          y: 150
+        width: 244
+        type: custom
+
+      # ========================================
+      # Node 3b: Template - Prepare Deposit Data
+      # ========================================
+      - data:
+          type: template-transform
+          title: Prepare Deposit Data
+          desc: Format data for QuickBooks Deposit (income)
+          template: |
+            {%- set abs_amount = trigger-plugin-mercury.amount | abs -%}
+            {%- set txn_date = trigger-plugin-mercury.posted_at[:10] if trigger-plugin-mercury.posted_at else '' -%}
+            {%- set description = trigger-plugin-mercury.bank_description or trigger-plugin-mercury.counterparty_name or 'Mercury Transaction' -%}
+            {%- set memo = 'Mercury ' ~ trigger-plugin-mercury.transaction_type ~ ': ' ~ trigger-plugin-mercury.counterparty_name -%}
+            {{ abs_amount }}|||{{ txn_date }}|||{{ description[:500] }}|||{{ memo[:4000] }}
+          variables:
+            - value_selector:
+                - trigger-plugin-mercury
+                - amount
+              variable: amount
+            - value_selector:
+                - trigger-plugin-mercury
+                - posted_at
+              variable: posted_at
+            - value_selector:
+                - trigger-plugin-mercury
+                - counterparty_name
+              variable: counterparty_name
+            - value_selector:
+                - trigger-plugin-mercury
+                - bank_description
+              variable: bank_description
+            - value_selector:
+                - trigger-plugin-mercury
+                - transaction_type
+              variable: transaction_type
+        height: 150
+        id: template-deposit-data
+        position:
+          x: 700
+          y: 450
+        width: 244
+        type: custom
+
+      # ========================================
+      # Node 4a: Tool - Create Purchase (Expense)
+      # ========================================
+      - data:
+          type: tool
+          title: Create QuickBooks Purchase
+          desc: Record expense/debit transaction in QuickBooks
+          provider_id: "quickbooks"
+          provider_type: "custom"
+          tool_name: "create_purchase"
+          tool_label: "Create Purchase"
+          tool_configurations: {}
+          credential_id: ""
+          tool_parameters:
+            bank_account_id:
+              type: variable
+              value:
+                - env
+                - QB_BANK_ACCOUNT_ID
+            expense_account_id:
+              type: variable
+              value:
+                - env
+                - QB_EXPENSE_ACCOUNT_ID
+            amount:
+              type: variable
+              value:
+                - trigger-plugin-mercury
+                - amount
+            txn_date:
+              type: variable
+              value:
+                - trigger-plugin-mercury
+                - posted_at
+            description:
+              type: variable
+              value:
+                - trigger-plugin-mercury
+                - bank_description
+            note:
+              type: mixed
+              value: "Mercury {{#trigger-plugin-mercury.transaction_type#}}: {{#trigger-plugin-mercury.counterparty_name#}}"
+            payment_type:
+              type: constant
+              value: "Check"
+        height: 180
+        id: tool-create-purchase
+        position:
+          x: 1000
+          y: 150
+        width: 244
+        type: custom
+
+      # ========================================
+      # Node 4b: Tool - Create Deposit (Income)
+      # ========================================
+      - data:
+          type: tool
+          title: Create QuickBooks Deposit
+          desc: Record income/credit transaction in QuickBooks
+          provider_id: "quickbooks"
+          provider_type: "custom"
+          tool_name: "create_deposit"
+          tool_label: "Create Deposit"
+          tool_configurations: {}
+          credential_id: ""
+          tool_parameters:
+            bank_account_id:
+              type: variable
+              value:
+                - env
+                - QB_BANK_ACCOUNT_ID
+            income_account_id:
+              type: variable
+              value:
+                - env
+                - QB_INCOME_ACCOUNT_ID
+            amount:
+              type: variable
+              value:
+                - trigger-plugin-mercury
+                - amount
+            txn_date:
+              type: variable
+              value:
+                - trigger-plugin-mercury
+                - posted_at
+            description:
+              type: variable
+              value:
+                - trigger-plugin-mercury
+                - bank_description
+            note:
+              type: mixed
+              value: "Mercury {{#trigger-plugin-mercury.transaction_type#}}: {{#trigger-plugin-mercury.counterparty_name#}}"
+        height: 180
+        id: tool-create-deposit
+        position:
+          x: 1000
+          y: 450
+        width: 244
+        type: custom
+
+      # ========================================
+      # Node 5: End - Success
+      # ========================================
+      - data:
+          type: end
+          title: Sync Complete
+          desc: Transaction successfully synced to QuickBooks
+          outputs:
+            - value_selector:
+                - trigger-plugin-mercury
+                - transaction_id
+              variable: mercury_transaction_id
+            - value_selector:
+                - trigger-plugin-mercury
+                - amount
+              variable: original_amount
+            - value_selector:
+                - trigger-plugin-mercury
+                - counterparty_name
+              variable: counterparty
+            - value_selector:
+                - trigger-plugin-mercury
+                - posted_at
+              variable: transaction_date
+        height: 150
+        id: end-success
+        position:
+          x: 1300
+          y: 300
+        width: 244
+        type: custom
