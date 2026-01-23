@@ -24,7 +24,7 @@ parameters:
     en_US: The source account ID
     zh_Hans: 转出的账户 ID
   llm_description: QuickBooks account ID for the source account
-  form: llm
+  form: form
 - name: to_account_id
   type: string
   required: true
@@ -35,7 +35,7 @@ parameters:
     en_US: The destination account ID
     zh_Hans: 转入的账户 ID
   llm_description: QuickBooks account ID for the destination account
-  form: llm
+  form: form
 - name: amount
   type: number
   required: true
@@ -46,7 +46,7 @@ parameters:
     en_US: Transfer amount
     zh_Hans: 转账金额
   llm_description: Amount to transfer (positive number)
-  form: llm
+  form: form
 - name: txn_date
   type: string
   required: false
@@ -57,7 +57,7 @@ parameters:
     en_US: Date of the transfer (YYYY-MM-DD format, defaults to today)
     zh_Hans: 转账日期（YYYY-MM-DD 格式，默认为今天）
   llm_description: Transaction date in YYYY-MM-DD format
-  form: llm
+  form: form
 - name: note
   type: string
   required: false
@@ -67,7 +67,7 @@ parameters:
   human_description:
     en_US: Internal note for this transfer
     zh_Hans: 此转账的内部备注
-  form: llm
+  form: form
 extra:
   python:
     source: tools/create_transfer.py
