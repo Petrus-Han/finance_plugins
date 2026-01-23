@@ -168,7 +168,13 @@ class QuickBooksProvider(ToolProvider):
             return ToolOAuthCredentials(credentials=new_credentials, expires_at=expires_at)
 
         except httpx.HTTPStatusError as e:
-            raise ToolProviderOAuthError(f"Failed to refresh token: {e}") from e
+            # Log the actual error response from QuickBooks
+            error_detail = ""
+            try:
+                error_detail = e.response.text
+            except:
+                pass
+            raise ToolProviderOAuthError(f"Failed to refresh token: {e}. Response: {error_detail}") from e
         except Exception as e:
             raise ToolProviderOAuthError(f"Token refresh error: {e}") from e
 
