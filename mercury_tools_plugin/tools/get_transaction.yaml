@@ -12,14 +12,14 @@ description:
 parameters:
   - name: account_id
     type: string
-    required: true
+    required: false
     label:
       en_US: Account ID
       zh_Hans: 账户 ID
     human_description:
-      en_US: The Mercury account ID that contains the transaction
-      zh_Hans: 包含该交易的 Mercury 账户 ID
-    llm_description: Mercury account ID (UUID format)
+      en_US: The Mercury account ID (optional, improves query performance if known)
+      zh_Hans: Mercury 账户 ID（可选，如已知可提高查询性能）
+    llm_description: Mercury account ID (UUID format, optional)
     form: form
   - name: transaction_id
     type: string
