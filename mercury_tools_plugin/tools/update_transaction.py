@@ -66,7 +66,7 @@ class UpdateTransactionTool(Tool):
         try:
             # Use PATCH to update transaction
             response = httpx.patch(
-                f"{api_base_url}/transactions/{transaction_id}",
+                f"{api_base_url}/transaction/{transaction_id}",
                 headers=headers,
                 json=update_data,
                 timeout=15
