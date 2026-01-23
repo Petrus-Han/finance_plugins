@@ -19,7 +19,6 @@ dist/
 .eggs/
 
 # Dify plugin packages
-*.difypkg
 
 # IDE
 .vscode/
