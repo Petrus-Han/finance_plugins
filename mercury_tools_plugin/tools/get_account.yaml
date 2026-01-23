@@ -23,7 +23,7 @@ parameters:
       en_US: The unique identifier of the Mercury account to retrieve
       zh_Hans: 要检索的 Mercury 账户的唯一标识符
     llm_description: The unique identifier (ID) of the Mercury account to retrieve detailed information for
-    form: llm
+    form: form
 
 output_schema:
   type: object

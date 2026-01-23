@@ -23,7 +23,7 @@ parameters:
       en_US: The recipient ID to update
       zh_Hans: 要更新的收款人 ID
     llm_description: The UUID of the recipient to update
-    form: llm
+    form: form
 
   - name: name
     type: string
@@ -35,7 +35,7 @@ parameters:
       en_US: Recipient's name
       zh_Hans: 收款人名称
     llm_description: The recipient's name
-    form: llm
+    form: form
 
   - name: nickname
     type: string
@@ -47,7 +47,7 @@ parameters:
       en_US: Nickname for the recipient
       zh_Hans: 收款人昵称
     llm_description: A nickname for the recipient
-    form: llm
+    form: form
 
   - name: emails_json
     type: string
@@ -59,7 +59,7 @@ parameters:
       en_US: "JSON array of email addresses: [\"email1@example.com\", \"email2@example.com\"]"
       zh_Hans: "邮箱地址 JSON 数组: [\"email1@example.com\"]"
     llm_description: JSON array of email addresses associated with the recipient
-    form: llm
+    form: form
 
   - name: contact_email
     type: string
@@ -71,7 +71,7 @@ parameters:
       en_US: Primary contact email
       zh_Hans: 主要联系邮箱
     llm_description: Primary contact email address for the recipient
-    form: llm
+    form: form
 
   - name: account_number
     type: string
@@ -83,7 +83,7 @@ parameters:
       en_US: Bank account number for ACH/wire
       zh_Hans: ACH/电汇的银行账户号码
     llm_description: Bank account number for electronic payments
-    form: llm
+    form: form
 
   - name: routing_number
     type: string
@@ -95,7 +95,7 @@ parameters:
       en_US: Bank routing number
       zh_Hans: 银行路由号码
     llm_description: Bank routing number for ACH/wire transfers
-    form: llm
+    form: form
 
   - name: account_type
     type: select
@@ -107,7 +107,7 @@ parameters:
       en_US: Type of bank account
       zh_Hans: 银行账户类型
     llm_description: Type of bank account (checking or savings)
-    form: llm
+    form: form
     options:
       - value: checking
         label:

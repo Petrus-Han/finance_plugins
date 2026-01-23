@@ -26,7 +26,7 @@ parameters:
       en_US: Operation
       zh_Hans: 操作
     llm_description: "Operation type: create, read, update, or query"
-    form: llm
+    form: form
     options:
       - value: create
         label:
@@ -67,7 +67,7 @@ parameters:
       en_US: Item ID
       zh_Hans: 商品 ID
     llm_description: Required for read and update.
-    form: llm
+    form: form
 
   - name: sync_token
     type: string
@@ -79,7 +79,7 @@ parameters:
       en_US: Sync Token
       zh_Hans: 同步令牌
     llm_description: Required for update.
-    form: llm
+    form: form
 
   - name: name
     type: string
@@ -91,7 +91,7 @@ parameters:
       en_US: Name
       zh_Hans: 名称
     llm_description: Item name (must be unique). Required for create.
-    form: llm
+    form: form
 
   - name: item_type
     type: select
@@ -103,7 +103,7 @@ parameters:
       en_US: Type
       zh_Hans: 类型
     llm_description: Item type. Required for create.
-    form: llm
+    form: form
     options:
       - value: Service
         label:
@@ -144,7 +144,7 @@ parameters:
       en_US: Income Account ID
       zh_Hans: 收入账户 ID
     llm_description: Income account for sales. Required for Service and Inventory.
-    form: llm
+    form: form
 
   - name: expense_account_id
     type: string
@@ -156,7 +156,7 @@ parameters:
       en_US: Expense Account ID
       zh_Hans: 费用账户 ID
     llm_description: Expense account for purchases.
-    form: llm
+    form: form
 
   - name: asset_account_id
     type: string
@@ -168,7 +168,7 @@ parameters:
       en_US: Asset Account ID
       zh_Hans: 资产账户 ID
     llm_description: Inventory asset account. Required for Inventory type.
-    form: llm
+    form: form
 
   - name: unit_price
     type: number
@@ -180,7 +180,7 @@ parameters:
       en_US: Unit Price
       zh_Hans: 单价
     llm_description: Sales price per unit.
-    form: llm
+    form: form
 
   - name: purchase_cost
     type: number
@@ -192,7 +192,7 @@ parameters:
       en_US: Purchase Cost
       zh_Hans: 采购成本
     llm_description: Purchase cost per unit.
-    form: llm
+    form: form
 
   - name: qty_on_hand
     type: number
@@ -204,7 +204,7 @@ parameters:
       en_US: Quantity On Hand
       zh_Hans: 库存数量
     llm_description: Initial quantity. Required for Inventory type.
-    form: llm
+    form: form
 
   - name: description
     type: string
@@ -215,7 +215,7 @@ parameters:
     human_description:
       en_US: Description
       zh_Hans: 描述
-    form: llm
+    form: form
 
   - name: sku
     type: string
@@ -226,7 +226,7 @@ parameters:
     human_description:
       en_US: SKU
       zh_Hans: 库存单位
-    form: llm
+    form: form
 
   - name: taxable
     type: boolean
@@ -238,7 +238,7 @@ parameters:
     human_description:
       en_US: Taxable
       zh_Hans: 应税
-    form: llm
+    form: form
 
   - name: query_string
     type: string
@@ -249,7 +249,7 @@ parameters:
     human_description:
       en_US: Query String
       zh_Hans: 查询条件
-    form: llm
+    form: form
 
 output_schema:
   type: object

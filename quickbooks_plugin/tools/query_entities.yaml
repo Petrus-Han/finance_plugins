@@ -26,7 +26,7 @@ parameters:
       en_US: Entity Type
       zh_Hans: 实体类型
     llm_description: The type of entity to query. Required if not using custom_query.
-    form: llm
+    form: form
     options:
       - value: Account
         label:
@@ -214,7 +214,7 @@ parameters:
       en_US: WHERE Clause
       zh_Hans: WHERE 子句
     llm_description: "Optional WHERE clause conditions, e.g., \"DisplayName LIKE '%John%'\" or \"TxnDate > '2024-01-01'\""
-    form: llm
+    form: form
 
   - name: custom_query
     type: string
@@ -226,7 +226,7 @@ parameters:
       en_US: Custom Query
       zh_Hans: 自定义查询
     llm_description: "Full custom query string, e.g., \"SELECT Id, DisplayName FROM Customer WHERE Active = true\""
-    form: llm
+    form: form
 
   - name: max_results
     type: number
@@ -238,7 +238,7 @@ parameters:
       en_US: Max Results
       zh_Hans: 最大结果数
     llm_description: Maximum number of results to return (default 100).
-    form: llm
+    form: form
     default: 100
 
 output_schema:

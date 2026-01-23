@@ -23,7 +23,7 @@ parameters:
       en_US: The transaction ID to attach the file to
       zh_Hans: 要附加文件的交易 ID
     llm_description: The UUID of the transaction to attach the file to
-    form: llm
+    form: form
 
   - name: file
     type: file
@@ -35,7 +35,7 @@ parameters:
       en_US: The file to upload
       zh_Hans: 要上传的文件
     llm_description: The file to upload as an attachment
-    form: llm
+    form: form
 
 output_schema:
   type: object
