@@ -74,7 +74,7 @@ class EditRecipientTool(Tool):
             url = f"{api_base_url}/recipient/{recipient_id}"
             logger.info(f"Making request to: {url}")
 
-            response = httpx.post(url, headers=headers, json=payload, timeout=15)
+            response = httpx.patch(url, headers=headers, json=payload, timeout=15)
             logger.info(f"Response status: {response.status_code}")
 
             if response.status_code == 200:
