@@ -48,7 +48,7 @@ class GetTransactionTool(Tool):
 
         try:
             response = httpx.get(
-                f"{api_base_url}/transactions/{transaction_id}",
+                f"{api_base_url}/transaction/{transaction_id}",
                 headers=headers,
                 timeout=15
             )
