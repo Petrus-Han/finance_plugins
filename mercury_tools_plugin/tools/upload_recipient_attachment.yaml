@@ -23,7 +23,7 @@ parameters:
       en_US: The recipient ID to attach the file to
       zh_Hans: 要附加文件的收款人 ID
     llm_description: The UUID of the recipient to attach the file to
-    form: form
+    form: llm
 
   - name: file
     type: file
@@ -35,7 +35,7 @@ parameters:
       en_US: The file to upload
       zh_Hans: 要上传的文件
     llm_description: The file to upload as an attachment
-    form: form
+    form: llm
 
 output_schema:
   type: object

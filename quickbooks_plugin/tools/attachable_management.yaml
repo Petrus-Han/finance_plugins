@@ -26,7 +26,7 @@ parameters:
       en_US: Operation
       zh_Hans: 操作
     llm_description: "Operation type: create_note, read, update, delete, download, or query"
-    form: form
+    form: llm
     options:
       - value: create_note
         label:
@@ -81,7 +81,7 @@ parameters:
       en_US: Attachable ID
       zh_Hans: 附件 ID
     llm_description: Required for read, update, delete, download.
-    form: form
+    form: llm
 
   - name: sync_token
     type: string
@@ -93,7 +93,7 @@ parameters:
       en_US: Sync Token
       zh_Hans: 同步令牌
     llm_description: Required for update and delete.
-    form: form
+    form: llm
 
   - name: note
     type: string
@@ -105,7 +105,7 @@ parameters:
       en_US: Note
       zh_Hans: 备注内容
     llm_description: Note content. Required for create_note.
-    form: form
+    form: llm
 
   - name: entity_type
     type: string
@@ -117,7 +117,7 @@ parameters:
       en_US: "Type of entity to attach to (Invoice, Bill, Purchase, etc.)"
       zh_Hans: "要附加到的实体类型（Invoice、Bill、Purchase 等）"
     llm_description: The entity type to link attachment to (e.g., Invoice, Bill, Purchase, Vendor, Customer)
-    form: form
+    form: llm
 
   - name: entity_id
     type: string
@@ -129,7 +129,7 @@ parameters:
       en_US: Entity ID
       zh_Hans: 实体 ID
     llm_description: The entity ID to link attachment to.
-    form: form
+    form: llm
 
   - name: include_on_send
     type: boolean
@@ -142,7 +142,7 @@ parameters:
       en_US: Include On Send
       zh_Hans: 发送时包含
     llm_description: Whether to include the attachment when sending the entity.
-    form: form
+    form: llm
 
   - name: query_string
     type: string
@@ -154,7 +154,7 @@ parameters:
       en_US: Query String
       zh_Hans: 查询条件
     llm_description: "Example: AttachableRef.EntityRef.Type = 'Invoice' and AttachableRef.EntityRef.value = '123'"
-    form: form
+    form: llm
 
 output_schema:
   type: object

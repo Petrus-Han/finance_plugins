@@ -23,7 +23,7 @@ parameters:
       en_US: The Mercury account ID to get cards for. If not provided, fetches cards for all accounts.
       zh_Hans: 要获取卡片的 Mercury 账户 ID。如果不提供，将获取所有账户的卡片。
     llm_description: The UUID of the Mercury account to retrieve cards for. If not provided, fetches cards for all accounts.
-    form: form
+    form: llm
 
 output_schema:
   type: object

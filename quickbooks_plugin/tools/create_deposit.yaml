@@ -18,7 +18,7 @@ extra:
     source: tools/create_deposit.py
 parameters:
 - name: bank_account_id
-  form: form
+  form: llm
   type: string
   required: true
   label:
@@ -29,7 +29,7 @@ parameters:
     zh_Hans: 存入的 QuickBooks 银行账户 ID
   llm_description: The QuickBooks account ID for the bank account to deposit into
 - name: income_account_id
-  form: form
+  form: llm
   type: string
   required: true
   label:
@@ -40,7 +40,7 @@ parameters:
     zh_Hans: QuickBooks 收入账户 ID
   llm_description: The QuickBooks account ID for the income category
 - name: amount
-  form: form
+  form: llm
   type: number
   required: true
   label:
@@ -51,7 +51,7 @@ parameters:
     zh_Hans: 存款金额
   llm_description: The deposit amount (positive number)
 - name: txn_date
-  form: form
+  form: llm
   type: string
   required: false
   label:
@@ -62,7 +62,7 @@ parameters:
     zh_Hans: 交易日期（YYYY-MM-DD 格式）
   llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
 - name: description
-  form: form
+  form: llm
   type: string
   required: false
   label:
@@ -73,7 +73,7 @@ parameters:
     zh_Hans: 存款描述
   llm_description: Description of the deposit
 - name: note
-  form: form
+  form: llm
   type: string
   required: false
   label:

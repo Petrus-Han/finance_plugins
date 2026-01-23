@@ -20,7 +20,7 @@ parameters:
       en_US: The Mercury account ID to transfer from
       zh_Hans: 转出的 Mercury 账户 ID
     llm_description: The source Mercury account ID (starts with 'acc_' or 'account_')
-    form: form
+    form: llm
 
   - name: to_account_id
     type: string
@@ -32,7 +32,7 @@ parameters:
       en_US: The Mercury account ID to transfer to
       zh_Hans: 转入的 Mercury 账户 ID
     llm_description: The destination Mercury account ID (starts with 'acc_' or 'account_')
-    form: form
+    form: llm
 
   - name: amount
     type: number
@@ -44,7 +44,7 @@ parameters:
       en_US: Amount to transfer (positive number)
       zh_Hans: 转账金额（正数）
     llm_description: The amount to transfer in USD (must be positive)
-    form: form
+    form: llm
 
   - name: note
     type: string
@@ -56,7 +56,7 @@ parameters:
       en_US: Internal note for the transfer
       zh_Hans: 转账的内部备注
     llm_description: Optional internal note for the transfer
-    form: form
+    form: llm
 
   - name: idempotency_key
     type: string

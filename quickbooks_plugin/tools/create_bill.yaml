@@ -24,7 +24,7 @@ parameters:
     en_US: The QuickBooks vendor ID for the bill
     zh_Hans: 账单的 QuickBooks 供应商 ID
   llm_description: The QuickBooks Online vendor ID (numeric string)
-  form: form
+  form: llm
 - name: line_items
   type: string
   required: true
@@ -50,7 +50,7 @@ parameters:
     Example: [{"amount": 500, "description": "Office supplies", "account_id": "64"}]
 
     '
-  form: form
+  form: llm
 - name: txn_date
   type: string
   required: false
@@ -61,7 +61,7 @@ parameters:
     en_US: Bill date (YYYY-MM-DD format)
     zh_Hans: 账单日期（YYYY-MM-DD 格式）
   llm_description: Bill date in YYYY-MM-DD format. Defaults to today if not provided.
-  form: form
+  form: llm
 - name: due_date
   type: string
   required: false
@@ -72,7 +72,7 @@ parameters:
     en_US: Payment due date (YYYY-MM-DD format)
     zh_Hans: 付款到期日期（YYYY-MM-DD 格式）
   llm_description: Payment due date in YYYY-MM-DD format
-  form: form
+  form: llm
 - name: doc_number
   type: string
   required: false
@@ -83,7 +83,7 @@ parameters:
     en_US: Bill reference/document number
     zh_Hans: 账单参考/文档编号
   llm_description: Bill reference number or vendor invoice number
-  form: form
+  form: llm
 - name: private_note
   type: string
   required: false
@@ -94,7 +94,7 @@ parameters:
     en_US: Internal note
     zh_Hans: 内部备注
   llm_description: Internal note for the bill
-  form: form
+  form: llm
 - name: ap_account_id
   type: string
   required: false
@@ -106,7 +106,7 @@ parameters:
     zh_Hans: 应付账款账户 ID（不指定则使用默认）
   llm_description: Optional Accounts Payable account ID. Uses default AP account if
     not specified.
-  form: form
+  form: llm
 extra:
   python:
     source: tools/create_bill.py
