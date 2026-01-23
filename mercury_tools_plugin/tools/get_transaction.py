@@ -23,6 +23,10 @@ class GetTransactionTool(Tool):
             Detailed transaction information
         """
         # Get parameters
+        account_id = tool_parameters.get("account_id", "")
+        if not account_id:
+            raise ValueError("Account ID is required.")
+
         transaction_id = tool_parameters.get("transaction_id", "")
         if not transaction_id:
             raise ValueError("Transaction ID is required.")
@@ -48,7 +52,7 @@ class GetTransactionTool(Tool):
 
         try:
             response = httpx.get(
-                f"{api_base_url}/transaction/{transaction_id}",
+                f"{api_base_url}/account/{account_id}/transaction/{transaction_id}",
                 headers=headers,
                 timeout=15
             )
