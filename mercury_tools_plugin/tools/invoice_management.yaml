@@ -23,7 +23,7 @@ parameters:
       en_US: The operation to perform
       zh_Hans: 要执行的操作
     llm_description: "Operation type: list, get, create, update, or cancel"
-    form: llm
+    form: form
     options:
       - value: list
         label:
@@ -56,7 +56,7 @@ parameters:
       en_US: Invoice ID (required for get, update, cancel)
       zh_Hans: 发票 ID（获取、更新、取消时必填）
     llm_description: The UUID of the invoice. Required for get, update, and cancel operations.
-    form: llm
+    form: form
 
   - name: customer_id
     type: string
@@ -68,7 +68,7 @@ parameters:
       en_US: Customer ID (required for create)
       zh_Hans: 客户 ID（创建时必填）
     llm_description: The UUID of the customer receiving the invoice. Required for create.
-    form: llm
+    form: form
 
   - name: destination_account_id
     type: string
@@ -80,7 +80,7 @@ parameters:
       en_US: Mercury account ID for payment receipt (required for create)
       zh_Hans: 接收付款的 Mercury 账户 ID（创建时必填）
     llm_description: The Mercury account ID where payments will be received. Required for create.
-    form: llm
+    form: form
 
   - name: invoice_date
     type: string
@@ -92,7 +92,7 @@ parameters:
       en_US: Invoice date in YYYY-MM-DD format
       zh_Hans: 发票日期，格式 YYYY-MM-DD
     llm_description: The date of the invoice in YYYY-MM-DD format. Required for create.
-    form: llm
+    form: form
 
   - name: due_date
     type: string
@@ -104,7 +104,7 @@ parameters:
       en_US: Payment due date in YYYY-MM-DD format
       zh_Hans: 付款到期日期，格式 YYYY-MM-DD
     llm_description: The payment due date in YYYY-MM-DD format. Required for create.
-    form: llm
+    form: form
 
   - name: line_items_json
     type: string
@@ -116,7 +116,7 @@ parameters:
       en_US: "JSON array of line items: [{\"name\": \"Service\", \"quantity\": 1, \"unitPrice\": 100}]"
       zh_Hans: "行项目 JSON 数组: [{\"name\": \"服务\", \"quantity\": 1, \"unitPrice\": 100}]"
     llm_description: "JSON array of line items. Each item: {name: string, quantity: number, unitPrice: number, salesTaxRate?: number}"
-    form: llm
+    form: form
 
   - name: invoice_number
     type: string
@@ -128,7 +128,7 @@ parameters:
       en_US: Custom invoice number for the payer
       zh_Hans: 自定义发票编号
     llm_description: Optional custom invoice number visible to the payer
-    form: llm
+    form: form
 
   - name: po_number
     type: string
@@ -140,7 +140,7 @@ parameters:
       en_US: Purchase order reference number
       zh_Hans: 采购订单参考号
     llm_description: Optional purchase order reference number
-    form: llm
+    form: form
 
   - name: payer_memo
     type: string
@@ -152,7 +152,7 @@ parameters:
       en_US: Note visible to the customer
       zh_Hans: 客户可见的备注
     llm_description: Optional note visible to the customer on the invoice
-    form: llm
+    form: form
 
   - name: internal_note
     type: string
@@ -164,7 +164,7 @@ parameters:
       en_US: Internal note (not visible to customer)
       zh_Hans: 内部备注（客户不可见）
     llm_description: Optional internal note not visible to the customer
-    form: llm
+    form: form
 
   - name: credit_card_enabled
     type: boolean
@@ -177,7 +177,7 @@ parameters:
       en_US: Allow credit card payments
       zh_Hans: 允许信用卡付款
     llm_description: Whether to enable credit card payments for this invoice
-    form: llm
+    form: form
 
   - name: ach_debit_enabled
     type: boolean
@@ -190,7 +190,7 @@ parameters:
       en_US: Allow ACH debit payments
       zh_Hans: 允许 ACH 借记付款
     llm_description: Whether to enable ACH debit payments for this invoice
-    form: llm
+    form: form
 
 output_schema:
   type: object

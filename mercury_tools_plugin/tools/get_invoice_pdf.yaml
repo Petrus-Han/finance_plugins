@@ -23,7 +23,7 @@ parameters:
       en_US: The invoice ID to download
       zh_Hans: 要下载的发票 ID
     llm_description: The UUID of the invoice to download as PDF
-    form: llm
+    form: form
 
 output_schema:
   type: object

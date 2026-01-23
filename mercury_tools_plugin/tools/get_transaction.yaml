@@ -20,7 +20,7 @@ parameters:
       en_US: The Mercury account ID that contains the transaction
       zh_Hans: 包含该交易的 Mercury 账户 ID
     llm_description: Mercury account ID (UUID format)
-    form: llm
+    form: form
   - name: transaction_id
     type: string
     required: true
@@ -31,7 +31,7 @@ parameters:
       en_US: The unique identifier of the transaction
       zh_Hans: 交易的唯一标识符
     llm_description: Mercury transaction ID (e.g., txn_xxx)
-    form: llm
+    form: form
 
 output_schema:
   type: object

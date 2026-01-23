@@ -23,7 +23,7 @@ parameters:
       en_US: The operation to perform
       zh_Hans: 要执行的操作
     llm_description: "Operation type: list, get, create, update, or delete"
-    form: llm
+    form: form
     options:
       - value: list
         label:
@@ -56,7 +56,7 @@ parameters:
       en_US: Customer ID (required for get, update, delete)
       zh_Hans: 客户 ID（获取、更新、删除时必填）
     llm_description: The UUID of the customer. Required for get, update, and delete operations.
-    form: llm
+    form: form
 
   - name: name
     type: string
@@ -68,7 +68,7 @@ parameters:
       en_US: Customer name (required for create/update)
       zh_Hans: 客户名称（创建/更新时必填）
     llm_description: The name of the customer. Required for create and update operations.
-    form: llm
+    form: form
 
   - name: email
     type: string
@@ -80,7 +80,7 @@ parameters:
       en_US: Customer email (required for create/update)
       zh_Hans: 客户邮箱（创建/更新时必填）
     llm_description: The email address of the customer. Required for create and update operations.
-    form: llm
+    form: form
 
   - name: address1
     type: string
@@ -92,7 +92,7 @@ parameters:
       en_US: Primary street address
       zh_Hans: 主要街道地址
     llm_description: Primary street address line
-    form: llm
+    form: form
 
   - name: address2
     type: string
@@ -104,7 +104,7 @@ parameters:
       en_US: Secondary street address (optional)
       zh_Hans: 次要街道地址（可选）
     llm_description: Secondary street address line (optional)
-    form: llm
+    form: form
 
   - name: city
     type: string
@@ -116,7 +116,7 @@ parameters:
       en_US: City name
       zh_Hans: 城市名称
     llm_description: City name for the address
-    form: llm
+    form: form
 
   - name: region
     type: string
@@ -128,7 +128,7 @@ parameters:
       en_US: State, province, or region
       zh_Hans: 州、省或地区
     llm_description: State, province, or region code
-    form: llm
+    form: form
 
   - name: postal_code
     type: string
@@ -140,7 +140,7 @@ parameters:
       en_US: Postal or ZIP code
       zh_Hans: 邮政编码
     llm_description: Postal or ZIP code
-    form: llm
+    form: form
 
   - name: country
     type: string
@@ -152,7 +152,7 @@ parameters:
       en_US: ISO 3166-1 alpha-2 country code (e.g., US)
       zh_Hans: ISO 3166-1 alpha-2 国家代码（如 US）
     llm_description: Country code in ISO 3166-1 alpha-2 format (e.g., US, CA, GB)
-    form: llm
+    form: form
 
   - name: resend_open_invoices
     type: boolean
@@ -165,7 +165,7 @@ parameters:
       en_US: Whether to resend open invoices after update
       zh_Hans: 更新后是否重发未付发票
     llm_description: Whether to resend open invoices to the customer after updating their information. Only used for update operation.
-    form: llm
+    form: form
 
 output_schema:
   type: object

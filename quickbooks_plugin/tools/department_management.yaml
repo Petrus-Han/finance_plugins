@@ -26,7 +26,7 @@ parameters:
       en_US: Operation
       zh_Hans: 操作
     llm_description: "Operation type: create, read, update, or query"
-    form: llm
+    form: form
     options:
       - value: create
         label:
@@ -67,7 +67,7 @@ parameters:
       en_US: Department ID
       zh_Hans: 部门 ID
     llm_description: Required for read and update operations.
-    form: llm
+    form: form
 
   - name: sync_token
     type: string
@@ -79,7 +79,7 @@ parameters:
       en_US: Sync Token
       zh_Hans: 同步令牌
     llm_description: Required for update operation.
-    form: llm
+    form: form
 
   - name: name
     type: string
@@ -91,7 +91,7 @@ parameters:
       en_US: Department Name
       zh_Hans: 部门名称
     llm_description: Required for create operation.
-    form: llm
+    form: form
 
   - name: parent_id
     type: string
@@ -103,7 +103,7 @@ parameters:
       en_US: Parent Department ID
       zh_Hans: 父部门 ID
     llm_description: Optional - provide to create a subdepartment.
-    form: llm
+    form: form
 
   - name: active
     type: boolean
@@ -114,7 +114,7 @@ parameters:
     human_description:
       en_US: Active
       zh_Hans: 启用状态
-    form: llm
+    form: form
 
   - name: query_string
     type: string
@@ -125,7 +125,7 @@ parameters:
     human_description:
       en_US: Query String
       zh_Hans: 查询条件
-    form: llm
+    form: form
 
 output_schema:
   type: object

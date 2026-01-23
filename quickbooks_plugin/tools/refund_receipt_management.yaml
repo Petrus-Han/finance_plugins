@@ -26,7 +26,7 @@ parameters:
       en_US: Operation
       zh_Hans: 操作
     llm_description: "Operation type: create, read, delete, or query"
-    form: llm
+    form: form
     options:
       - value: create
         label:
@@ -67,7 +67,7 @@ parameters:
       en_US: Refund Receipt ID
       zh_Hans: 退款收据 ID
     llm_description: Required for read and delete operations.
-    form: llm
+    form: form
 
   - name: sync_token
     type: string
@@ -79,7 +79,7 @@ parameters:
       en_US: Sync Token
       zh_Hans: 同步令牌
     llm_description: Required for delete operation.
-    form: llm
+    form: form
 
   - name: deposit_to_account_id
     type: string
@@ -91,7 +91,7 @@ parameters:
       en_US: Deposit To Account ID
       zh_Hans: 来源账户 ID
     llm_description: Required for create - the account from which refund is issued.
-    form: llm
+    form: form
 
   - name: customer_id
     type: string
@@ -102,7 +102,7 @@ parameters:
     human_description:
       en_US: Customer ID
       zh_Hans: 客户 ID
-    form: llm
+    form: form
 
   - name: lines_json
     type: string
@@ -114,7 +114,7 @@ parameters:
       en_US: Line Items (JSON)
       zh_Hans: 行项目 (JSON)
     llm_description: "JSON array: [{\"ItemRef\": {\"value\": \"1\"}, \"Qty\": 1, \"UnitPrice\": 100, \"Amount\": 100}]"
-    form: llm
+    form: form
 
   - name: payment_method_id
     type: string
@@ -125,7 +125,7 @@ parameters:
     human_description:
       en_US: Payment Method ID
       zh_Hans: 付款方式 ID
-    form: llm
+    form: form
 
   - name: txn_date
     type: string
@@ -136,7 +136,7 @@ parameters:
     human_description:
       en_US: Transaction Date
       zh_Hans: 交易日期
-    form: llm
+    form: form
 
   - name: customer_memo
     type: string
@@ -147,7 +147,7 @@ parameters:
     human_description:
       en_US: Customer Memo
       zh_Hans: 客户备注
-    form: llm
+    form: form
 
   - name: private_note
     type: string
@@ -158,7 +158,7 @@ parameters:
     human_description:
       en_US: Private Note
       zh_Hans: 内部备注
-    form: llm
+    form: form
 
   - name: query_string
     type: string
@@ -169,7 +169,7 @@ parameters:
     human_description:
       en_US: Query String
       zh_Hans: 查询条件
-    form: llm
+    form: form
 
 output_schema:
   type: object

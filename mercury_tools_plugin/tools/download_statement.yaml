@@ -23,7 +23,7 @@ parameters:
       en_US: The statement ID to download (from get_statements)
       zh_Hans: 要下载的账单 ID（从获取账单列表获得）
     llm_description: The UUID of the statement to download as PDF. Get this from the get_statements tool response.
-    form: llm
+    form: form
 
 output_schema:
   type: object
