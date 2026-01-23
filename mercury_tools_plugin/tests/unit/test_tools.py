@@ -247,15 +247,31 @@ class TestGetTransactionTool:
             list(tool._invoke({"account_id": "acc_001", "transaction_id": "txn_invalid"}))
         assert "not found" in str(excinfo.value)
 
-    def test_get_transaction_missing_account_id(self):
-        """Test error when account_id is missing."""
+    @patch('httpx.get')
+    def test_get_transaction_without_account_id(self, mock_get):
+        """Test transaction retrieval without account_id uses /transaction/{id} endpoint."""
         from tools.get_transaction import GetTransactionTool
 
-        tool = GetTransactionTool(runtime=create_mock_runtime(), session=create_mock_session())
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            "id": "txn_123",
+            "accountId": "acc_001",
+            "amount": -500.00,
+            "status": "sent",
+        }
+        mock_get.return_value = mock_response
 
-        with pytest.raises(ValueError) as excinfo:
-            list(tool._invoke({"transaction_id": "txn_123"}))
-        assert "Account ID is required" in str(excinfo.value)
+        tool = GetTransactionTool(runtime=create_mock_runtime(), session=create_mock_session())
+        results = list(tool._invoke({"transaction_id": "txn_123"}))
+
+        assert len(results) == 1
+
+        # Verify uses /transaction/{id} endpoint (without account_id)
+        call_args = mock_get.call_args
+        url = call_args[0][0] if call_args[0] else call_args[1].get('url', '')
+        assert "/transaction/txn_123" in url, f"Incorrect endpoint: {url}"
+        assert "/account/" not in url, f"Should not include account in path: {url}"
 
     def test_get_transaction_missing_transaction_id(self):
         """Test error when transaction_id is missing."""
@@ -405,8 +421,8 @@ class TestAPIEndpointPaths:
         assert "/api/v1/account/acc_123/transactions" in url, f"Expected /api/v1/account/acc_123/transactions, got: {url}"
 
     @patch('httpx.get')
-    def test_get_transaction_endpoint(self, mock_get):
-        """Verify GET /api/v1/account/{id}/transaction/{txnId} endpoint."""
+    def test_get_transaction_endpoint_with_account_id(self, mock_get):
+        """Verify GET /api/v1/account/{id}/transaction/{txnId} endpoint when account_id is provided."""
         from tools.get_transaction import GetTransactionTool
 
         mock_response = MagicMock()
@@ -419,6 +435,23 @@ class TestAPIEndpointPaths:
 
         url = mock_get.call_args[0][0]
         assert "/api/v1/account/acc_123/transaction/txn_456" in url, f"Expected /api/v1/account/acc_123/transaction/txn_456, got: {url}"
+
+    @patch('httpx.get')
+    def test_get_transaction_endpoint_without_account_id(self, mock_get):
+        """Verify GET /api/v1/transaction/{id} endpoint when account_id is not provided."""
+        from tools.get_transaction import GetTransactionTool
+
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {"id": "txn_456", "accountId": "acc_123"}
+        mock_get.return_value = mock_response
+
+        tool = GetTransactionTool(runtime=create_mock_runtime(), session=create_mock_session())
+        list(tool._invoke({"transaction_id": "txn_456"}))
+
+        url = mock_get.call_args[0][0]
+        assert "/api/v1/transaction/txn_456" in url, f"Expected /api/v1/transaction/txn_456, got: {url}"
+        assert "/account/" not in url, f"Should not include /account/ when account_id not provided: {url}"
 
     @patch('httpx.patch')
     def test_update_transaction_endpoint(self, mock_patch):
