@@ -23,7 +23,7 @@ parameters:
       en_US: The Mercury account ID to retrieve transactions for. If not provided, fetches transactions for all accounts.
       zh_Hans: 要检索交易的 Mercury 账户 ID。如果不提供，将获取所有账户的交易。
     llm_description: The Mercury account ID to retrieve transactions for. If not provided, fetches transactions for all accounts.
-    form: form
+    form: llm
 
   - name: start_date
     type: string
@@ -35,7 +35,7 @@ parameters:
       en_US: Start date for filtering transactions (ISO 8601 format, e.g., 2026-01-01T00:00:00Z)
       zh_Hans: 过滤交易的开始日期（ISO 8601 格式，例如 2026-01-01T00:00:00Z）
     llm_description: Optional start date for filtering transactions in ISO 8601 format (e.g., 2026-01-01T00:00:00Z)
-    form: form
+    form: llm
 
   - name: end_date
     type: string
@@ -47,7 +47,7 @@ parameters:
       en_US: End date for filtering transactions (ISO 8601 format, e.g., 2026-01-31T23:59:59Z)
       zh_Hans: 过滤交易的结束日期（ISO 8601 格式，例如 2026-01-31T23:59:59Z）
     llm_description: Optional end date for filtering transactions in ISO 8601 format (e.g., 2026-01-31T23:59:59Z)
-    form: form
+    form: llm
 
   - name: limit
     type: number
@@ -60,7 +60,7 @@ parameters:
       en_US: Maximum number of transactions to return (default 100)
       zh_Hans: 返回的最大交易数量（默认 100）
     llm_description: Maximum number of transactions to return (default 100)
-    form: form
+    form: llm
 
   - name: offset
     type: number
@@ -73,7 +73,7 @@ parameters:
       en_US: Number of transactions to skip for pagination (default 0)
       zh_Hans: 用于分页的跳过交易数量（默认 0）
     llm_description: Number of transactions to skip for pagination (default 0)
-    form: form
+    form: llm
 
 output_schema:
   type: object

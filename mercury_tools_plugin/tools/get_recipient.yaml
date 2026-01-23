@@ -20,7 +20,7 @@ parameters:
       en_US: The unique identifier of the recipient
       zh_Hans: 收款人的唯一标识符
     llm_description: Mercury recipient ID (e.g., recipient_xxx)
-    form: form
+    form: llm
 
 output_schema:
   type: object

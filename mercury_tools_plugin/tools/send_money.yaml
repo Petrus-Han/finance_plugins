@@ -20,7 +20,7 @@ parameters:
       en_US: The Mercury account ID to send money from
       zh_Hans: 用于发送付款的 Mercury 账户 ID
     llm_description: The Mercury source account ID (starts with 'acc_' or 'account_')
-    form: form
+    form: llm
 
   - name: recipient_id
     type: string
@@ -32,7 +32,7 @@ parameters:
       en_US: The recipient ID to send money to
       zh_Hans: 收款人 ID
     llm_description: The Mercury recipient ID (starts with 'rcp_' or 'recipient_')
-    form: form
+    form: llm
 
   - name: amount
     type: number
@@ -44,7 +44,7 @@ parameters:
       en_US: Amount to send (positive number)
       zh_Hans: 发送金额（正数）
     llm_description: The amount to send in USD (must be positive)
-    form: form
+    form: llm
 
   - name: payment_method
     type: select
@@ -82,7 +82,7 @@ parameters:
       en_US: Internal note for the payment (not visible to recipient)
       zh_Hans: 付款的内部备注（收款人不可见）
     llm_description: Optional internal note for the payment
-    form: form
+    form: llm
 
   - name: external_memo
     type: string
@@ -94,7 +94,7 @@ parameters:
       en_US: Memo visible to the recipient
       zh_Hans: 收款人可见的备注
     llm_description: Optional memo that will be visible to the recipient
-    form: form
+    form: llm
 
   - name: idempotency_key
     type: string

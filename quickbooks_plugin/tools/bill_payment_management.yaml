@@ -26,7 +26,7 @@ parameters:
       en_US: The operation to perform
       zh_Hans: 要执行的操作
     llm_description: "Operation type: create, read, update, delete, void, or query"
-    form: form
+    form: llm
     options:
       - value: create
         label:
@@ -74,7 +74,7 @@ parameters:
       en_US: The QuickBooks BillPayment ID
       zh_Hans: QuickBooks 账单付款 ID
     llm_description: The QuickBooks BillPayment ID. Required for read, delete, and void.
-    form: form
+    form: llm
 
   - name: sync_token
     type: string
@@ -86,7 +86,7 @@ parameters:
       en_US: Sync token for concurrency control
       zh_Hans: 并发控制的同步令牌
     llm_description: Required for delete and void operations.
-    form: form
+    form: llm
 
   - name: vendor_id
     type: string
@@ -98,7 +98,7 @@ parameters:
       en_US: The QuickBooks Vendor ID
       zh_Hans: QuickBooks 供应商 ID
     llm_description: The QuickBooks Vendor ID. Required for create.
-    form: form
+    form: llm
 
   - name: total_amount
     type: number
@@ -110,7 +110,7 @@ parameters:
       en_US: The total payment amount
       zh_Hans: 总付款金额
     llm_description: The total payment amount. Required for create.
-    form: form
+    form: llm
 
   - name: pay_type
     type: select
@@ -122,7 +122,7 @@ parameters:
       en_US: Payment type (Check or CreditCard)
       zh_Hans: 付款类型（支票或信用卡）
     llm_description: Payment type (Check or CreditCard). Required for create.
-    form: form
+    form: llm
     options:
       - value: Check
         label:
@@ -149,7 +149,7 @@ parameters:
       en_US: Bank account ID for Check payments
       zh_Hans: 支票付款的银行账户 ID
     llm_description: Bank account ID for Check payments. Required when pay_type is Check.
-    form: form
+    form: llm
 
   - name: credit_card_account_id
     type: string
@@ -161,7 +161,7 @@ parameters:
       en_US: Credit card account ID for CreditCard payments
       zh_Hans: 信用卡付款的账户 ID
     llm_description: Credit card account ID for CreditCard payments. Required when pay_type is CreditCard.
-    form: form
+    form: llm
 
   - name: bill_id
     type: string
@@ -173,7 +173,7 @@ parameters:
       en_US: The Bill ID to pay
       zh_Hans: 要支付的账单 ID
     llm_description: The Bill ID to pay
-    form: form
+    form: llm
 
   - name: txn_date
     type: string
@@ -185,7 +185,7 @@ parameters:
       en_US: Payment date in YYYY-MM-DD format
       zh_Hans: 付款日期（YYYY-MM-DD 格式）
     llm_description: Payment date in YYYY-MM-DD format
-    form: form
+    form: llm
 
   - name: private_note
     type: string
@@ -197,7 +197,7 @@ parameters:
       en_US: Private note for internal use
       zh_Hans: 内部使用的备注
     llm_description: Private note for internal use
-    form: form
+    form: llm
 
   - name: query_string
     type: string
@@ -209,7 +209,7 @@ parameters:
       en_US: SQL-like WHERE clause for query
       zh_Hans: 类 SQL 的 WHERE 查询条件
     llm_description: "SQL-like WHERE clause for query"
-    form: form
+    form: llm
 
 output_schema:
   type: object

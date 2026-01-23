@@ -26,7 +26,7 @@ parameters:
       en_US: Operation
       zh_Hans: 操作
     llm_description: "Operation type: create, read, update, or query"
-    form: form
+    form: llm
     options:
       - value: create
         label:
@@ -67,7 +67,7 @@ parameters:
       en_US: Employee ID
       zh_Hans: 员工 ID
     llm_description: Required for read and update operations.
-    form: form
+    form: llm
 
   - name: sync_token
     type: string
@@ -79,7 +79,7 @@ parameters:
       en_US: Sync Token
       zh_Hans: 同步令牌
     llm_description: Required for update operation.
-    form: form
+    form: llm
 
   - name: given_name
     type: string
@@ -91,7 +91,7 @@ parameters:
       en_US: First Name
       zh_Hans: 名
     llm_description: At least one of given_name or family_name is required for create.
-    form: form
+    form: llm
 
   - name: family_name
     type: string
@@ -102,7 +102,7 @@ parameters:
     human_description:
       en_US: Last Name
       zh_Hans: 姓
-    form: form
+    form: llm
 
   - name: display_name
     type: string
@@ -113,7 +113,7 @@ parameters:
     human_description:
       en_US: Display Name
       zh_Hans: 显示名称
-    form: form
+    form: llm
 
   - name: email
     type: string
@@ -124,7 +124,7 @@ parameters:
     human_description:
       en_US: Email
       zh_Hans: 邮箱
-    form: form
+    form: llm
 
   - name: phone
     type: string
@@ -135,7 +135,7 @@ parameters:
     human_description:
       en_US: Phone
       zh_Hans: 电话
-    form: form
+    form: llm
 
   - name: mobile
     type: string
@@ -146,7 +146,7 @@ parameters:
     human_description:
       en_US: Mobile
       zh_Hans: 手机
-    form: form
+    form: llm
 
   - name: address_line1
     type: string
@@ -157,7 +157,7 @@ parameters:
     human_description:
       en_US: Address Line 1
       zh_Hans: 地址行 1
-    form: form
+    form: llm
 
   - name: city
     type: string
@@ -168,7 +168,7 @@ parameters:
     human_description:
       en_US: City
       zh_Hans: 城市
-    form: form
+    form: llm
 
   - name: state
     type: string
@@ -179,7 +179,7 @@ parameters:
     human_description:
       en_US: State
       zh_Hans: 州/省
-    form: form
+    form: llm
 
   - name: postal_code
     type: string
@@ -190,7 +190,7 @@ parameters:
     human_description:
       en_US: Postal Code
       zh_Hans: 邮编
-    form: form
+    form: llm
 
   - name: active
     type: boolean
@@ -201,7 +201,7 @@ parameters:
     human_description:
       en_US: Active
       zh_Hans: 启用状态
-    form: form
+    form: llm
 
   - name: query_string
     type: string
@@ -212,7 +212,7 @@ parameters:
     human_description:
       en_US: Query String
       zh_Hans: 查询条件
-    form: form
+    form: llm
 
 output_schema:
   type: object

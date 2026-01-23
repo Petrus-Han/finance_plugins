@@ -23,7 +23,7 @@ parameters:
       en_US: The Mercury account ID to get statements for. If not provided, fetches statements for all accounts.
       zh_Hans: 要获取账单的 Mercury 账户 ID。如果不提供，将获取所有账户的账单。
     llm_description: The UUID of the Mercury account to retrieve statements for. If not provided, fetches statements for all accounts.
-    form: form
+    form: llm
 
 output_schema:
   type: object
