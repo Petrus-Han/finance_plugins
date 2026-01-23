@@ -20,7 +20,7 @@ parameters:
       en_US: Name of the recipient (person or company)
       zh_Hans: 收款人名称（个人或公司）
     llm_description: The display name for this recipient
-    form: form
+    form: llm
 
   - name: payment_method
     type: select
@@ -57,7 +57,7 @@ parameters:
       en_US: Bank account number (required for ACH/wire)
       zh_Hans: 银行账户号码（ACH/电汇必填）
     llm_description: The bank account number for electronic payments
-    form: form
+    form: llm
 
   - name: routing_number
     type: string
@@ -69,7 +69,7 @@ parameters:
       en_US: ABA routing number (required for ACH/wire)
       zh_Hans: ABA 路由号码（ACH/电汇必填）
     llm_description: The 9-digit ABA routing number
-    form: form
+    form: llm
 
   - name: account_type
     type: select
@@ -102,7 +102,7 @@ parameters:
       en_US: Contact email for the recipient
       zh_Hans: 收款人的联系邮箱
     llm_description: Email address for payment notifications
-    form: form
+    form: llm
 
   - name: address1
     type: string
@@ -113,7 +113,7 @@ parameters:
     human_description:
       en_US: Street address (required for check payments)
       zh_Hans: 街道地址（支票付款必填）
-    form: form
+    form: llm
 
   - name: city
     type: string
@@ -124,7 +124,7 @@ parameters:
     human_description:
       en_US: City (required for check payments)
       zh_Hans: 城市（支票付款必填）
-    form: form
+    form: llm
 
   - name: region
     type: string
@@ -135,7 +135,7 @@ parameters:
     human_description:
       en_US: State or region code (e.g., CA, NY)
       zh_Hans: 州或地区代码（如 CA, NY）
-    form: form
+    form: llm
 
   - name: postal_code
     type: string
@@ -146,7 +146,7 @@ parameters:
     human_description:
       en_US: ZIP or postal code
       zh_Hans: ZIP 或邮政编码
-    form: form
+    form: llm
 
   - name: country
     type: string

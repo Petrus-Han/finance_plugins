@@ -20,7 +20,7 @@ parameters:
       en_US: The unique identifier of the transaction to update
       zh_Hans: 要更新的交易的唯一标识符
     llm_description: Mercury transaction ID (e.g., txn_xxx)
-    form: form
+    form: llm
 
   - name: note
     type: string
@@ -32,7 +32,7 @@ parameters:
       en_US: Internal note for this transaction
       zh_Hans: 此交易的内部备注
     llm_description: Internal note to add or update
-    form: form
+    form: llm
 
   - name: category_id
     type: string
@@ -44,7 +44,7 @@ parameters:
       en_US: Mercury category ID to assign to this transaction
       zh_Hans: 分配给此交易的 Mercury 分类 ID
     llm_description: The category ID to assign
-    form: form
+    form: llm
 
 output_schema:
   type: object

@@ -56,7 +56,7 @@ parameters:
     en_US: Customer display name (required for create, used for search)
     zh_Hans: 客户显示名称（创建时必填，搜索时使用）
   llm_description: The name to display for this customer
-  form: form
+  form: llm
 - name: company_name
   type: string
   required: false
@@ -66,7 +66,7 @@ parameters:
   human_description:
     en_US: Company name (optional)
     zh_Hans: 公司名称（可选）
-  form: form
+  form: llm
 - name: email
   type: string
   required: false
@@ -76,7 +76,7 @@ parameters:
   human_description:
     en_US: Primary email address
     zh_Hans: 主要电子邮件地址
-  form: form
+  form: llm
 - name: phone
   type: string
   required: false
@@ -86,7 +86,7 @@ parameters:
   human_description:
     en_US: Primary phone number
     zh_Hans: 主要电话号码
-  form: form
+  form: llm
 extra:
   python:
     source: tools/customer_management.py
