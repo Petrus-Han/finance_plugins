@@ -1,0 +1,111 @@
+identity:
+  name: update_journal_entry
+  author: petrus
+  label:
+    en_US: Update Journal Entry
+    zh_Hans: 更新日记账分录
+
+description:
+  human:
+    en_US: Update an existing journal entry
+    zh_Hans: 更新已有的日记账分录
+  llm: Update an existing journal entry in QuickBooks. Requires the journal entry ID and sync token from a previous read operation.
+
+parameters:
+  - name: journal_entry_id
+    type: string
+    required: true
+    label:
+      en_US: Journal Entry ID
+      zh_Hans: 日记账分录 ID
+    human_description:
+      en_US: The ID of the journal entry to update
+      zh_Hans: 要更新的日记账分录 ID
+    llm_description: QuickBooks journal entry ID to update
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: true
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync token from the journal entry (required for concurrency control)
+      zh_Hans: 日记账分录的同步令牌（用于并发控制）
+    llm_description: Sync token from the journal entry. Get this from a read operation first.
+    form: llm
+
+  - name: lines_json
+    type: string
+    required: true
+    label:
+      en_US: Lines (JSON)
+      zh_Hans: 分录行 (JSON)
+    human_description:
+      en_US: "JSON array of lines with PostingType (Debit/Credit), AccountRef, Amount"
+      zh_Hans: "分录行 JSON 数组，包含 PostingType、AccountRef、Amount"
+    llm_description: 'JSON array of journal entry lines. Example: [{"PostingType": "Debit", "AccountRef": {"value": "1"}, "Amount": 100}, {"PostingType": "Credit", "AccountRef": {"value": "2"}, "Amount": 100}]'
+    form: llm
+
+  - name: txn_date
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
+      en_US: Transaction date in YYYY-MM-DD format
+      zh_Hans: 交易日期，格式为 YYYY-MM-DD
+    llm_description: Transaction date in YYYY-MM-DD format
+    form: llm
+
+  - name: doc_number
+    type: string
+    required: false
+    label:
+      en_US: Document Number
+      zh_Hans: 凭证号
+    human_description:
+      en_US: Reference/document number
+      zh_Hans: 参考/凭证号
+    llm_description: Reference number for the journal entry
+    form: llm
+
+  - name: private_note
+    type: string
+    required: false
+    label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Internal note for the journal entry
+      zh_Hans: 日记账分录的内部备注
+    llm_description: Private note visible only within QuickBooks
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Journal entry ID
+    sync_token:
+      type: string
+      description: New sync token after update
+    doc_number:
+      type: string
+      description: Document number
+    txn_date:
+      type: string
+      description: Transaction date
+    total_amount:
+      type: number
+      description: Total amount
+    lines:
+      type: array
+      description: Updated journal entry lines
+
+extra:
+  python:
+    source: tools/update_journal_entry.py

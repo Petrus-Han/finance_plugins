@@ -1,0 +1,304 @@
+identity:
+  name: create_journal_entry
+  author: petrus
+  label:
+    en_US: Create Journal Entry
+    zh_Hans: 创建日记账分录
+
+description:
+  human:
+    en_US: Create a new journal entry with debit and credit lines (supports up to 4 lines)
+    zh_Hans: 创建包含借方和贷方分录行的新日记账分录（最多支持4行）
+  llm: Create a journal entry in QuickBooks. Supports up to 4 lines. Total debits must equal total credits. Use get_chart_of_accounts to find account IDs first.
+
+parameters:
+  # Line 1
+  - name: line1_type
+    type: select
+    required: true
+    label:
+      en_US: "Line 1: Type"
+      zh_Hans: "第1行: 类型"
+    human_description:
+      en_US: Debit or Credit for line 1
+      zh_Hans: 第1行的借方或贷方
+    llm_description: "Posting type for line 1: Debit or Credit"
+    form: llm
+    options:
+      - value: Debit
+        label:
+          en_US: Debit (借)
+          zh_Hans: 借方
+      - value: Credit
+        label:
+          en_US: Credit (贷)
+          zh_Hans: 贷方
+
+  - name: line1_account_id
+    type: string
+    required: true
+    label:
+      en_US: "Line 1: Account ID"
+      zh_Hans: "第1行: 科目ID"
+    human_description:
+      en_US: Account ID from Chart of Accounts
+      zh_Hans: 来自科目表的账户ID
+    llm_description: "Account ID for line 1. Get from get_chart_of_accounts tool."
+    form: llm
+
+  - name: line1_amount
+    type: number
+    required: true
+    label:
+      en_US: "Line 1: Amount"
+      zh_Hans: "第1行: 金额"
+    human_description:
+      en_US: Amount for line 1 (positive number)
+      zh_Hans: 第1行金额（正数）
+    llm_description: "Amount for line 1 (positive number)"
+    form: llm
+
+  - name: line1_description
+    type: string
+    required: false
+    label:
+      en_US: "Line 1: Description"
+      zh_Hans: "第1行: 描述"
+    human_description:
+      en_US: Optional description for line 1
+      zh_Hans: 第1行的可选描述
+    form: llm
+
+  # Line 2
+  - name: line2_type
+    type: select
+    required: true
+    label:
+      en_US: "Line 2: Type"
+      zh_Hans: "第2行: 类型"
+    human_description:
+      en_US: Debit or Credit for line 2
+      zh_Hans: 第2行的借方或贷方
+    llm_description: "Posting type for line 2: Debit or Credit"
+    form: llm
+    options:
+      - value: Debit
+        label:
+          en_US: Debit (借)
+          zh_Hans: 借方
+      - value: Credit
+        label:
+          en_US: Credit (贷)
+          zh_Hans: 贷方
+
+  - name: line2_account_id
+    type: string
+    required: true
+    label:
+      en_US: "Line 2: Account ID"
+      zh_Hans: "第2行: 科目ID"
+    human_description:
+      en_US: Account ID from Chart of Accounts
+      zh_Hans: 来自科目表的账户ID
+    llm_description: "Account ID for line 2. Get from get_chart_of_accounts tool."
+    form: llm
+
+  - name: line2_amount
+    type: number
+    required: true
+    label:
+      en_US: "Line 2: Amount"
+      zh_Hans: "第2行: 金额"
+    human_description:
+      en_US: Amount for line 2 (positive number)
+      zh_Hans: 第2行金额（正数）
+    llm_description: "Amount for line 2 (positive number)"
+    form: llm
+
+  - name: line2_description
+    type: string
+    required: false
+    label:
+      en_US: "Line 2: Description"
+      zh_Hans: "第2行: 描述"
+    human_description:
+      en_US: Optional description for line 2
+      zh_Hans: 第2行的可选描述
+    form: llm
+
+  # Line 3 (optional)
+  - name: line3_type
+    type: select
+    required: false
+    label:
+      en_US: "Line 3: Type (Optional)"
+      zh_Hans: "第3行: 类型（可选）"
+    human_description:
+      en_US: Debit or Credit for line 3
+      zh_Hans: 第3行的借方或贷方
+    llm_description: "Posting type for line 3 (optional)"
+    form: llm
+    options:
+      - value: Debit
+        label:
+          en_US: Debit (借)
+          zh_Hans: 借方
+      - value: Credit
+        label:
+          en_US: Credit (贷)
+          zh_Hans: 贷方
+
+  - name: line3_account_id
+    type: string
+    required: false
+    label:
+      en_US: "Line 3: Account ID"
+      zh_Hans: "第3行: 科目ID"
+    human_description:
+      en_US: Account ID for line 3
+      zh_Hans: 第3行的账户ID
+    llm_description: "Account ID for line 3 (optional)"
+    form: llm
+
+  - name: line3_amount
+    type: number
+    required: false
+    label:
+      en_US: "Line 3: Amount"
+      zh_Hans: "第3行: 金额"
+    human_description:
+      en_US: Amount for line 3
+      zh_Hans: 第3行金额
+    llm_description: "Amount for line 3 (optional)"
+    form: llm
+
+  - name: line3_description
+    type: string
+    required: false
+    label:
+      en_US: "Line 3: Description"
+      zh_Hans: "第3行: 描述"
+    human_description:
+      en_US: Optional description for line 3
+      zh_Hans: 第3行的可选描述
+    form: llm
+
+  # Line 4 (optional)
+  - name: line4_type
+    type: select
+    required: false
+    label:
+      en_US: "Line 4: Type (Optional)"
+      zh_Hans: "第4行: 类型（可选）"
+    human_description:
+      en_US: Debit or Credit for line 4
+      zh_Hans: 第4行的借方或贷方
+    llm_description: "Posting type for line 4 (optional)"
+    form: llm
+    options:
+      - value: Debit
+        label:
+          en_US: Debit (借)
+          zh_Hans: 借方
+      - value: Credit
+        label:
+          en_US: Credit (贷)
+          zh_Hans: 贷方
+
+  - name: line4_account_id
+    type: string
+    required: false
+    label:
+      en_US: "Line 4: Account ID"
+      zh_Hans: "第4行: 科目ID"
+    human_description:
+      en_US: Account ID for line 4
+      zh_Hans: 第4行的账户ID
+    llm_description: "Account ID for line 4 (optional)"
+    form: llm
+
+  - name: line4_amount
+    type: number
+    required: false
+    label:
+      en_US: "Line 4: Amount"
+      zh_Hans: "第4行: 金额"
+    human_description:
+      en_US: Amount for line 4
+      zh_Hans: 第4行金额
+    llm_description: "Amount for line 4 (optional)"
+    form: llm
+
+  - name: line4_description
+    type: string
+    required: false
+    label:
+      en_US: "Line 4: Description"
+      zh_Hans: "第4行: 描述"
+    human_description:
+      en_US: Optional description for line 4
+      zh_Hans: 第4行的可选描述
+    form: llm
+
+  # Common fields
+  - name: txn_date
+    type: string
+    required: false
+    label:
+      en_US: Transaction Date
+      zh_Hans: 交易日期
+    human_description:
+      en_US: Transaction date in YYYY-MM-DD format
+      zh_Hans: 交易日期，格式为 YYYY-MM-DD
+    llm_description: Transaction date in YYYY-MM-DD format. Defaults to today if not specified.
+    form: llm
+
+  - name: doc_number
+    type: string
+    required: false
+    label:
+      en_US: Document Number
+      zh_Hans: 凭证号
+    human_description:
+      en_US: Reference/document number for the journal entry
+      zh_Hans: 日记账分录的参考/凭证号
+    llm_description: Reference number for the journal entry
+    form: llm
+
+  - name: private_note
+    type: string
+    required: false
+    label:
+      en_US: Private Note
+      zh_Hans: 内部备注
+    human_description:
+      en_US: Internal note for the journal entry
+      zh_Hans: 日记账分录的内部备注
+    llm_description: Private note visible only within QuickBooks
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    id:
+      type: string
+      description: Journal entry ID
+    sync_token:
+      type: string
+      description: Sync token for updates
+    doc_number:
+      type: string
+      description: Document number
+    txn_date:
+      type: string
+      description: Transaction date
+    total_amount:
+      type: number
+      description: Total amount
+    lines:
+      type: array
+      description: Journal entry lines
+
+extra:
+  python:
+    source: tools/create_journal_entry.py

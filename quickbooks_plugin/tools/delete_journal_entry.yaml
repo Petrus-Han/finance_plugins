@@ -1,0 +1,54 @@
+identity:
+  name: delete_journal_entry
+  author: petrus
+  label:
+    en_US: Delete Journal Entry
+    zh_Hans: 删除日记账分录
+
+description:
+  human:
+    en_US: Delete an existing journal entry
+    zh_Hans: 删除已有的日记账分录
+  llm: Delete a journal entry from QuickBooks. Requires the journal entry ID and sync token from a previous read operation.
+
+parameters:
+  - name: journal_entry_id
+    type: string
+    required: true
+    label:
+      en_US: Journal Entry ID
+      zh_Hans: 日记账分录 ID
+    human_description:
+      en_US: The ID of the journal entry to delete
+      zh_Hans: 要删除的日记账分录 ID
+    llm_description: QuickBooks journal entry ID to delete
+    form: llm
+
+  - name: sync_token
+    type: string
+    required: true
+    label:
+      en_US: Sync Token
+      zh_Hans: 同步令牌
+    human_description:
+      en_US: Sync token from the journal entry (required for concurrency control)
+      zh_Hans: 日记账分录的同步令牌（用于并发控制）
+    llm_description: Sync token from the journal entry. Get this from a read operation first.
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Whether deletion was successful
+    deleted_id:
+      type: string
+      description: ID of the deleted journal entry
+    message:
+      type: string
+      description: Status message
+
+extra:
+  python:
+    source: tools/delete_journal_entry.py

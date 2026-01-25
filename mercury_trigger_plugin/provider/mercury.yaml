@@ -99,9 +99,6 @@ subscription_constructor:
         en_US: "Only required when API Environment is set to 'Mock'. Enter the full URL of your mock Mercury server."
         zh_Hans: "仅在 API 环境设置为 'Mock' 时需要填写。输入 mock Mercury 服务器的完整地址。"
 
-events:
-- events/transaction.yaml
-
 identity:
   author: petrus
   name: mercury_trigger
@@ -116,3 +113,6 @@ identity:
 extra:
   python:
     source: provider/mercury.py
+
+events:
+  - events/transaction.yaml
