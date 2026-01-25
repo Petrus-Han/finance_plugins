@@ -99,6 +99,44 @@ subscription_constructor:
         en_US: "Only required when API Environment is set to 'Mock'. Enter the full URL of your mock Mercury server."
         zh_Hans: "仅在 API 环境设置为 'Mock' 时需要填写。输入 mock Mercury 服务器的完整地址。"
 
+  oauth_schema:
+    client_schema:
+    - name: "client_id"
+      type: "secret-input"
+      required: true
+      url: https://mercury.com/developers
+      placeholder:
+        en_US: "Please input your Client ID"
+        zh_Hans: "请输入你的 Client ID"
+      help:
+        en_US: "Client ID is used to authenticate OAuth requests to the Mercury API. Requires Mercury approval for OAuth access."
+        zh_Hans: "Client ID 用于认证 OAuth 请求到 Mercury API。需要 Mercury 批准 OAuth 访问。"
+      label:
+        en_US: "Client ID"
+        zh_Hans: "Client ID"
+    - name: "client_secret"
+      type: "secret-input"
+      required: true
+      url: https://mercury.com/developers
+      placeholder:
+        en_US: "Please input your Client Secret"
+        zh_Hans: "请输入你的 Client Secret"
+      help:
+        en_US: "Client Secret is used to authenticate OAuth requests to the Mercury API."
+        zh_Hans: "Client Secret 用于认证 OAuth 请求到 Mercury API。"
+      label:
+        en_US: "Client Secret"
+        zh_Hans: "Client Secret"
+    credentials_schema:
+    - name: "access_token"
+      type: "secret-input"
+      label:
+        en_US: "Access Token"
+        zh_Hans: "访问令牌"
+    extra:
+      python:
+        source: provider/mercury.py
+
 identity:
   author: petrus
   name: mercury_trigger
