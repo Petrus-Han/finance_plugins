@@ -88,12 +88,15 @@ class JournalEntryManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "create",
                 "journal_entry": self._format(data.get("JournalEntry", {})),
                 "message": "Journal entry created successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -107,12 +110,15 @@ class JournalEntryManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "read",
                 "journal_entry": self._format(data.get("JournalEntry", {})),
                 "message": "Journal entry retrieved successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -161,12 +167,15 @@ class JournalEntryManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "update",
                 "journal_entry": self._format(data.get("JournalEntry", {})),
                 "message": "Journal entry updated successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -182,11 +191,14 @@ class JournalEntryManagementTool(Tool):
         response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
         if response.status_code == 200:
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "delete",
                 "message": f"Journal entry {je_id} deleted successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -203,13 +215,16 @@ class JournalEntryManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("JournalEntry", [])
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "query",
                 "journal_entries": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} journal entries"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
