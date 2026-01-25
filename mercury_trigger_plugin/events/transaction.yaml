@@ -36,7 +36,15 @@ parameters:
 
 output_schema:
   type: object
+  additionalProperties: false
   description: Mercury transaction event payload
+  required:
+    - event_id
+    - transaction_id
+    - operation_type
+    - account_id
+    - amount
+    - status
   properties:
     event_id:
       type: string
