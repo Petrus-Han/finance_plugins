@@ -87,12 +87,15 @@ class PaymentManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             payment = data.get("Payment", {})
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "create",
                 "payment": self._format_payment(payment),
                 "message": "Payment created successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -107,12 +110,15 @@ class PaymentManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             payment = data.get("Payment", {})
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "read",
                 "payment": self._format_payment(payment),
                 "message": "Payment retrieved successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         elif response.status_code == 404:
             raise ValueError(f"Payment not found: {payment_id}")
         else:
@@ -145,12 +151,15 @@ class PaymentManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             payment = data.get("Payment", {})
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "update",
                 "payment": self._format_payment(payment),
                 "message": "Payment updated successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -166,11 +175,14 @@ class PaymentManagementTool(Tool):
         response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
         if response.status_code == 200:
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "delete",
                 "message": f"Payment {payment_id} deleted successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -186,11 +198,14 @@ class PaymentManagementTool(Tool):
         response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
         if response.status_code == 200:
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "void",
                 "message": f"Payment {payment_id} voided successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -207,13 +222,16 @@ class PaymentManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             payments = data.get("QueryResponse", {}).get("Payment", [])
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "query",
                 "payments": [self._format_payment(p) for p in payments],
                 "count": len(payments),
                 "message": f"Found {len(payments)} payments"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
