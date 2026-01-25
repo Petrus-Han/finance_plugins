@@ -97,8 +97,12 @@ class GetAccountsTool(Tool):
                     output.append(account_info)
 
                 logger.info(f"Returning {len(output)} accounts")
-                # Return as JSON message with structured output
-                yield self.create_json_message({"accounts": output})
+                # Yield as variable for direct access
+                yield self.create_variable_message("accounts", output)
+                yield self.create_variable_message("count", len(output))
+
+                # Also yield the full JSON for convenience
+                yield self.create_json_message({"accounts": output, "count": len(output)})
                 logger.info("Successfully yielded JSON message")
 
             elif response.status_code == 401:
