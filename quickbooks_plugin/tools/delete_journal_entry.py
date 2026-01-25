@@ -41,11 +41,14 @@ class DeleteJournalEntryTool(Tool):
             response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
             if response.status_code == 200:
-                yield self.create_json_message({
+                result = {
                     "success": True,
                     "deleted_id": je_id,
                     "message": f"Journal entry {je_id} deleted successfully"
-                })
+                }
+                for key, value in result.items():
+                    yield self.create_variable_message(key, value)
+                yield self.create_json_message(result)
             elif response.status_code == 401:
                 raise ToolProviderCredentialValidationError("Authentication failed. Please check your QuickBooks credentials.")
             elif response.status_code == 404:

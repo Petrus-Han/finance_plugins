@@ -49,10 +49,13 @@ class GetJournalEntryTool(Tool):
         if response.status_code == 200:
             data = response.json()
             je = data.get("JournalEntry", {})
-            yield self.create_json_message({
+            result = {
                 "journal_entry": self._format(je),
                 "count": 1
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         elif response.status_code == 401:
             raise ToolProviderCredentialValidationError("Authentication failed.")
         elif response.status_code == 404:
@@ -74,10 +77,13 @@ class GetJournalEntryTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("JournalEntry", [])
-            yield self.create_json_message({
+            result = {
                 "journal_entries": [self._format(item) for item in items],
                 "count": len(items)
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         elif response.status_code == 401:
             raise ToolProviderCredentialValidationError("Authentication failed.")
         else:

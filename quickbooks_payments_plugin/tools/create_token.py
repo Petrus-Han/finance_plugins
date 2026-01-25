@@ -112,6 +112,8 @@ class CreateTokenTool(Tool):
                     "note": "This token is single-use and expires after 15 minutes"
                 }
 
+                for key, value in result.items():
+                    yield self.create_variable_message(key, value)
                 yield self.create_json_message(result)
 
             elif response.status_code == 400:

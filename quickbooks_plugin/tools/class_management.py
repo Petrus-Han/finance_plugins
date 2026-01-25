@@ -61,12 +61,15 @@ class ClassManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "create",
                 "class": self._format(data.get("Class", {})),
                 "message": "Class created successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -80,12 +83,15 @@ class ClassManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "read",
                 "class": self._format(data.get("Class", {})),
                 "message": "Class retrieved successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -116,12 +122,15 @@ class ClassManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "update",
                 "class": self._format(data.get("Class", {})),
                 "message": "Class updated successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -138,13 +147,16 @@ class ClassManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("Class", [])
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "query",
                 "classes": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} classes"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
