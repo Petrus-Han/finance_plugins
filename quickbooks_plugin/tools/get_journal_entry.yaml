@@ -1,0 +1,54 @@
+identity:
+  name: get_journal_entry
+  author: petrus
+  label:
+    en_US: Get Journal Entry
+    zh_Hans: 获取日记账分录
+
+description:
+  human:
+    en_US: Retrieve journal entry by ID or query multiple entries
+    zh_Hans: 通过 ID 获取日记账分录或查询多条分录
+  llm: Retrieve a specific journal entry by ID, or query multiple journal entries with optional filters.
+
+parameters:
+  - name: journal_entry_id
+    type: string
+    required: false
+    label:
+      en_US: Journal Entry ID
+      zh_Hans: 日记账分录 ID
+    human_description:
+      en_US: The ID of the journal entry to retrieve
+      zh_Hans: 要获取的日记账分录 ID
+    llm_description: QuickBooks journal entry ID. If provided, retrieves a single entry. If not provided, queries all entries.
+    form: llm
+
+  - name: query_string
+    type: string
+    required: false
+    label:
+      en_US: Query Filter
+      zh_Hans: 查询条件
+    human_description:
+      en_US: "WHERE clause for querying (e.g., TxnDate > '2024-01-01')"
+      zh_Hans: "查询的 WHERE 条件（如：TxnDate > '2024-01-01'）"
+    llm_description: "Optional WHERE clause for filtering results. Example: TxnDate > '2024-01-01' AND TotalAmt > 100"
+    form: llm
+
+output_schema:
+  type: object
+  properties:
+    journal_entry:
+      type: object
+      description: Single journal entry (when querying by ID)
+    journal_entries:
+      type: array
+      description: List of journal entries (when querying)
+    count:
+      type: integer
+      description: Number of entries returned
+
+extra:
+  python:
+    source: tools/get_journal_entry.py
