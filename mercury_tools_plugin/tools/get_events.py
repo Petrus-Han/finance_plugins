@@ -58,11 +58,18 @@ class GetEventsTool(Tool):
 
         if response.status_code == 200:
             event = self._format_event(response.json())
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "event": event,
                 "message": "Event retrieved successfully"
-            })
+            }
+
+            # Yield each field as a separate variable for direct access
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+
+            # Also yield the full JSON for convenience
+            yield self.create_json_message(result)
         elif response.status_code == 404:
             raise ValueError(f"Event not found: {event_id}")
         else:
@@ -116,6 +123,11 @@ class GetEventsTool(Tool):
             else:
                 result["has_more"] = False
 
+            # Yield each field as a separate variable for direct access
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+
+            # Also yield the full JSON for convenience
             yield self.create_json_message(result)
         else:
             self._handle_error(response)

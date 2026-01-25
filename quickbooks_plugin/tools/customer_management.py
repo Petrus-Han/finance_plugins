@@ -88,9 +88,9 @@ class CustomerManagementTool(Tool):
             data = response.json()
             customers = data.get("QueryResponse", {}).get("Customer", [])
 
-            result = []
+            customers_list = []
             for cust in customers:
-                result.append({
+                customers_list.append({
                     "id": cust.get("Id"),
                     "display_name": cust.get("DisplayName"),
                     "company_name": cust.get("CompanyName", ""),
@@ -100,10 +100,13 @@ class CustomerManagementTool(Tool):
                     "active": cust.get("Active", True)
                 })
 
-            yield self.create_json_message({
-                "customers": result,
-                "count": len(result)
-            })
+            result = {
+                "customers": customers_list,
+                "count": len(customers_list)
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
 
         elif response.status_code == 401:
             raise ToolProviderCredentialValidationError(
@@ -135,9 +138,9 @@ class CustomerManagementTool(Tool):
             if not customers:
                 raise ValueError(f"No customers found matching '{display_name}'")
 
-            result = []
+            customers_list = []
             for cust in customers:
-                result.append({
+                customers_list.append({
                     "id": cust.get("Id"),
                     "display_name": cust.get("DisplayName"),
                     "company_name": cust.get("CompanyName", ""),
@@ -146,10 +149,13 @@ class CustomerManagementTool(Tool):
                     "balance": cust.get("Balance", 0)
                 })
 
-            yield self.create_json_message({
-                "customers": result,
-                "count": len(result)
-            })
+            result = {
+                "customers": customers_list,
+                "count": len(customers_list)
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
 
         elif response.status_code == 401:
             raise ToolProviderCredentialValidationError(
@@ -189,13 +195,16 @@ class CustomerManagementTool(Tool):
             data = response.json()
             customer = data.get("Customer", {})
 
-            yield self.create_json_message({
+            result = {
                 "id": customer.get("Id"),
                 "display_name": customer.get("DisplayName"),
                 "company_name": customer.get("CompanyName", ""),
                 "sync_token": customer.get("SyncToken"),
                 "message": f"Successfully created customer '{display_name}'"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
 
         elif response.status_code == 400:
             error_detail = response.json() if response.content else {}

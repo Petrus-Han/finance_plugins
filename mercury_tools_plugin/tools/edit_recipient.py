@@ -74,12 +74,12 @@ class EditRecipientTool(Tool):
             url = f"{api_base_url}/recipient/{recipient_id}"
             logger.info(f"Making request to: {url}")
 
-            response = httpx.post(url, headers=headers, json=payload, timeout=15)
+            response = httpx.patch(url, headers=headers, json=payload, timeout=15)
             logger.info(f"Response status: {response.status_code}")
 
             if response.status_code == 200:
                 recipient = response.json()
-                yield self.create_json_message({
+                result = {
                     "success": True,
                     "recipient": {
                         "id": recipient.get("id", ""),
@@ -92,7 +92,14 @@ class EditRecipientTool(Tool):
                         "date_last_paid": recipient.get("dateLastPaid"),
                     },
                     "message": "Recipient updated successfully"
-                })
+                }
+
+                # Yield each field as a separate variable for direct access
+                for key, value in result.items():
+                    yield self.create_variable_message(key, value)
+
+                # Also yield the full JSON for convenience
+                yield self.create_json_message(result)
             elif response.status_code == 401:
                 raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
             elif response.status_code == 404:
