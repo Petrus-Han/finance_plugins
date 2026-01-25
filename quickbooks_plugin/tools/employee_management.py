@@ -82,12 +82,15 @@ class EmployeeManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "create",
                 "employee": self._format(data.get("Employee", {})),
                 "message": "Employee created successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -101,12 +104,15 @@ class EmployeeManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "read",
                 "employee": self._format(data.get("Employee", {})),
                 "message": "Employee retrieved successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -146,12 +152,15 @@ class EmployeeManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "update",
                 "employee": self._format(data.get("Employee", {})),
                 "message": "Employee updated successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -168,13 +177,16 @@ class EmployeeManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("Employee", [])
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "query",
                 "employees": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} employees"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
