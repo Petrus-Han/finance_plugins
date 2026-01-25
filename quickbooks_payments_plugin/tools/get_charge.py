@@ -51,6 +51,8 @@ class GetChargeTool(Tool):
 
             if response.status_code == 200:
                 data = response.json()
+                for key, value in data.items():
+                    yield self.create_variable_message(key, value)
                 yield self.create_json_message(data)
 
             elif response.status_code == 404:
