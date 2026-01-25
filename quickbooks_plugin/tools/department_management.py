@@ -61,15 +61,12 @@ class DepartmentManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "create",
                 "department": self._format(data.get("Department", {})),
                 "message": "Department created successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -83,15 +80,12 @@ class DepartmentManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "read",
                 "department": self._format(data.get("Department", {})),
                 "message": "Department retrieved successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -122,15 +116,12 @@ class DepartmentManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "update",
                 "department": self._format(data.get("Department", {})),
                 "message": "Department updated successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -147,16 +138,13 @@ class DepartmentManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("Department", [])
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "query",
                 "departments": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} departments"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 

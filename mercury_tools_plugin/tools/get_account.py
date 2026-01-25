@@ -72,11 +72,7 @@ class GetAccountTool(Tool):
                     "legal_business_name": account.get("legalBusinessName", ""),
                 }
 
-                # Yield each field as a separate variable for direct access
-                for key, value in account_info.items():
-                    yield self.create_variable_message(key, value)
-
-                # Also yield the full JSON for convenience
+                # Return JSON data
                 yield self.create_json_message(account_info)
 
             elif response.status_code == 404:
