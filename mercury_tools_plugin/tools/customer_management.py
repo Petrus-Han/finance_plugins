@@ -71,12 +71,15 @@ class CustomerManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             customers = [self._format_customer(c) for c in data.get("customers", [])]
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "list",
                 "customers": customers,
                 "message": f"Found {len(customers)} customers"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -84,12 +87,15 @@ class CustomerManagementTool(Tool):
         response = httpx.get(f"{api_base_url}/ar/customers/{customer_id}", headers=headers, timeout=15)
         if response.status_code == 200:
             customer = self._format_customer(response.json())
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "get",
                 "customer": customer,
                 "message": "Customer retrieved successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         elif response.status_code == 404:
             raise ValueError(f"Customer not found: {customer_id}")
         else:
@@ -109,12 +115,15 @@ class CustomerManagementTool(Tool):
         response = httpx.post(f"{api_base_url}/ar/customers", headers=headers, json=payload, timeout=15)
         if response.status_code in (200, 201):
             customer = self._format_customer(response.json())
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "create",
                 "customer": customer,
                 "message": "Customer created successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -136,12 +145,15 @@ class CustomerManagementTool(Tool):
         response = httpx.post(f"{api_base_url}/ar/customers/{customer_id}", headers=headers, json=payload, timeout=15)
         if response.status_code == 200:
             customer = self._format_customer(response.json())
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "update",
                 "customer": customer,
                 "message": "Customer updated successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         elif response.status_code == 404:
             raise ValueError(f"Customer not found: {customer_id}")
         else:
@@ -150,11 +162,14 @@ class CustomerManagementTool(Tool):
     def _delete_customer(self, api_base_url: str, headers: dict, customer_id: str) -> Generator[ToolInvokeMessage, None, None]:
         response = httpx.delete(f"{api_base_url}/ar/customers/{customer_id}", headers=headers, timeout=15)
         if response.status_code in (200, 204):
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "delete",
                 "message": f"Customer {customer_id} deleted successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         elif response.status_code == 404:
             raise ValueError(f"Customer not found: {customer_id}")
         else:

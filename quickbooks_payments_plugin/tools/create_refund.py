@@ -49,6 +49,8 @@ class CreateRefundTool(Tool):
 
             if response.status_code == 201:
                 data = response.json()
+                for key, value in data.items():
+                    yield self.create_variable_message(key, value)
                 yield self.create_json_message(data)
             elif response.status_code == 404:
                 raise ValueError(f"Charge with ID '{charge_id}' not found.")

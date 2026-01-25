@@ -75,11 +75,14 @@ class DownloadStatementTool(Tool):
                         blob=response.content,
                         meta={"mime_type": "application/pdf", "filename": filename}
                     )
-                    yield self.create_json_message({
+                    result = {
                         "success": True,
                         "filename": filename,
                         "message": f"Statement PDF downloaded successfully ({len(response.content)} bytes)"
-                    })
+                    }
+                    for key, value in result.items():
+                        yield self.create_variable_message(key, value)
+                    yield self.create_json_message(result)
                 else:
                     raise Exception(f"Unexpected content type: {content_type}")
 
