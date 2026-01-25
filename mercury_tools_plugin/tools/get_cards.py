@@ -76,11 +76,6 @@ class GetCardsTool(Tool):
                 yield self.create_text_message("No cards found.")
                 return
 
-            # Yield as variables for direct access
-            yield self.create_variable_message("cards", all_cards)
-            yield self.create_variable_message("total_count", len(all_cards))
-
-            # Also yield the full JSON for convenience
             yield self.create_json_message({
                 "cards": all_cards,
                 "total_count": len(all_cards)

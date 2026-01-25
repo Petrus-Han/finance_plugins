@@ -88,15 +88,12 @@ class CreditMemoManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "create",
                 "credit_memo": self._format(data.get("CreditMemo", {})),
                 "message": "Credit memo created successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -110,15 +107,12 @@ class CreditMemoManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "read",
                 "credit_memo": self._format(data.get("CreditMemo", {})),
                 "message": "Credit memo retrieved successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -134,14 +128,11 @@ class CreditMemoManagementTool(Tool):
         response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
         if response.status_code == 200:
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "delete",
                 "message": f"Credit memo {credit_memo_id} deleted successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -158,16 +149,13 @@ class CreditMemoManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("CreditMemo", [])
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "query",
                 "credit_memos": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} credit memos"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 

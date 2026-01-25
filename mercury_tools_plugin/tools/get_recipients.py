@@ -91,12 +91,6 @@ class GetRecipientsTool(Tool):
 
                     output.append(recipient_info)
 
-                # Yield as variables for direct access
-                yield self.create_variable_message("recipients", output)
-                yield self.create_variable_message("count", len(recipients))
-                yield self.create_variable_message("has_more", data.get("hasMore", False))
-
-                # Also yield the full JSON for convenience
                 yield self.create_json_message({
                     "recipients": output,
                     "count": len(recipients),

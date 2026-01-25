@@ -120,8 +120,6 @@ class CreatePurchaseTool(Tool):
                         "type": purchase["EntityRef"].get("type")
                     }
 
-                for key, value in result.items():
-                    yield self.create_variable_message(key, value)
                 yield self.create_json_message(result)
 
             elif response.status_code == 400:

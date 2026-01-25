@@ -95,15 +95,12 @@ class PurchaseOrderManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "create",
                 "purchase_order": self._format(data.get("PurchaseOrder", {})),
                 "message": "Purchase order created successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -117,15 +114,12 @@ class PurchaseOrderManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "read",
                 "purchase_order": self._format(data.get("PurchaseOrder", {})),
                 "message": "Purchase order retrieved successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -141,14 +135,11 @@ class PurchaseOrderManagementTool(Tool):
         response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
         if response.status_code == 200:
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "delete",
                 "message": f"Purchase order {po_id} deleted successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -165,16 +156,13 @@ class PurchaseOrderManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("PurchaseOrder", [])
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "query",
                 "purchase_orders": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} purchase orders"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 

@@ -66,7 +66,7 @@ class UploadTransactionAttachmentTool(Tool):
 
             if response.status_code in (200, 201):
                 data = response.json()
-                result = {
+                yield self.create_json_message({
                     "success": True,
                     "attachment": {
                         "id": data.get("id", ""),
@@ -74,10 +74,7 @@ class UploadTransactionAttachmentTool(Tool):
                         "url": data.get("url", ""),
                     },
                     "message": "Attachment uploaded successfully"
-                }
-                for key, value in result.items():
-                    yield self.create_variable_message(key, value)
-                yield self.create_json_message(result)
+                })
             elif response.status_code == 401:
                 raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
             elif response.status_code == 404:

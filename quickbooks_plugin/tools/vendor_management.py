@@ -87,13 +87,10 @@ class VendorManagementTool(Tool):
                         }
                         output.append(vendor_info)
 
-                    result = {
+                    yield self.create_json_message({
                         "vendors": output,
                         "count": len(output)
-                    }
-                    for key, value in result.items():
-                        yield self.create_variable_message(key, value)
-                    yield self.create_json_message(result)
+                    })
 
                 elif response.status_code == 400:
                     error_detail = response.json() if response.content else {}
@@ -141,8 +138,6 @@ class VendorManagementTool(Tool):
                         "meta_data": vendor.get("MetaData", {})
                     }
 
-                    for key, value in result.items():
-                        yield self.create_variable_message(key, value)
                     yield self.create_json_message(result)
 
                 elif response.status_code == 400:
