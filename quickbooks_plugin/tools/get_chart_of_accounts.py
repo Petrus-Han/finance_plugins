@@ -65,11 +65,14 @@ class GetChartOfAccountsTool(Tool):
                 accounts = data.get("QueryResponse", {}).get("Account", [])
 
                 if not accounts:
-                    yield self.create_json_message({
+                    result = {
                         "accounts": [],
                         "count": 0,
                         "message": "No accounts found."
-                    })
+                    }
+                    for key, value in result.items():
+                        yield self.create_variable_message(key, value)
+                    yield self.create_json_message(result)
                     return
 
                 # Format accounts for output
@@ -87,10 +90,13 @@ class GetChartOfAccountsTool(Tool):
                     }
                     output.append(account_info)
 
-                yield self.create_json_message({
+                result = {
                     "accounts": output,
                     "count": len(output)
-                })
+                }
+                for key, value in result.items():
+                    yield self.create_variable_message(key, value)
+                yield self.create_json_message(result)
 
             elif response.status_code == 400:
                 error_detail = response.json() if response.content else {}

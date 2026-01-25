@@ -1,4 +1,4 @@
-version: 0.2.2
+version: 0.2.4
 type: plugin
 author: petrus
 name: mercury_tools
@@ -12,7 +12,7 @@ description:
   zh_Hans: Mercury 银行 API 工具，用于访问账户、交易和财务数据。
 
 meta:
-  version: 0.2.2
+  version: 0.2.4
   minimum_dify_version: 1.10.0
   arch:
     - amd64

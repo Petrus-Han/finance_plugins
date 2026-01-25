@@ -79,7 +79,7 @@ class UpdateJournalEntryTool(Tool):
             if response.status_code == 200:
                 data = response.json()
                 je = data.get("JournalEntry", {})
-                yield self.create_json_message({
+                result = {
                     "id": je.get("Id"),
                     "sync_token": je.get("SyncToken"),
                     "doc_number": je.get("DocNumber"),
@@ -87,7 +87,10 @@ class UpdateJournalEntryTool(Tool):
                     "private_note": je.get("PrivateNote"),
                     "total_amount": je.get("TotalAmt"),
                     "lines": je.get("Line", []),
-                })
+                }
+                for key, value in result.items():
+                    yield self.create_variable_message(key, value)
+                yield self.create_json_message(result)
             elif response.status_code == 401:
                 raise ToolProviderCredentialValidationError("Authentication failed. Please check your QuickBooks credentials.")
             else:

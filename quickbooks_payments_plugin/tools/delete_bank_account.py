@@ -39,7 +39,10 @@ class DeleteBankAccountTool(Tool):
             )
 
             if response.status_code == 204:
-                yield self.create_json_message({"success": True, "message": "Bank account deleted successfully"})
+                result = {"success": True, "message": "Bank account deleted successfully"}
+                for key, value in result.items():
+                    yield self.create_variable_message(key, value)
+                yield self.create_json_message(result)
             elif response.status_code == 404:
                 raise ValueError("Customer or bank account not found.")
             elif response.status_code == 401:

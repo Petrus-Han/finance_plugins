@@ -91,12 +91,15 @@ class ItemManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "create",
                 "item": self._format(data.get("Item", {})),
                 "message": "Item created successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -110,12 +113,15 @@ class ItemManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "read",
                 "item": self._format(data.get("Item", {})),
                 "message": "Item retrieved successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -155,12 +161,15 @@ class ItemManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "update",
                 "item": self._format(data.get("Item", {})),
                 "message": "Item updated successfully"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
@@ -177,13 +186,16 @@ class ItemManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("Item", [])
-            yield self.create_json_message({
+            result = {
                 "success": True,
                 "operation": "query",
                 "items": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} items"
-            })
+            }
+            for key, value in result.items():
+                yield self.create_variable_message(key, value)
+            yield self.create_json_message(result)
         else:
             self._handle_error(response)
 
