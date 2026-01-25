@@ -87,15 +87,12 @@ class SalesReceiptManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "create",
                 "sales_receipt": self._format(data.get("SalesReceipt", {})),
                 "message": "Sales receipt created successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -109,15 +106,12 @@ class SalesReceiptManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "read",
                 "sales_receipt": self._format(data.get("SalesReceipt", {})),
                 "message": "Sales receipt retrieved successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -133,14 +127,11 @@ class SalesReceiptManagementTool(Tool):
         response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
         if response.status_code == 200:
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "delete",
                 "message": f"Sales receipt {sr_id} deleted successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -157,16 +148,13 @@ class SalesReceiptManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("SalesReceipt", [])
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "query",
                 "sales_receipts": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} sales receipts"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 

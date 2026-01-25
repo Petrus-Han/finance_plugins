@@ -79,7 +79,7 @@ class EditRecipientTool(Tool):
 
             if response.status_code == 200:
                 recipient = response.json()
-                result = {
+                yield self.create_json_message({
                     "success": True,
                     "recipient": {
                         "id": recipient.get("id", ""),
@@ -92,14 +92,7 @@ class EditRecipientTool(Tool):
                         "date_last_paid": recipient.get("dateLastPaid"),
                     },
                     "message": "Recipient updated successfully"
-                }
-
-                # Yield each field as a separate variable for direct access
-                for key, value in result.items():
-                    yield self.create_variable_message(key, value)
-
-                # Also yield the full JSON for convenience
-                yield self.create_json_message(result)
+                })
             elif response.status_code == 401:
                 raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
             elif response.status_code == 404:

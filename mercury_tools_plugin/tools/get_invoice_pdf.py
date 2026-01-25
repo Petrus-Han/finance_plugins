@@ -54,17 +54,11 @@ class GetInvoicePdfTool(Tool):
                         blob=response.content,
                         meta={"mime_type": "application/pdf", "filename": filename}
                     )
-                    result = {
+                    yield self.create_json_message({
                         "success": True,
                         "filename": filename,
                         "message": f"Invoice PDF downloaded successfully ({len(response.content)} bytes)"
-                    }
-                    # Yield each field as a separate variable for direct access
-                    for key, value in result.items():
-                        yield self.create_variable_message(key, value)
-
-                    # Also yield the full JSON for convenience
-                    yield self.create_json_message(result)
+                    })
                 else:
                     raise Exception(f"Unexpected content type: {content_type}")
             elif response.status_code == 401:

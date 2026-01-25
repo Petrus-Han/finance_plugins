@@ -76,11 +76,6 @@ class GetStatementsTool(Tool):
                 yield self.create_text_message("No statements found.")
                 return
 
-            # Yield as variables for direct access
-            yield self.create_variable_message("statements", all_statements)
-            yield self.create_variable_message("total_count", len(all_statements))
-
-            # Also yield the full JSON for convenience
             yield self.create_json_message({
                 "statements": all_statements,
                 "total_count": len(all_statements)

@@ -72,15 +72,12 @@ class InvoiceManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             invoices = [self._format_invoice(inv) for inv in data.get("invoices", [])]
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "list",
                 "invoices": invoices,
                 "message": f"Found {len(invoices)} invoices"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -88,15 +85,12 @@ class InvoiceManagementTool(Tool):
         response = httpx.get(f"{api_base_url}/ar/invoices/{invoice_id}", headers=headers, timeout=15)
         if response.status_code == 200:
             invoice = self._format_invoice(response.json())
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "get",
                 "invoice": invoice,
                 "message": "Invoice retrieved successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         elif response.status_code == 404:
             raise ValueError(f"Invoice not found: {invoice_id}")
         else:
@@ -139,15 +133,12 @@ class InvoiceManagementTool(Tool):
         response = httpx.post(f"{api_base_url}/ar/invoices", headers=headers, json=payload, timeout=15)
         if response.status_code in (200, 201):
             invoice = self._format_invoice(response.json())
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "create",
                 "invoice": invoice,
                 "message": "Invoice created successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -182,15 +173,12 @@ class InvoiceManagementTool(Tool):
         response = httpx.post(f"{api_base_url}/ar/invoices/{invoice_id}", headers=headers, json=payload, timeout=15)
         if response.status_code == 200:
             invoice = self._format_invoice(response.json())
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "update",
                 "invoice": invoice,
                 "message": "Invoice updated successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         elif response.status_code == 404:
             raise ValueError(f"Invoice not found: {invoice_id}")
         else:
@@ -199,14 +187,11 @@ class InvoiceManagementTool(Tool):
     def _cancel_invoice(self, api_base_url: str, headers: dict, invoice_id: str) -> Generator[ToolInvokeMessage, None, None]:
         response = httpx.post(f"{api_base_url}/ar/invoices/{invoice_id}/cancel", headers=headers, timeout=15)
         if response.status_code in (200, 204):
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "cancel",
                 "message": f"Invoice {invoice_id} cancelled successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         elif response.status_code == 404:
             raise ValueError(f"Invoice not found: {invoice_id}")
         else:
