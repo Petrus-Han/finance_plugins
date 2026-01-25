@@ -88,7 +88,10 @@ tools:
   - tools/create_bill.yaml
   - tools/payment_management.yaml
   - tools/bill_payment_management.yaml
-  - tools/journal_entry_management.yaml
+  - tools/create_journal_entry.yaml
+  - tools/get_journal_entry.yaml
+  - tools/update_journal_entry.yaml
+  - tools/delete_journal_entry.yaml
   - tools/item_management.yaml
   - tools/attachable_management.yaml
   - tools/estimate_management.yaml
