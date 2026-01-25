@@ -91,15 +91,12 @@ class EstimateManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "create",
                 "estimate": self._format(data.get("Estimate", {})),
                 "message": "Estimate created successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -113,15 +110,12 @@ class EstimateManagementTool(Tool):
 
         if response.status_code == 200:
             data = response.json()
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "read",
                 "estimate": self._format(data.get("Estimate", {})),
                 "message": "Estimate retrieved successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -137,14 +131,11 @@ class EstimateManagementTool(Tool):
         response = httpx.post(url, headers=headers, json=payload, timeout=30)
 
         if response.status_code == 200:
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "delete",
                 "message": f"Estimate {estimate_id} deleted successfully"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 
@@ -161,16 +152,13 @@ class EstimateManagementTool(Tool):
         if response.status_code == 200:
             data = response.json()
             items = data.get("QueryResponse", {}).get("Estimate", [])
-            result = {
+            yield self.create_json_message({
                 "success": True,
                 "operation": "query",
                 "estimates": [self._format(item) for item in items],
                 "count": len(items),
                 "message": f"Found {len(items)} estimates"
-            }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
-            yield self.create_json_message(result)
+            })
         else:
             self._handle_error(response)
 

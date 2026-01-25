@@ -75,7 +75,7 @@ class QueryEntitiesTool(Tool):
                         results = query_response[key]
                         break
 
-                result = {
+                yield self.create_json_message({
                     "success": True,
                     "entity_type": result_key or entity_type,
                     "results": results,
@@ -83,10 +83,7 @@ class QueryEntitiesTool(Tool):
                     "total_count": query_response.get("totalCount"),
                     "query": query,
                     "message": f"Query executed successfully, found {len(results)} results"
-                }
-                for key, value in result.items():
-                    yield self.create_variable_message(key, value)
-                yield self.create_json_message(result)
+                })
             else:
                 self._handle_error(response)
 

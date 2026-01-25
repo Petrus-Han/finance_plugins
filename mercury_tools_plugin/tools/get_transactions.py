@@ -88,13 +88,6 @@ class GetTransactionsTool(Tool):
                 yield self.create_text_message("No transactions found for the specified criteria.")
                 return
 
-            # Yield as variables for direct access
-            yield self.create_variable_message("transactions", all_transactions)
-            yield self.create_variable_message("total_count", len(all_transactions))
-            yield self.create_variable_message("limit", limit)
-            yield self.create_variable_message("offset", offset)
-
-            # Also yield the full JSON for convenience
             yield self.create_json_message({
                 "transactions": all_transactions,
                 "total_count": len(all_transactions),
