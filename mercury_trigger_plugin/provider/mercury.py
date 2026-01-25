@@ -4,18 +4,22 @@ import hmac
 import hashlib
 import json
 import logging
+import secrets
 import sys
+import urllib.parse
 from typing import Any, Mapping
 
 import httpx
 from werkzeug import Request, Response
 
+from dify_plugin.entities.oauth import TriggerOAuthCredentials
 from dify_plugin.entities.provider_config import CredentialType
 from dify_plugin.entities.trigger import EventDispatch, Subscription, UnsubscribeResult
 from dify_plugin.errors.trigger import (
     SubscriptionError,
     TriggerDispatchError,
     TriggerProviderCredentialValidationError,
+    TriggerProviderOAuthError,
     TriggerValidationError,
     UnsubscribeError,
 )
@@ -165,6 +169,8 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
         "production": "https://api.mercury.com/api/v1",
         "sandbox": "https://api-sandbox.mercury.com/api/v1",
     }
+    _AUTH_URL = "https://app.mercury.com/oauth/authorize"
+    _TOKEN_URL = "https://oauth2.mercury.com/oauth2/token"
     _REQUEST_TIMEOUT = 15
 
     def _get_api_base_url(self, credentials: Mapping[str, Any]) -> str:
@@ -193,6 +199,164 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
         url = self._API_BASE_URLS.get(api_environment, self._API_BASE_URLS["sandbox"])
         log_info(f"Using API base URL: {url} (environment: {api_environment})")
         return url
+
+    def _oauth_get_authorization_url(self, redirect_uri: str, system_credentials: Mapping[str, Any]) -> str:
+        """
+        Generate the authorization URL for the Mercury OAuth.
+
+        Args:
+            redirect_uri: The callback URL where Mercury will redirect after authorization
+            system_credentials: System-level credentials containing client_id and client_secret
+
+        Returns:
+            The full authorization URL
+        """
+        log_info("=== _oauth_get_authorization_url called ===")
+        state = secrets.token_urlsafe(16)
+        params = {
+            "client_id": system_credentials["client_id"],
+            "redirect_uri": redirect_uri,
+            "response_type": "code",
+            "scope": "read:accounts read:transactions webhooks:write offline_access",
+            "state": state,
+        }
+        auth_url = f"{self._AUTH_URL}?{urllib.parse.urlencode(params)}"
+        log_info(f"Generated authorization URL: {auth_url[:80]}...")
+        return auth_url
+
+    def _oauth_get_credentials(
+        self, redirect_uri: str, system_credentials: Mapping[str, Any], request: Request
+    ) -> TriggerOAuthCredentials:
+        """
+        Exchange authorization code for access token.
+
+        Args:
+            redirect_uri: The callback URL
+            system_credentials: System-level credentials containing client_id and client_secret
+            request: The HTTP request containing the authorization code
+
+        Returns:
+            TriggerOAuthCredentials containing the access token and expiration time
+        """
+        log_info("=== _oauth_get_credentials called ===")
+        code = request.args.get("code")
+        if not code:
+            log_error("No authorization code provided")
+            raise TriggerProviderOAuthError("No authorization code provided")
+
+        if not system_credentials.get("client_id") or not system_credentials.get("client_secret"):
+            log_error("Client ID or Client Secret is required")
+            raise TriggerProviderOAuthError("Client ID or Client Secret is required")
+
+        data = {
+            "grant_type": "authorization_code",
+            "client_id": system_credentials["client_id"],
+            "client_secret": system_credentials["client_secret"],
+            "code": code,
+            "redirect_uri": redirect_uri,
+        }
+
+        try:
+            response = httpx.post(
+                self._TOKEN_URL,
+                data=data,
+                headers={"Accept": "application/json"},
+                timeout=self._REQUEST_TIMEOUT
+            )
+            response.raise_for_status()
+            response_json = response.json()
+
+            access_token = response_json.get("access_token")
+            refresh_token = response_json.get("refresh_token")
+            expires_in = response_json.get("expires_in", 3600)
+
+            if not access_token:
+                log_error(f"Error in Mercury OAuth: {response_json}")
+                raise TriggerProviderOAuthError(f"Error in Mercury OAuth: {response_json}")
+
+            import time
+            expires_at = int(time.time()) + expires_in
+
+            credentials = {"access_token": access_token}
+            if refresh_token:
+                credentials["refresh_token"] = refresh_token
+
+            log_info("OAuth credentials obtained successfully")
+            return TriggerOAuthCredentials(credentials=credentials, expires_at=expires_at)
+
+        except httpx.HTTPStatusError as e:
+            log_error(f"Failed to exchange code for token: {e}")
+            raise TriggerProviderOAuthError(f"Failed to exchange code for token: {e}") from e
+        except TriggerProviderOAuthError:
+            raise
+        except Exception as e:
+            log_error(f"OAuth error: {e}")
+            raise TriggerProviderOAuthError(f"OAuth error: {e}") from e
+
+    def _oauth_refresh_credentials(
+        self, redirect_uri: str, system_credentials: Mapping[str, Any], credentials: Mapping[str, Any]
+    ) -> TriggerOAuthCredentials:
+        """
+        Refresh the access token using the refresh token.
+
+        Args:
+            redirect_uri: The callback URL
+            system_credentials: System-level credentials containing client_id and client_secret
+            credentials: Current credentials containing the refresh_token
+
+        Returns:
+            TriggerOAuthCredentials containing the new access token and expiration time
+        """
+        log_info("=== _oauth_refresh_credentials called ===")
+        refresh_token = credentials.get("refresh_token")
+        if not refresh_token:
+            log_error("No refresh token available")
+            raise TriggerProviderOAuthError("No refresh token available")
+
+        data = {
+            "grant_type": "refresh_token",
+            "client_id": system_credentials["client_id"],
+            "client_secret": system_credentials["client_secret"],
+            "refresh_token": refresh_token,
+        }
+
+        try:
+            response = httpx.post(
+                self._TOKEN_URL,
+                data=data,
+                headers={"Accept": "application/json"},
+                timeout=self._REQUEST_TIMEOUT
+            )
+            response.raise_for_status()
+            response_json = response.json()
+
+            access_token = response_json.get("access_token")
+            new_refresh_token = response_json.get("refresh_token", refresh_token)
+            expires_in = response_json.get("expires_in", 3600)
+
+            if not access_token:
+                log_error(f"Error refreshing token: {response_json}")
+                raise TriggerProviderOAuthError(f"Error refreshing token: {response_json}")
+
+            import time
+            expires_at = int(time.time()) + expires_in
+
+            new_credentials = {
+                "access_token": access_token,
+                "refresh_token": new_refresh_token
+            }
+
+            log_info("OAuth credentials refreshed successfully")
+            return TriggerOAuthCredentials(credentials=new_credentials, expires_at=expires_at)
+
+        except httpx.HTTPStatusError as e:
+            log_error(f"Failed to refresh token: {e}")
+            raise TriggerProviderOAuthError(f"Failed to refresh token: {e}") from e
+        except TriggerProviderOAuthError:
+            raise
+        except Exception as e:
+            log_error(f"Token refresh error: {e}")
+            raise TriggerProviderOAuthError(f"Token refresh error: {e}") from e
 
     def _validate_api_key(self, credentials: Mapping[str, Any]) -> None:
         """Validate Mercury API access token."""
