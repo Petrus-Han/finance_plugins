@@ -133,9 +133,6 @@ subscription_constructor:
       label:
         en_US: "Access Token"
         zh_Hans: "访问令牌"
-    extra:
-      python:
-        source: provider/mercury.py
 
 identity:
   author: petrus
