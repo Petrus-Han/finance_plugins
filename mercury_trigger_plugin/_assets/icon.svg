@@ -1,6 +1,13 @@
 <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="256" height="256" rx="48" fill="#000000"/>
-<path d="M64 192V64H192V192H64Z" stroke="white" stroke-width="12"/>
-<path d="M64 128H192" stroke="white" stroke-width="12"/>
-<circle cx="128" cy="128" r="32" fill="white"/>
+  <!-- Mercury Black Background -->
+  <rect width="256" height="256" rx="24" fill="#1A1A1A"/>
+
+  <!-- Mercury M Logo -->
+  <g transform="translate(48, 80)">
+    <!-- Stylized M shape representing Mercury -->
+    <path d="M20 96V40C20 34.477 24.477 30 30 30H40C45.523 30 50 34.477 50 40V66L80 30H90C95.523 30 100 34.477 100 40V66L130 30H140C145.523 30 150 34.477 150 40V96C150 101.523 145.523 106 140 106H130C124.477 106 120 101.523 120 96V70L90 106H80C74.477 106 70 101.523 70 96V70L40 106H30C24.477 106 20 101.523 20 96Z" fill="#FF6B35"/>
+  </g>
+
+  <!-- Banking accent line -->
+  <rect x="48" y="200" width="160" height="4" rx="2" fill="#FF6B35" opacity="0.6"/>
 </svg>
