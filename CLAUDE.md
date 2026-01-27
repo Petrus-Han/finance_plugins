@@ -1,173 +1,134 @@
 # CLAUDE.md
 
-本文件为 Claude 提供 Dify 插件开发的上下文和参考指南。
+本文件为 Claude 提供 Finance Plugins 项目的上下文和开发指南。
 
 ## 项目概述
 
-Mercury Plugin 是一个 Dify Trigger 插件项目，用于实现 Mercury 银行与 QuickBooks 的实时交易同步。
+Finance Plugins 是一组 Dify 插件，用于实现 Mercury 银行与 QuickBooks 的集成：
 
-## Workspace 参考仓库
-
-本 workspace 包含多个关联仓库，在开发插件时应参考：
-
-### 1. 插件运行时 (dify-plugin-daemon)
-
-**路径**: `/Users/petrus/Source/dify/ee/dify-plugin-daemon`
-
-**用途**: 了解插件如何被执行和管理
-
-**关键目录**:
-- `cmd/commandline/plugin/templates/` - 插件模板文件
-- `pkg/entities/plugin_entities/` - 插件实体定义（Go）
-- `internal/core/plugin_manager/` - 插件管理器实现
-- `internal/core/local_runtime/` - 本地运行时实现
-
-**参考场景**:
-- 理解插件生命周期
-- 了解插件与 Dify 的通信协议
-- 排查插件运行时问题
-
-### 2. 官方插件示例 (dify-official-plugins)
-
-**路径**: `/Users/petrus/Source/dify/ee/dify-official-plugins`
-
-**用途**: 参考官方插件的实现模式和最佳实践
-
-**关键目录**:
-- `tools/` - 工具插件示例（如 Google、GitHub、Slack 等）
-- `triggers/` - Trigger 插件示例 ⚠️ 重点参考
-- `models/` - 模型插件示例
-- `extensions/` - 扩展插件示例
-
-**参考场景**:
-- 实现新功能时先查找类似的官方插件
-- 学习 YAML 配置文件的标准写法
-- 参考 Python 代码结构和最佳实践
-
-### 3. Dify 平台 (dify)
-
-**路径**: `/Users/petrus/Source/dify/ee/dify`
-
-**用途**: 了解平台侧如何调用和集成插件
-
-**关键目录**:
-- `api/core/plugin/` - 插件调用核心逻辑
-- `api/core/trigger/` - Trigger 相关实现
-- `api/core/tools/` - 工具调用实现
-- `api/services/` - 服务层实现
-
-**参考场景**:
-- 理解插件 API 的调用方式
-- 调试平台与插件的交互问题
-- 了解 OAuth 集成的平台侧实现
+- `mercury_tools_plugin` - Mercury 银行 API 工具集（账户、交易、收款人等）
+- `mercury_trigger_plugin` - Mercury Webhook 触发器（交易事件同步）
 
 ## 本项目文档
-
-### 核心文档
-
-| 文档 | 用途 |
-|------|------|
-| `架构方案-优化版.md` | 项目整体架构设计，包含 Trigger Plugin 方案 |
-| `Dify_Plugin_Development_Guide.md` | 插件开发完整指南 |
-| `Dify_Trigger_Plugin_Guide.md` | Trigger 插件专项指南 |
-| `solution-design.md` | 技术方案详细设计 |
-| `dev-docs.md` | 开发参考链接汇总 |
-
-### API 文档
 
 | 文档 | 用途 |
 |------|------|
 | `Mercury_API_Documentation.md` | Mercury 银行 API 文档 |
 | `QuickBooks_API_Documentation.md` | QuickBooks API 文档 |
+| `solution-design.md` | 技术方案详细设计 |
 
-## 插件开发规范
+## 财务安全合规要求
 
-### 文件结构标准
+本项目处理银行账户和财务数据，必须遵守以下合规要求：
 
-```
-plugin-name/
-├── _assets/
-│   └── icon.svg              # 插件图标
-├── provider/
-│   └── provider-name.yaml    # Provider 配置
-├── triggers/                  # Trigger 插件
-│   └── trigger-name/
-│       ├── trigger-name.yaml # Trigger 配置
-│       └── trigger-name.py   # Trigger 实现
-├── tools/                     # Tool 插件
-│   └── tool-name/
-│       ├── tool-name.yaml
-│       └── tool-name.py
-├── manifest.yaml             # 插件清单
-├── requirements.txt          # Python 依赖
-└── README.md
-```
+### 1. 数据分类与保护
 
-### 代码风格
+**敏感数据类型**：
+- 银行账户号码、路由号码
+- API 凭证（Access Token、Refresh Token、API Key）
+- OAuth Client Secret
+- 交易金额和明细
+- 个人身份信息（姓名、地址、税号等）
 
-1. **Python**
-   - 使用类型提示
-   - 遵循 PEP 8 规范
-   - 使用 `dify_plugin` SDK 提供的基类
+**保护措施**：
+- 敏感数据在传输中必须加密（TLS 1.2+）
+- 敏感数据不得明文存储在代码、配置文件或日志中
+- 遵循最小权限原则，仅请求业务必需的数据
 
-2. **YAML 配置**
-   - 参考 `dify-official-plugins` 中的格式
-   - 确保 `en_US` 和 `zh_Hans` 标签完整
+### 2. 认证与授权
 
-### Trigger 插件开发要点
+- 所有 API 调用必须经过认证
+- OAuth Token 需设置合理的过期时间
+- Refresh Token 需安全存储，不得暴露给客户端
+- 实现 Token 自动刷新机制，避免服务中断
+- Webhook 请求必须验证签名，防止伪造
 
-1. **继承 `Trigger` 基类**
-2. **实现 `_run` 方法** - 返回 Generator 
-3. **实现 `_schedule` 方法** - 用于定时任务
-4. **使用 `self.session.create_message()` 触发 Workflow**
+### 3. 日志与审计
 
-### OAuth 集成要点
+**必须记录**：
+- 所有金融操作的时间戳（UTC）
+- 操作类型和结果（成功/失败）
+- 脱敏后的业务标识符
+- 错误代码和非敏感错误信息
 
-1. 在 provider YAML 中配置 `credentials_schema`
-2. 使用 `credentials_for_provider` 属性获取认证信息
-3. 参考 `dify-official-plugins/tools/` 中的 OAuth 示例
+**禁止记录**：
+- 完整的账户号码（仅允许后 4 位）
+- Access Token、Refresh Token、API Key
+- 完整的交易金额明细
+- 个人身份信息
 
-## 开发命令
+### 4. 数据脱敏规则
 
-```bash
-# 初始化插件项目
-dify plugin init
+- 银行账户号码：仅显示后 4 位，如 `****1234`
+- 路由号码：仅显示后 4 位
+- API Token：仅记录是否存在（true/false）
+- 金额：审计日志中可记录，调试日志中禁止
 
-# 打包插件
-dify plugin package ./plugin-folder
+### 5. 错误处理
 
-# 本地调试（需要先配置 .env）
-dify run ./plugin-folder
-```
+- 错误消息不得包含内部系统路径
+- 错误消息不得包含数据库查询或 API 响应原文
+- 错误消息不得包含凭证信息
+- 区分用户可见错误和内部日志错误
 
-## 调试技巧
+### 6. 传输安全
 
-### 连接远程调试
+- 所有外部 API 调用必须使用 HTTPS
+- 禁止禁用 SSL/TLS 证书验证
+- 设置合理的请求超时（建议 15-30 秒）
+- 实现请求重试时使用指数退避
 
-1. 在 Dify 平台启用远程调试
-2. 获取调试密钥
-3. 配置 `.env` 文件
-4. 运行 `dify run ./plugin-folder`
+### 7. 输入验证
 
-### 查看日志
+- 验证所有外部输入的格式和范围
+- 账户 ID、交易 ID 需验证格式
+- 金额需验证为正数且在合理范围内
+- 日期需验证格式和有效性
+- 防止注入攻击（SQL、命令、SSRF）
 
-- 插件运行日志通过 STDOUT 输出
-- 使用 `logging` 模块记录调试信息
+### 8. 幂等性与一致性
 
-## 搜索策略
+- 金融操作必须实现幂等性
+- 使用唯一业务标识符进行去重
+- 避免重复处理同一笔交易
+- 操作失败时确保状态一致
 
-当需要查找实现参考时，按以下顺序搜索：
+### 9. 速率限制
 
-1. **先搜官方插件** (`dify-official-plugins/triggers/` 或 `tools/`)
-2. **再查插件运行时** (`dify-plugin-daemon/`) 了解底层实现
-3. **最后查平台代码** (`dify/api/`) 了解调用方
+- 遵守第三方 API 的速率限制
+- 实现客户端限流，避免超限
+- 监控 API 配额使用情况
+
+### 10. 代码审查检查清单
+
+- [ ] 无硬编码凭证或密钥
+- [ ] 日志中无敏感数据
+- [ ] 所有外部输入已验证
+- [ ] 错误消息不暴露内部细节
+- [ ] API 调用使用 HTTPS
+- [ ] 设置了请求超时
+- [ ] Webhook 签名已验证
+- [ ] 金融操作具有幂等性
+
+### 11. 禁止事项
+
+- 在代码、注释、配置中写入真实凭证
+- 将任何凭证提交到版本控制
+- 禁用 SSL/TLS 证书验证
+- 在日志中记录完整凭证或账户信息
+- 实现绕过认证授权的后门
+- 在 URL 参数中传递敏感信息
+- 存储超出业务需要的个人数据
+
+## Git 工作流规范
+
+- **禁止直接在 main 分支提交代码**：必须根据当前任务新建功能分支
+- **分支命名规范**：`feature/<功能名>`, `fix/<问题描述>`, `chore/<维护任务>`
+- **提交 PR 前必须确保**：单元测试和集成测试全部通过
+- **PR 合并后删除功能分支**
 
 ## 注意事项
 
-- **不要自动运行测试**：除非用户明确要求
 - **优先参考官方插件**：不要凭空实现，先找类似示例
-- **保持代码简洁**：不要过度设计，遵循 KISS 原则
-
-
-
-
+- **保持代码简洁**：遵循 KISS 原则，不要过度设计
+- **严格遵守安全合规**：上述安全规范是强制性要求，不可妥协
