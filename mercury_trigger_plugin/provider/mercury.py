@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import ipaddress
 import json
+import logging
+import re
 import secrets
 import time
 import urllib.parse
 from collections.abc import Mapping
 from typing import Any
+from urllib.parse import urlparse
 
 import httpx
 from werkzeug import Request, Response
@@ -25,6 +29,11 @@ from dify_plugin.errors.trigger import (
 )
 from dify_plugin.interfaces.trigger import Trigger, TriggerSubscriptionConstructor
 
+logger = logging.getLogger(__name__)
+
+# Webhook timestamp tolerance in seconds (5 minutes)
+_WEBHOOK_TIMESTAMP_TOLERANCE = 300
+
 
 class MercuryTrigger(Trigger):
     """Handle Mercury transaction webhook event dispatch."""
@@ -33,6 +42,11 @@ class MercuryTrigger(Trigger):
         webhook_secret = subscription.properties.get("webhook_secret")
         if webhook_secret:
             self._validate_signature(request, webhook_secret)
+        else:
+            logger.warning(
+                "Webhook signature validation is disabled: webhook_secret not configured. "
+                "This is a security risk - webhooks can be forged without signature verification."
+            )
 
         payload = self._validate_payload(request)
         response = Response(response='{"status": "ok"}', status=200, mimetype="application/json")
@@ -41,7 +55,7 @@ class MercuryTrigger(Trigger):
         return EventDispatch(events=events, response=response)
 
     def _validate_signature(self, request: Request, secret: str) -> None:
-        """Verify Mercury webhook signature."""
+        """Verify Mercury webhook signature and timestamp."""
         sig_header = request.headers.get("Mercury-Signature")
         if not sig_header:
             raise TriggerValidationError("Missing Mercury-Signature header")
@@ -53,6 +67,19 @@ class MercuryTrigger(Trigger):
 
             if not timestamp or not signature:
                 raise TriggerValidationError("Invalid Mercury-Signature format")
+
+            # Validate timestamp to prevent replay attacks
+            try:
+                webhook_timestamp = int(timestamp)
+                current_timestamp = int(time.time())
+                time_diff = abs(current_timestamp - webhook_timestamp)
+                if time_diff > _WEBHOOK_TIMESTAMP_TOLERANCE:
+                    raise TriggerValidationError(
+                        f"Webhook timestamp expired: request is {time_diff} seconds old "
+                        f"(tolerance: {_WEBHOOK_TIMESTAMP_TOLERANCE} seconds)"
+                    )
+            except ValueError as e:
+                raise TriggerValidationError(f"Invalid timestamp format: {timestamp}") from e
 
             body = request.get_data(as_text=True)
             signed_payload = f"{timestamp}.{body}"
@@ -108,12 +135,74 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
                 raise TriggerProviderCredentialValidationError(
                     "Mock Server URL is required when using Mock environment"
                 )
+
+            # SSRF protection: validate mock_server_url
+            self._validate_mock_url(mock_url)
+
             base_url = mock_url.rstrip("/")
             if not base_url.endswith("/api/v1"):
                 base_url = f"{base_url}/api/v1"
             return base_url
 
         return self._API_BASE_URLS.get(api_environment, self._API_BASE_URLS["sandbox"])
+
+    def _validate_mock_url(self, url: str) -> None:
+        """Validate mock server URL to prevent SSRF attacks.
+
+        Only allows localhost and 127.0.0.1 for mock/testing purposes.
+        Rejects private IP ranges and other potentially dangerous URLs.
+        """
+        try:
+            parsed = urlparse(url)
+
+            # Must have http or https scheme
+            if parsed.scheme not in ("http", "https"):
+                raise TriggerProviderCredentialValidationError(
+                    f"Invalid URL scheme: {parsed.scheme}. Only http or https are allowed."
+                )
+
+            hostname = parsed.hostname
+            if not hostname:
+                raise TriggerProviderCredentialValidationError("Invalid URL: missing hostname")
+
+            # Allow only localhost for mock testing
+            allowed_hosts = {"localhost", "127.0.0.1", "::1"}
+            if hostname.lower() in allowed_hosts:
+                return
+
+            # Check if it's an IP address
+            try:
+                ip = ipaddress.ip_address(hostname)
+
+                # Only allow loopback addresses
+                if ip.is_loopback:
+                    return
+
+                # Block private, link-local, and reserved ranges
+                if ip.is_private or ip.is_link_local or ip.is_reserved:
+                    raise TriggerProviderCredentialValidationError(
+                        f"Mock server URL cannot use private/internal IP address: {hostname}. "
+                        "Only localhost (127.0.0.1) is allowed for security reasons."
+                    )
+
+                # Block any other IP address
+                raise TriggerProviderCredentialValidationError(
+                    f"Mock server URL cannot use IP address: {hostname}. "
+                    "Only localhost (127.0.0.1) is allowed for security reasons."
+                )
+
+            except ValueError:
+                # Not an IP address - it's a hostname
+                # Block any hostname that's not localhost
+                raise TriggerProviderCredentialValidationError(
+                    f"Mock server URL hostname not allowed: {hostname}. "
+                    "Only localhost (127.0.0.1) is allowed for mock testing."
+                )
+
+        except TriggerProviderCredentialValidationError:
+            raise
+        except Exception as e:
+            raise TriggerProviderCredentialValidationError(f"Invalid mock server URL: {e}") from e
 
     def _oauth_get_authorization_url(self, redirect_uri: str, system_credentials: Mapping[str, Any]) -> str:
         state = secrets.token_urlsafe(16)

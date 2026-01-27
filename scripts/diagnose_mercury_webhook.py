@@ -2,6 +2,8 @@
 """
 Mercury Webhook 诊断脚本
 
+WARNING: This script is for development only. Do not use in production.
+
 用法:
     # 设置环境变量
     export MERCURY_API_TOKEN="your_production_token"
@@ -101,7 +103,7 @@ def list_webhooks(token: str) -> list:
                 print(f"   URL:    {wh.get('url', 'N/A')}")
                 print(f"   Status: {wh.get('status', 'N/A')}")
                 print(f"   Events: {wh.get('eventTypes', 'N/A')}")
-                print(f"   Secret: {str(wh.get('secret', 'N/A'))[:20]}..." if wh.get('secret') else "   Secret: N/A")
+                print(f"   Secret present: {bool(wh.get('secret'))}")
                 print()
 
             return webhooks
@@ -146,8 +148,8 @@ def create_webhook(token: str, url: str) -> Optional[dict]:
 
             secret = result.get('secret', '')
             if secret:
-                print(f"   Secret: {secret[:30]}...")
-                print(f"\n⚠️  请保存这个 Secret，后续验证签名需要用到")
+                print(f"   Secret present: True")
+                print(f"\n⚠️  Secret 已生成，后续验证签名需要用到（查看 Mercury Dashboard 获取）")
 
             return result
         else:

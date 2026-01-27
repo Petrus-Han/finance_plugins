@@ -1,3 +1,4 @@
+import re
 import urllib.parse
 from collections.abc import Generator
 from typing import Any
@@ -20,6 +21,62 @@ class QueryEntitiesTool(Tool):
         "RefundReceipt", "SalesReceipt", "TaxCode", "TaxRate", "Term",
         "TimeActivity", "Transfer", "Vendor", "VendorCredit"
     ]
+
+    # Dangerous SQL keywords that could indicate injection attempts
+    _DANGEROUS_KEYWORDS = [
+        "DELETE", "UPDATE", "INSERT", "DROP", "ALTER", "TRUNCATE",
+        "CREATE", "EXEC", "EXECUTE", "UNION", "INTO", "--", "/*", "*/"
+    ]
+
+    def _validate_custom_query(self, query: str) -> None:
+        """Validate custom query to prevent injection attacks.
+
+        Ensures the query:
+        - Starts with SELECT
+        - Does not contain dangerous keywords
+        - References only supported entity types
+        """
+        if not query or not query.strip():
+            raise ValueError("Custom query cannot be empty")
+
+        normalized = query.strip().upper()
+
+        # Must start with SELECT
+        if not normalized.startswith("SELECT"):
+            raise ValueError(
+                "Custom query must start with SELECT. "
+                "Only read operations are allowed."
+            )
+
+        # Check for dangerous keywords
+        for keyword in self._DANGEROUS_KEYWORDS:
+            # Use word boundary matching for SQL keywords, literal match for comment markers
+            if keyword.startswith("-") or keyword.startswith("/") or keyword.startswith("*"):
+                if keyword in normalized:
+                    raise ValueError(
+                        f"Custom query contains forbidden pattern: {keyword}. "
+                        "Only SELECT queries are allowed."
+                    )
+            else:
+                # Word boundary check for SQL keywords
+                pattern = rf"\b{keyword}\b"
+                if re.search(pattern, normalized):
+                    raise ValueError(
+                        f"Custom query contains forbidden keyword: {keyword}. "
+                        "Only SELECT queries are allowed."
+                    )
+
+        # Validate FROM clause references a supported entity
+        from_match = re.search(r"\bFROM\s+(\w+)", normalized)
+        if from_match:
+            entity = from_match.group(1)
+            # Check against supported entities (case-insensitive)
+            entity_upper_list = [e.upper() for e in self.SUPPORTED_ENTITIES]
+            if entity not in entity_upper_list:
+                raise ValueError(
+                    f"Unsupported entity type in query: {entity}. "
+                    f"Supported entities: {', '.join(self.SUPPORTED_ENTITIES)}"
+                )
 
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
         access_token = self.runtime.credentials.get("access_token")
@@ -44,7 +101,8 @@ class QueryEntitiesTool(Tool):
 
         try:
             if custom_query:
-                # Use custom query directly
+                # Validate custom query for injection protection
+                self._validate_custom_query(custom_query)
                 query = custom_query
             elif entity_type:
                 if entity_type not in self.SUPPORTED_ENTITIES:
