@@ -2,6 +2,8 @@
 """
 QuickBooks OAuth2 Helper Script
 
+WARNING: This script is for development only. Do not use in production.
+
 Usage:
     1. Run: python quickbooks_oauth.py
     2. Open the authorization URL in browser
@@ -176,7 +178,7 @@ def main():
         choice = input("\nChoice [1/2/3/4/5]: ").strip()
 
         if choice == "1":
-            print(f"\nAccess Token: {creds['access_token'][:50]}...")
+            print(f"\nAccess Token present: {bool(creds.get('access_token'))}")
             print(f"Realm ID: {creds.get('realm_id')}")
             return
         elif choice == "2":
@@ -187,7 +189,7 @@ def main():
                 creds["access_token"] = new_tokens["access_token"]
                 creds["refresh_token"] = new_tokens.get("refresh_token", creds["refresh_token"])
                 save_credentials(creds)
-                print(f"\nNew Access Token: {creds['access_token'][:50]}...")
+                print(f"\nAccess Token refreshed: {bool(creds.get('access_token'))}")
                 return
             except Exception as e:
                 print(f"Refresh failed: {e}")
@@ -258,7 +260,7 @@ def run_local_oauth_flow(creds: dict, client_id: str, client_secret: str):
             save_credentials(creds)
 
             print(f"\n✓ OAuth2 complete!")
-            print(f"Access Token: {tokens['access_token'][:50]}...")
+            print(f"Access Token present: {bool(tokens.get('access_token'))}")
             print(f"Realm ID: {tokens['realm_id']}")
             print(f"Token expires in: {tokens['expires_in']} seconds")
 
@@ -295,7 +297,7 @@ def exchange_code_manually(creds: dict, client_id: str, client_secret: str):
         save_credentials(creds)
 
         print(f"\n✓ Token exchange successful!")
-        print(f"Access Token: {tokens['access_token'][:50]}...")
+        print(f"Access Token present: {bool(tokens.get('access_token'))}")
         print(f"Realm ID: {tokens['realm_id']}")
         print(f"Token expires in: {tokens['expires_in']} seconds")
 
@@ -325,8 +327,7 @@ def manual_token_entry(creds):
     if access_token or refresh_token or realm_id:
         save_credentials(creds)
         print("\n✓ Tokens saved successfully!")
-        if creds.get("access_token"):
-            print(f"Access Token: {creds['access_token'][:50]}...")
+        print(f"Access Token present: {bool(creds.get('access_token'))}")
         if creds.get("realm_id"):
             print(f"Realm ID: {creds['realm_id']}")
     else:

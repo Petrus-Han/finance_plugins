@@ -2,6 +2,8 @@
 """
 Webhook Receiver - Simulates Dify Plugin Webhook Endpoint
 
+WARNING: This script is for development only. Do not use in production.
+
 This server receives webhook events and validates them exactly like
 the mercury_trigger_plugin does. Use this for debugging the full flow.
 
@@ -263,7 +265,7 @@ def print_banner():
   Signature Validation: {"ENABLED" if WEBHOOK_SECRET else "DISABLED"}
 """)
     if WEBHOOK_SECRET:
-        print(f"  Webhook Secret: {WEBHOOK_SECRET[:20]}...")
+        print(f"  Webhook Secret configured: True")
     else:
         print("""  To enable signature validation, set the WEBHOOK_SECRET env var:
     WEBHOOK_SECRET="your_base64_secret" python scripts/webhook_receiver.py
