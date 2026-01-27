@@ -1,5 +1,33 @@
 <svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="256" height="256" rx="48" fill="#2CA01C"/>
-<path d="M70 186V70H90V186H70Z" fill="white"/>
-<path d="M110 186V70H160C171.046 70 180 78.9543 180 90V110C180 121.046 171.046 130 160 130H130V186H110ZM130 110H160V90H130V110Z" fill="white"/>
+  <!-- QuickBooks Green Background with gradient for Payments -->
+  <defs>
+    <linearGradient id="qbGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2CA01C;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e7014;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="24" fill="url(#qbGradient)"/>
+
+  <!-- Payment Card Icon -->
+  <g transform="translate(48, 88)">
+    <!-- Card Shape -->
+    <rect x="0" y="0" width="160" height="100" rx="8" fill="white" opacity="0.95"/>
+
+    <!-- Card Chip -->
+    <rect x="20" y="25" width="35" height="25" rx="4" fill="#2CA01C"/>
+
+    <!-- Card Lines -->
+    <rect x="20" y="65" width="80" height="8" rx="2" fill="#2CA01C" opacity="0.6"/>
+    <rect x="110" y="65" width="30" height="8" rx="2" fill="#2CA01C" opacity="0.6"/>
+
+    <!-- QB Logo mini -->
+    <g transform="translate(115, 20) scale(0.3)">
+      <path d="M30 20C18.954 20 10 28.954 10 40v18c0 11.046 8.954 20 20 20h10c2.761 0 5-2.239 5-5V40c0-11.046-8.954-20-20-20h5zm5 43h-5c-5.523 0-10-4.477-10-10V40c0-5.523 4.477-10 10-10s10 4.477 10 10v18c0 2.761-2.239 5-5 5z" fill="#2CA01C"/>
+      <path d="M48 25c0-2.761 2.239-5 5-5h15c8.284 0 15 6.716 15 15 0 4.388-1.886 8.339-4.891 11.086C81.114 48.833 83 52.784 83 57.25c0 8.284-6.716 15-15 15H53c-2.761 0-5-2.239-5-5V25zm10 5v13h10c2.761 0 5-2.239 5-5s-2.239-5-5-5H58zm0 23v14h10c2.761 0 5-2.239 5-5s-2.239-5-5-5H58z" fill="#2CA01C"/>
+    </g>
+  </g>
+
+  <!-- Dollar Sign for Payments -->
+  <circle cx="208" cy="208" r="28" fill="white"/>
+  <text x="208" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="#2CA01C">$</text>
 </svg>
