@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""诊断 Mercury API Token 问题"""
+"""
+诊断 Mercury API Token 问题
+
+WARNING: This script is for development only. Do not use in production.
+"""
 
 import sys
 import httpx
@@ -11,7 +15,7 @@ def test_token(token: str):
     print("="*70)
     print("Mercury API Token 诊断工具")
     print("="*70)
-    print(f"\nToken (前10字符): {token[:10]}...")
+    print(f"\nToken present: {bool(token)}")
     print(f"Token 长度: {len(token)}")
     print()
 

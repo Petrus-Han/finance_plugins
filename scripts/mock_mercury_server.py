@@ -2,6 +2,8 @@
 """
 Mock Mercury Server - Complete Mercury API and Webhook Simulator
 
+WARNING: This script is for development only. Do not use in production.
+
 This server simulates the Mercury Banking API for local development and testing
 of the mercury_trigger_plugin. It implements:
 
@@ -556,7 +558,7 @@ class MockMercuryHandler(BaseHTTPRequestHandler):
             print(f"  ID: {webhook_id}")
             print(f"  URL: {url}")
             print(f"  Events: {webhook['eventTypes']}")
-            print(f"  Secret: {webhook_secret[:20]}... (base64)")
+            print(f"  Secret present: True")
             print(f"{'='*60}\n")
 
             self._send_json(webhook, 201)

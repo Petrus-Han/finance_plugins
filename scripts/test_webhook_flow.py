@@ -2,6 +2,8 @@
 """
 End-to-End Webhook Flow Test
 
+WARNING: This script is for development only. Do not use in production.
+
 This script tests the complete webhook flow by:
 1. Starting the mock Mercury server
 2. Starting the webhook receiver
@@ -138,7 +140,7 @@ def test_webhook_registration(verbose: bool = False) -> Optional[dict]:
         print(f"      URL: {webhook_url}")
 
         if verbose:
-            print(f"      Secret: {webhook_secret[:20]}..." if webhook_secret else "      Secret: N/A")
+            print(f"      Secret present: {bool(webhook_secret)}")
             print(f"      Events: {webhook.get('eventTypes')}")
 
         print("  PASS: Webhook registration working")
@@ -242,7 +244,7 @@ def test_signature_validation(webhook_secret: str, verbose: bool = False) -> boo
 
     if verbose:
         print(f"        To test, restart webhook_receiver.py with:")
-        print(f"        WEBHOOK_SECRET=\"{webhook_secret}\" python scripts/webhook_receiver.py")
+        print(f"        WEBHOOK_SECRET=\"<secret>\" python scripts/webhook_receiver.py")
 
     print("  PASS: Signature generation verified (see webhook_receiver output)")
     return True
@@ -256,7 +258,7 @@ def run_tests(verbose: bool = False, keep_alive: bool = False):
 
     print(f"\n  Mercury Server: http://localhost:{MERCURY_SERVER_PORT}")
     print(f"  Webhook Receiver: http://localhost:{WEBHOOK_RECEIVER_PORT}")
-    print(f"  API Token: {MERCURY_TOKEN}")
+    print(f"  API Token configured: {bool(MERCURY_TOKEN)}")
 
     # Check if servers are running
     print("\n[SETUP] Checking servers...")
