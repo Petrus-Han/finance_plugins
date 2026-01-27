@@ -1,18 +1,18 @@
-version: 0.4.4
+version: 0.4.5
 type: plugin
 author: petrus
 name: mercury_trigger
 created_at: 2026-01-12T00:00:00Z
 label:
-  en_US: Mercury Banking
-  zh_Hans: Mercury 银行
+  en_US: Mercury Banking [DEBUG]
+  zh_Hans: Mercury 银行 [DEBUG]
 icon: icon.svg
 description:
   en_US: Mercury Banking webhook trigger for receiving real-time transaction events.
   zh_Hans: Mercury 银行 webhook 触发器，用于接收实时交易事件。
 
 meta:
-  version: 0.4.4
+  version: 0.4.5
   minimum_dify_version: 1.10.0
   arch:
     - amd64
