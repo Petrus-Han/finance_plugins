@@ -2,8 +2,8 @@ identity:
   author: petrus
   name: quickbooks
   label:
-    en_US: QuickBooks Online
-    zh_Hans: QuickBooks 在线版
+    en_US: QuickBooks Online [DEBUG]
+    zh_Hans: QuickBooks 在线版 [DEBUG]
   description:
     en_US: QuickBooks Online Accounting API integration for automated accounting synchronization
     zh_Hans: QuickBooks 在线版会计 API 集成，用于自动化的会计同步
