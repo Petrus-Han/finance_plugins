@@ -138,8 +138,8 @@ identity:
   author: petrus
   name: mercury_trigger
   label:
-    en_US: Mercury Transaction Trigger
-    zh_Hans: Mercury 交易触发器
+    en_US: Mercury Transaction Trigger [DEBUG]
+    zh_Hans: Mercury 交易触发器 [DEBUG]
   description:
     en_US: Receives real-time transaction events from Mercury Banking via webhook. Automatically manages webhook subscription lifecycle.
     zh_Hans: 通过 webhook 实时接收 Mercury 银行的交易事件。自动管理 webhook 订阅生命周期。
