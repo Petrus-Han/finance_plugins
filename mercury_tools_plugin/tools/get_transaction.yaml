@@ -4,10 +4,20 @@ identity:
   label:
     en_US: Get Transaction Details
     zh_Hans: 获取交易详情
+    ja_JP: 取引詳細を取得
+    fr_FR: Obtenir les détails de la transaction
+    es_ES: Obtener detalles de transacción
+    pt_BR: Obter detalhes da transação
+    ko_KR: 거래 상세 조회
 description:
   human:
-    en_US: Retrieve detailed information about a specific transaction.
-    zh_Hans: 获取特定交易的详细信息。
+    en_US: Retrieve detailed information about a specific transaction, including status, counterparty, and tracking info.
+    zh_Hans: 获取特定交易的详细信息，包括状态、交易对手和追踪信息。
+    ja_JP: 特定の取引の詳細情報（ステータス、取引相手、追跡情報など）を取得。
+    fr_FR: Récupérer les informations détaillées d'une transaction spécifique, y compris le statut et les informations de suivi.
+    es_ES: Obtener información detallada de una transacción específica, incluyendo estado e información de seguimiento.
+    pt_BR: Obter informações detalhadas de uma transação específica, incluindo status e informações de rastreamento.
+    ko_KR: 특정 거래의 상세 정보(상태, 거래 상대방, 추적 정보 등)를 조회합니다.
   llm: Fetches complete details for a specific transaction by ID, including status, counterparty info, and tracking details.
 parameters:
   - name: account_id
@@ -16,9 +26,19 @@ parameters:
     label:
       en_US: Account ID
       zh_Hans: 账户 ID
+      ja_JP: 口座 ID
+      fr_FR: ID du compte
+      es_ES: ID de cuenta
+      pt_BR: ID da conta
+      ko_KR: 계좌 ID
     human_description:
       en_US: The Mercury account ID (optional, improves query performance if known)
       zh_Hans: Mercury 账户 ID（可选，如已知可提高查询性能）
+      ja_JP: Mercury 口座 ID（オプション、既知の場合はクエリ性能が向上）
+      fr_FR: L'ID du compte Mercury (optionnel, améliore les performances si connu)
+      es_ES: ID de la cuenta Mercury (opcional, mejora el rendimiento si se conoce)
+      pt_BR: ID da conta Mercury (opcional, melhora a performance se conhecido)
+      ko_KR: Mercury 계좌 ID (선택사항, 알고 있으면 조회 성능 향상)
     llm_description: Mercury account ID (UUID format, optional)
     form: llm
   - name: transaction_id
@@ -27,9 +47,19 @@ parameters:
     label:
       en_US: Transaction ID
       zh_Hans: 交易 ID
+      ja_JP: 取引 ID
+      fr_FR: ID de transaction
+      es_ES: ID de transacción
+      pt_BR: ID da transação
+      ko_KR: 거래 ID
     human_description:
       en_US: The unique identifier of the transaction
       zh_Hans: 交易的唯一标识符
+      ja_JP: 取引の一意識別子
+      fr_FR: L'identifiant unique de la transaction
+      es_ES: El identificador único de la transacción
+      pt_BR: O identificador único da transação
+      ko_KR: 거래의 고유 식별자
     llm_description: Mercury transaction ID (e.g., txn_xxx)
     form: llm
 
@@ -85,6 +115,18 @@ output_schema:
         bank_name:
           type: string
           description: Bank name
+    credit_card_id:
+      type: string
+      description: Credit card ID (for credit card transactions, can be matched with get_cards to find cardholder)
+    credit_card_email:
+      type: string
+      description: Credit card holder email
+    credit_card_payment_method:
+      type: string
+      description: Credit card payment method
+    debit_card_id:
+      type: string
+      description: Debit card ID (for debit card transactions, can be matched with get_cards to find cardholder)
     attachments:
       type: array
       description: Transaction attachments
