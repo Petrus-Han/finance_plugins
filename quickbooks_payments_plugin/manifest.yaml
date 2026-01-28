@@ -1,4 +1,4 @@
-version: 0.1.7
+version: 0.1.8
 type: plugin
 author: petrus
 name: quickbooks_payments
@@ -6,10 +6,20 @@ created_at: "2026-01-14T00:00:00Z"
 label:
   en_US: QuickBooks Payments
   zh_Hans: QuickBooks 支付
+  ja_JP: QuickBooks ペイメント
+  fr_FR: QuickBooks Paiements
+  es_ES: QuickBooks Pagos
+  pt_BR: QuickBooks Pagamentos
+  ko_KR: QuickBooks 결제
 icon: icon.svg
 description:
-  en_US: QuickBooks Payments API integration for processing credit card, debit card, and bank account (ACH/eCheck) payments.
-  zh_Hans: QuickBooks 支付 API 集成，用于处理信用卡、借记卡和银行账户（ACH/eCheck）支付。
+  en_US: Accept credit cards, debit cards, and bank transfers (ACH) from your customers. Process refunds when needed.
+  zh_Hans: 接受客户的信用卡、借记卡和银行转账（ACH）付款。需要时处理退款。
+  ja_JP: クレジットカード、デビットカード、銀行振込（ACH）での支払いを受け付け。必要に応じて返金を処理。
+  fr_FR: Acceptez les paiements par carte de crédit, carte de débit et virement bancaire (ACH) de vos clients. Traitez les remboursements si nécessaire.
+  es_ES: Acepte tarjetas de crédito, tarjetas de débito y transferencias bancarias (ACH) de sus clientes. Procese reembolsos cuando sea necesario.
+  pt_BR: Aceite cartões de crédito, cartões de débito e transferências bancárias (ACH) de seus clientes. Processe reembolsos quando necessário.
+  ko_KR: 고객으로부터 신용카드, 직불카드 및 은행 이체(ACH)를 받습니다. 필요시 환불을 처리합니다.
 
 resource:
   memory: 134217728
@@ -18,7 +28,7 @@ resource:
       enabled: true
 
 meta:
-  version: 0.1.7
+  version: 0.0.1
   minimum_dify_version: 1.0.0
   arch:
     - amd64

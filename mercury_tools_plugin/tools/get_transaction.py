@@ -75,7 +75,7 @@ class GetTransactionTool(Tool):
                     "tracking_number": txn.get("trackingNumber", ""),
                 }
 
-                # Include details (routing info, etc.)
+                # Include details (routing info, card info, etc.)
                 details = txn.get("details", {})
                 if details:
                     routing_info = details.get("electronicRoutingInfo", {})
@@ -85,6 +85,18 @@ class GetTransactionTool(Tool):
                             "routing_number": routing_info.get("routingNumber", ""),
                             "bank_name": routing_info.get("bankName", ""),
                         }
+
+                    # Extract credit card info (for credit card transactions)
+                    credit_card_info = details.get("creditCardInfo", {})
+                    if credit_card_info:
+                        transaction_info["credit_card_id"] = credit_card_info.get("id", "")
+                        transaction_info["credit_card_email"] = credit_card_info.get("email", "")
+                        transaction_info["credit_card_payment_method"] = credit_card_info.get("paymentMethod", "")
+
+                    # Extract debit card info (for debit card transactions)
+                    debit_card_info = details.get("debitCardInfo", {})
+                    if debit_card_info:
+                        transaction_info["debit_card_id"] = debit_card_info.get("id", "")
 
                 # Include attachments
                 attachments = txn.get("attachments", [])
