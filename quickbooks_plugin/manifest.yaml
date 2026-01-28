@@ -1,15 +1,25 @@
-version: 0.2.7
+version: 0.2.8
 type: plugin
 author: petrus
 name: quickbooks
 created_at: 2026-01-12T00:00:00Z
 label:
-  en_US: QuickBooks Online [DEBUG]
-  zh_Hans: QuickBooks 在线版 [DEBUG]
+  en_US: QuickBooks Online Accounting
+  zh_Hans: QuickBooks 在线会计
+  ja_JP: QuickBooks オンライン会計
+  fr_FR: Comptabilité QuickBooks Online
+  es_ES: Contabilidad QuickBooks Online
+  pt_BR: Contabilidade QuickBooks Online
+  ko_KR: QuickBooks 온라인 회계
 icon: icon.svg
 description:
-  en_US: QuickBooks Online integration for automated accounting synchronization.
-  zh_Hans: QuickBooks 在线版集成，用于自动化的会计同步。
+  en_US: Connect to QuickBooks Online to automate your bookkeeping. Create invoices, track expenses, manage vendors and customers, and sync transactions automatically.
+  zh_Hans: 连接 QuickBooks 在线版，自动化您的记账工作。创建发票、追踪支出、管理供应商和客户，自动同步交易。
+  ja_JP: QuickBooks Online に接続して記帳を自動化。請求書作成、経費追跡、取引先・顧客管理、取引の自動同期が可能です。
+  fr_FR: Connectez-vous à QuickBooks Online pour automatiser votre comptabilité. Créez des factures, suivez les dépenses, gérez fournisseurs et clients, synchronisez automatiquement les transactions.
+  es_ES: Conéctese a QuickBooks Online para automatizar su contabilidad. Cree facturas, rastree gastos, gestione proveedores y clientes, sincronice transacciones automáticamente.
+  pt_BR: Conecte-se ao QuickBooks Online para automatizar sua contabilidade. Crie faturas, rastreie despesas, gerencie fornecedores e clientes, sincronize transações automaticamente.
+  ko_KR: QuickBooks Online에 연결하여 회계 업무를 자동화하세요. 청구서 생성, 비용 추적, 공급업체 및 고객 관리, 거래 자동 동기화가 가능합니다.
 
 resource:
   memory: 134217728
@@ -18,7 +28,7 @@ resource:
       enabled: true
 
 meta:
-  version: 0.2.7
+  version: 0.0.1
   minimum_dify_version: 1.0.0
   arch:
     - amd64
