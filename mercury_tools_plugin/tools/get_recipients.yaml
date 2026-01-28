@@ -4,10 +4,20 @@ identity:
   label:
     en_US: Get Recipients
     zh_Hans: 获取收款人列表
+    ja_JP: 受取人一覧を取得
+    fr_FR: Obtenir les bénéficiaires
+    es_ES: Obtener beneficiarios
+    pt_BR: Obter beneficiários
+    ko_KR: 수취인 목록 조회
 description:
   human:
-    en_US: Retrieve a list of all payment recipients (payees) from Mercury.
-    zh_Hans: 获取 Mercury 中所有付款收款人（收款方）的列表。
+    en_US: Retrieve a list of all payment recipients (payees) configured in Mercury for sending payments.
+    zh_Hans: 获取 Mercury 中配置的所有付款收款人（收款方）列表，用于发送付款。
+    ja_JP: Mercury で設定されたすべての支払い受取人（振込先）のリストを取得。
+    fr_FR: Récupérer la liste de tous les bénéficiaires de paiement configurés dans Mercury.
+    es_ES: Obtener la lista de todos los beneficiarios de pagos configurados en Mercury.
+    pt_BR: Obter a lista de todos os beneficiários de pagamento configurados no Mercury.
+    ko_KR: Mercury에 설정된 모든 결제 수취인(수령인) 목록을 조회합니다.
   llm: Fetches all recipients configured in the Mercury account. Recipients are payees that can receive payments.
 parameters:
   - name: limit
@@ -17,9 +27,19 @@ parameters:
     label:
       en_US: Limit
       zh_Hans: 数量限制
+      ja_JP: 取得件数
+      fr_FR: Limite
+      es_ES: Límite
+      pt_BR: Limite
+      ko_KR: 조회 수
     human_description:
       en_US: Maximum number of recipients to return (default 50)
       zh_Hans: 返回的最大收款人数量（默认50）
+      ja_JP: 返却する受取人の最大件数（デフォルト50）
+      fr_FR: Nombre maximum de bénéficiaires à retourner (défaut 50)
+      es_ES: Número máximo de beneficiarios a devolver (predeterminado 50)
+      pt_BR: Número máximo de beneficiários a retornar (padrão 50)
+      ko_KR: 반환할 최대 수취인 수 (기본값 50)
     llm_description: Maximum number of recipients to return in a single request
     form: form
 

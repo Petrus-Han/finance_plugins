@@ -4,13 +4,23 @@ identity:
   label:
     en_US: Get Account Details
     zh_Hans: 获取账户详情
+    ja_JP: 口座詳細を取得
+    fr_FR: Obtenir les détails du compte
+    es_ES: Obtener detalles de cuenta
+    pt_BR: Obter detalhes da conta
+    ko_KR: 계좌 상세 조회
   icon: icon.svg
 
 description:
   human:
-    en_US: Get detailed information for a specific Mercury bank account by account ID
-    zh_Hans: 通过账户 ID 获取特定 Mercury 银行账户的详细信息
-  llm: A tool to retrieve detailed information for a specific Mercury bank account including balance, status, and account numbers
+    en_US: "Get detailed information for a specific Mercury bank account (checking, savings, treasury). Note: Does NOT include credit cards - use 'Get Employee Cards' for credit card info."
+    zh_Hans: "获取特定 Mercury 银行账户（支票、储蓄、国库账户）的详细信息。注意：不包含信用卡，请使用「获取员工信用卡」查询信用卡。"
+    ja_JP: "特定の Mercury 銀行口座（当座、普通、財務）の詳細情報を取得。注意：クレジットカードは含まれません。クレジットカード情報は「従業員カード取得」を使用。"
+    fr_FR: "Obtenir les informations détaillées d'un compte bancaire Mercury spécifique (courant, épargne, trésorerie). Note : N'inclut PAS les cartes de crédit."
+    es_ES: "Obtener información detallada de una cuenta bancaria Mercury específica (corriente, ahorro, tesorería). Nota: NO incluye tarjetas de crédito."
+    pt_BR: "Obter informações detalhadas de uma conta bancária Mercury específica (corrente, poupança, tesouraria). Nota: NÃO inclui cartões de crédito."
+    ko_KR: "특정 Mercury 은행 계좌(당좌, 저축, 재무)의 상세 정보를 조회합니다. 참고: 신용카드는 포함되지 않습니다."
+  llm: "A tool to retrieve detailed information for a specific Mercury bank account including balance, status, and account numbers. IMPORTANT: This endpoint returns bank account details only, NOT credit cards. To get credit card information, use the get_cards tool instead."
 
 parameters:
   - name: account_id
@@ -19,9 +29,19 @@ parameters:
     label:
       en_US: Account ID
       zh_Hans: 账户 ID
+      ja_JP: 口座 ID
+      fr_FR: ID du compte
+      es_ES: ID de cuenta
+      pt_BR: ID da conta
+      ko_KR: 계좌 ID
     human_description:
       en_US: The unique identifier of the Mercury account to retrieve
       zh_Hans: 要检索的 Mercury 账户的唯一标识符
+      ja_JP: 取得する Mercury 口座の一意識別子
+      fr_FR: L'identifiant unique du compte Mercury à récupérer
+      es_ES: El identificador único de la cuenta Mercury a recuperar
+      pt_BR: O identificador único da conta Mercury a recuperar
+      ko_KR: 조회할 Mercury 계좌의 고유 식별자
     llm_description: The unique identifier (ID) of the Mercury account to retrieve detailed information for
     form: llm
 

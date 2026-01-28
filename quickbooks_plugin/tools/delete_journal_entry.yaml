@@ -4,11 +4,21 @@ identity:
   label:
     en_US: Delete Journal Entry
     zh_Hans: 删除日记账分录
+    ja_JP: 仕訳を削除
+    fr_FR: Supprimer écriture comptable
+    es_ES: Eliminar asiento contable
+    pt_BR: Excluir lançamento contábil
+    ko_KR: 분개 삭제
 
 description:
   human:
-    en_US: Delete an existing journal entry
-    zh_Hans: 删除已有的日记账分录
+    en_US: Permanently remove a journal entry. You'll need the entry ID and sync token (get these by viewing the entry first).
+    zh_Hans: 永久删除日记账分录。需要分录 ID 和同步令牌（先查看分录获取这些信息）。
+    ja_JP: 仕訳を完全に削除。仕訳IDと同期トークンが必要（まず仕訳を表示して取得）。
+    fr_FR: Supprimez définitivement une écriture comptable. L'ID et le jeton de synchronisation sont requis (obtenez-les en consultant l'écriture).
+    es_ES: Elimine permanentemente un asiento contable. Necesita el ID y token de sincronización (obténgalos viendo el asiento primero).
+    pt_BR: Remova permanentemente um lançamento contábil. Você precisará do ID e token de sincronização (obtenha visualizando o lançamento primeiro).
+    ko_KR: 분개를 영구적으로 삭제합니다. 분개 ID와 동기화 토큰이 필요합니다 (먼저 분개를 조회하여 얻으세요).
   llm: Delete a journal entry from QuickBooks. Requires the journal entry ID and sync token from a previous read operation.
 
 parameters:

@@ -2,17 +2,24 @@ identity:
   name: purchase_order_management
   author: petrus
   label:
-    en_US: Purchase Order Management
-    zh_Hans: 采购订单管理
-  human_description:
-    en_US: Purchase Order Management
-    zh_Hans: 采购订单管理
+    en_US: Manage Purchase Orders
+    zh_Hans: 管理采购订单
+    ja_JP: 発注書管理
+    fr_FR: Gérer bons de commande
+    es_ES: Gestionar órdenes de compra
+    pt_BR: Gerenciar pedidos de compra
+    ko_KR: 구매 주문 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, or delete purchase orders
-    zh_Hans: 创建、读取或删除采购订单
+    en_US: Create orders to buy products from vendors. Track what you've ordered and what's been received.
+    zh_Hans: 创建向供应商购买产品的订单。追踪已订购和已收到的商品。
+    ja_JP: 取引先からの製品購入注文を作成。注文済みと受領済みの状況を追跡。
+    fr_FR: Créez des commandes d'achat auprès de fournisseurs. Suivez ce qui a été commandé et reçu.
+    es_ES: Cree órdenes para comprar productos de proveedores. Rastree lo ordenado y recibido.
+    pt_BR: Crie pedidos de compra de produtos de fornecedores. Rastreie o que foi pedido e recebido.
+    ko_KR: 공급업체에서 제품을 구매하는 주문을 생성합니다. 주문한 것과 수령한 것을 추적하세요.
   llm: A tool to manage purchase orders in QuickBooks - for ordering goods from vendors
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, delete, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Purchase Order
-          zh_Hans: 创建采购订单
-        human_description:
-          en_US: Create Purchase Order
-          zh_Hans: 创建采购订单
+          en_US: Create Order
+          zh_Hans: 创建订单
+          ja_JP: 注文を作成
+          fr_FR: Créer commande
+          es_ES: Crear orden
+          pt_BR: Criar pedido
+          ko_KR: 주문 생성
       - value: read
         label:
-          en_US: Read Purchase Order
-          zh_Hans: 读取采购订单
-        human_description:
-          en_US: Read Purchase Order
-          zh_Hans: 读取采购订单
+          en_US: View Order
+          zh_Hans: 查看订单
+          ja_JP: 注文を表示
+          fr_FR: Voir commande
+          es_ES: Ver orden
+          pt_BR: Ver pedido
+          ko_KR: 주문 보기
       - value: delete
         label:
-          en_US: Delete Purchase Order
-          zh_Hans: 删除采购订单
-        human_description:
-          en_US: Delete Purchase Order
-          zh_Hans: 删除采购订单
+          en_US: Delete Order
+          zh_Hans: 删除订单
+          ja_JP: 注文を削除
+          fr_FR: Supprimer commande
+          es_ES: Eliminar orden
+          pt_BR: Excluir pedido
+          ko_KR: 주문 삭제
       - value: query
         label:
-          en_US: Query Purchase Orders
-          zh_Hans: 查询采购订单
-
-        human_description:
-          en_US: Query Purchase Orders
-          zh_Hans: 查询采购订单
+          en_US: Search Orders
+          zh_Hans: 搜索订单
+          ja_JP: 注文を検索
+          fr_FR: Rechercher commandes
+          es_ES: Buscar órdenes
+          pt_BR: Pesquisar pedidos
+          ko_KR: 주문 검색
   - name: purchase_order_id
     type: string
     required: false

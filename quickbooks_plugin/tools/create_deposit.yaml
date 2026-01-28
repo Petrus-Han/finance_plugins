@@ -2,17 +2,23 @@ identity:
   name: create_deposit
   author: petrus
   label:
-    en_US: Create Deposit
-    zh_Hans: 创建存款
-  human_description:
-    en_US: Create Deposit
-    zh_Hans: 创建存款
+    en_US: Record Deposit
+    zh_Hans: 记录存款
+    ja_JP: 入金を記録
+    fr_FR: Enregistrer dépôt
+    es_ES: Registrar depósito
+    pt_BR: Registrar depósito
+    ko_KR: 입금 기록
 description:
   human:
-    en_US: Record a new deposit in QuickBooks.
-    zh_Hans: 在 QuickBooks 中记录新的存款。
-  llm: Create a deposit transaction in QuickBooks, recording money received into a
-    bank account from an income source.
+    en_US: Record money received into your bank account. Use this for income that isn't from invoices (e.g., cash sales, refunds, owner contributions).
+    zh_Hans: 记录收到银行账户的资金。用于非发票收入（如：现金销售、退款、业主投资）。
+    ja_JP: "銀行口座への入金を記録。請求書以外の収入に使用（例：現金売上、返金、オーナー出資）。"
+    fr_FR: Enregistrez l'argent reçu sur votre compte bancaire. Utilisez pour les revenus hors factures (ex. ventes au comptant, remboursements, apports).
+    es_ES: Registre dinero recibido en su cuenta bancaria. Use para ingresos no de facturas (ej., ventas en efectivo, reembolsos, aportes).
+    pt_BR: Registre dinheiro recebido em sua conta bancária. Use para receitas que não são de faturas (ex., vendas à vista, reembolsos, aportes).
+    ko_KR: "은행 계좌로 받은 돈을 기록합니다. 청구서 외 수입에 사용 (예: 현금 판매, 환불, 소유자 출자)."
+  llm: Create a deposit transaction in QuickBooks, recording money received into a bank account from an income source.
 extra:
   python:
     source: tools/create_deposit.py
@@ -22,22 +28,42 @@ parameters:
   type: string
   required: true
   label:
-    en_US: Bank Account ID
-    zh_Hans: 银行账户 ID
+    en_US: Deposit To
+    zh_Hans: 存入账户
+    ja_JP: 入金先
+    fr_FR: Déposer sur
+    es_ES: Depositar en
+    pt_BR: Depositar em
+    ko_KR: 입금 계좌
   human_description:
-    en_US: The QuickBooks bank account ID to deposit into
-    zh_Hans: 存入的 QuickBooks 银行账户 ID
+    en_US: Which bank account received the money?
+    zh_Hans: 哪个银行账户收到了这笔钱？
+    ja_JP: どの銀行口座に入金されましたか？
+    fr_FR: Quel compte bancaire a reçu l'argent ?
+    es_ES: ¿Qué cuenta bancaria recibió el dinero?
+    pt_BR: Qual conta bancária recebeu o dinheiro?
+    ko_KR: 어느 은행 계좌에 입금되었습니까?
   llm_description: The QuickBooks account ID for the bank account to deposit into
 - name: income_account_id
   form: llm
   type: string
   required: true
   label:
-    en_US: Income Account ID
-    zh_Hans: 收入账户 ID
+    en_US: Income Category
+    zh_Hans: 收入类别
+    ja_JP: 収入カテゴリ
+    fr_FR: Catégorie de revenu
+    es_ES: Categoría de ingreso
+    pt_BR: Categoria de receita
+    ko_KR: 수입 카테고리
   human_description:
-    en_US: The QuickBooks income account ID
-    zh_Hans: QuickBooks 收入账户 ID
+    en_US: What type of income is this? (e.g., Sales, Services, Other Income)
+    zh_Hans: 这是什么类型的收入？（如：销售、服务、其他收入）
+    ja_JP: "この収入の種類は？（例：売上、サービス、その他の収入）"
+    fr_FR: Quel type de revenu ? (ex. Ventes, Services, Autres revenus)
+    es_ES: ¿Qué tipo de ingreso es? (ej., Ventas, Servicios, Otros ingresos)
+    pt_BR: Que tipo de receita é? (ex., Vendas, Serviços, Outras receitas)
+    ko_KR: "어떤 유형의 수입입니까? (예: 판매, 서비스, 기타 수입)"
   llm_description: The QuickBooks account ID for the income category
 - name: amount
   form: llm
@@ -46,20 +72,40 @@ parameters:
   label:
     en_US: Amount
     zh_Hans: 金额
+    ja_JP: 金額
+    fr_FR: Montant
+    es_ES: Monto
+    pt_BR: Valor
+    ko_KR: 금액
   human_description:
-    en_US: Deposit amount
-    zh_Hans: 存款金额
+    en_US: How much did you receive?
+    zh_Hans: 您收到了多少钱？
+    ja_JP: いくら受け取りましたか？
+    fr_FR: Combien avez-vous reçu ?
+    es_ES: ¿Cuánto recibió?
+    pt_BR: Quanto você recebeu?
+    ko_KR: 얼마를 받았습니까?
   llm_description: The deposit amount (positive number)
 - name: txn_date
   form: llm
   type: string
   required: false
   label:
-    en_US: Transaction Date
-    zh_Hans: 交易日期
+    en_US: Date
+    zh_Hans: 日期
+    ja_JP: 日付
+    fr_FR: Date
+    es_ES: Fecha
+    pt_BR: Data
+    ko_KR: 날짜
   human_description:
-    en_US: Transaction date (YYYY-MM-DD format)
-    zh_Hans: 交易日期（YYYY-MM-DD 格式）
+    en_US: When was the deposit made? (YYYY-MM-DD, defaults to today)
+    zh_Hans: 存款日期？（YYYY-MM-DD，默认为今天）
+    ja_JP: いつ入金されましたか？（YYYY-MM-DD、デフォルトは今日）
+    fr_FR: Quand le dépôt a-t-il été effectué ? (AAAA-MM-JJ, par défaut aujourd'hui)
+    es_ES: ¿Cuándo se realizó el depósito? (AAAA-MM-DD, por defecto hoy)
+    pt_BR: Quando o depósito foi feito? (AAAA-MM-DD, padrão é hoje)
+    ko_KR: 언제 입금되었습니까? (YYYY-MM-DD, 기본값은 오늘)
   llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
 - name: description
   form: llm
@@ -68,20 +114,40 @@ parameters:
   label:
     en_US: Description
     zh_Hans: 描述
+    ja_JP: 説明
+    fr_FR: Description
+    es_ES: Descripción
+    pt_BR: Descrição
+    ko_KR: 설명
   human_description:
-    en_US: Deposit description
-    zh_Hans: 存款描述
+    en_US: What is this deposit for?
+    zh_Hans: 这笔存款是什么？
+    ja_JP: この入金は何のため？
+    fr_FR: À quoi correspond ce dépôt ?
+    es_ES: ¿Para qué es este depósito?
+    pt_BR: Para que é este depósito?
+    ko_KR: 이 입금은 무엇을 위한 것입니까?
   llm_description: Description of the deposit
 - name: note
   form: llm
   type: string
   required: false
   label:
-    en_US: Note
-    zh_Hans: 备注
-  human_description:
-    en_US: Private note
+    en_US: Private Note
     zh_Hans: 私人备注
+    ja_JP: 社内メモ
+    fr_FR: Note privée
+    es_ES: Nota privada
+    pt_BR: Nota privada
+    ko_KR: 비공개 메모
+  human_description:
+    en_US: Internal note for your records
+    zh_Hans: 仅供内部记录的备注
+    ja_JP: 社内記録用のメモ
+    fr_FR: Note interne pour vos dossiers
+    es_ES: Nota interna para sus registros
+    pt_BR: Nota interna para seus registros
+    ko_KR: 내부 기록용 메모
   llm_description: Internal note for this deposit
 output_schema:
   type: object

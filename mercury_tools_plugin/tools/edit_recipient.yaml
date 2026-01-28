@@ -4,12 +4,22 @@ identity:
   label:
     en_US: Edit Recipient
     zh_Hans: 编辑收款人
+    ja_JP: 受取人を編集
+    fr_FR: Modifier le bénéficiaire
+    es_ES: Editar beneficiario
+    pt_BR: Editar beneficiário
+    ko_KR: 수취인 편집
   icon: icon.svg
 
 description:
   human:
-    en_US: Update an existing recipient's information
-    zh_Hans: 更新现有收款人的信息
+    en_US: Update a saved recipient's name, email, or bank account information.
+    zh_Hans: 更新已保存收款人的名称、邮箱或银行账户信息。
+    ja_JP: 保存済み受取人の名前、メール、または銀行口座情報を更新。
+    fr_FR: Mettre à jour le nom, l'e-mail ou les informations bancaires d'un bénéficiaire enregistré.
+    es_ES: Actualizar el nombre, correo electrónico o información bancaria de un beneficiario guardado.
+    pt_BR: Atualizar o nome, e-mail ou informações bancárias de um beneficiário salvo.
+    ko_KR: 저장된 수취인의 이름, 이메일 또는 은행 계좌 정보를 업데이트합니다.
   llm: A tool to update recipient details including name, emails, and payment information
 
 parameters:
@@ -17,11 +27,21 @@ parameters:
     type: string
     required: true
     label:
-      en_US: Recipient ID
-      zh_Hans: 收款人 ID
+      en_US: Recipient
+      zh_Hans: 收款人
+      ja_JP: 受取人
+      fr_FR: Bénéficiaire
+      es_ES: Beneficiario
+      pt_BR: Beneficiário
+      ko_KR: 수취인
     human_description:
-      en_US: The recipient ID to update
-      zh_Hans: 要更新的收款人 ID
+      en_US: Select the recipient to edit
+      zh_Hans: 选择要编辑的收款人
+      ja_JP: 編集する受取人を選択
+      fr_FR: Sélectionnez le bénéficiaire à modifier
+      es_ES: Seleccione el beneficiario a editar
+      pt_BR: Selecione o beneficiário para editar
+      ko_KR: 편집할 수취인을 선택하세요
     llm_description: The UUID of the recipient to update
     form: llm
 
@@ -31,9 +51,19 @@ parameters:
     label:
       en_US: Name
       zh_Hans: 名称
+      ja_JP: 名前
+      fr_FR: Nom
+      es_ES: Nombre
+      pt_BR: Nome
+      ko_KR: 이름
     human_description:
-      en_US: Recipient's name
-      zh_Hans: 收款人名称
+      en_US: New name for the recipient
+      zh_Hans: 收款人的新名称
+      ja_JP: 受取人の新しい名前
+      fr_FR: Nouveau nom du bénéficiaire
+      es_ES: Nuevo nombre del beneficiario
+      pt_BR: Novo nome do beneficiário
+      ko_KR: 수취인의 새 이름
     llm_description: The recipient's name
     form: llm
 
@@ -43,9 +73,19 @@ parameters:
     label:
       en_US: Nickname
       zh_Hans: 昵称
+      ja_JP: ニックネーム
+      fr_FR: Surnom
+      es_ES: Apodo
+      pt_BR: Apelido
+      ko_KR: 별명
     human_description:
-      en_US: Nickname for the recipient
-      zh_Hans: 收款人昵称
+      en_US: A short nickname for easy identification
+      zh_Hans: 便于识别的简短昵称
+      ja_JP: 識別しやすいニックネーム
+      fr_FR: Un surnom court pour faciliter l'identification
+      es_ES: Un apodo corto para fácil identificación
+      pt_BR: Um apelido curto para fácil identificação
+      ko_KR: 쉽게 식별할 수 있는 짧은 별명
     llm_description: A nickname for the recipient
     form: llm
 
@@ -53,11 +93,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Emails (JSON)
-      zh_Hans: 邮箱列表 (JSON)
+      en_US: Email Addresses
+      zh_Hans: 邮箱地址
+      ja_JP: メールアドレス
+      fr_FR: Adresses e-mail
+      es_ES: Direcciones de correo
+      pt_BR: Endereços de e-mail
+      ko_KR: 이메일 주소
     human_description:
-      en_US: "JSON array of email addresses: [\"email1@example.com\", \"email2@example.com\"]"
-      zh_Hans: "邮箱地址 JSON 数组: [\"email1@example.com\"]"
+      en_US: "Email addresses as a list, e.g.: [\"email1@example.com\", \"email2@example.com\"]"
+      zh_Hans: "邮箱地址列表，如：[\"email1@example.com\", \"email2@example.com\"]"
+      ja_JP: "メールアドレスのリスト、例：[\"email1@example.com\", \"email2@example.com\"]"
+      fr_FR: "Liste d'adresses e-mail, ex. : [\"email1@example.com\", \"email2@example.com\"]"
+      es_ES: "Lista de direcciones de correo, ej.: [\"email1@example.com\", \"email2@example.com\"]"
+      pt_BR: "Lista de endereços de e-mail, ex.: [\"email1@example.com\", \"email2@example.com\"]"
+      ko_KR: "이메일 주소 목록, 예: [\"email1@example.com\", \"email2@example.com\"]"
     llm_description: JSON array of email addresses associated with the recipient
     form: llm
 
@@ -65,11 +115,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Contact Email
-      zh_Hans: 联系邮箱
+      en_US: Primary Email
+      zh_Hans: 主要邮箱
+      ja_JP: 主要メール
+      fr_FR: E-mail principal
+      es_ES: Correo principal
+      pt_BR: E-mail principal
+      ko_KR: 기본 이메일
     human_description:
-      en_US: Primary contact email
-      zh_Hans: 主要联系邮箱
+      en_US: Primary contact email address
+      zh_Hans: 主要联系邮箱地址
+      ja_JP: 主要な連絡先メールアドレス
+      fr_FR: Adresse e-mail de contact principale
+      es_ES: Dirección de correo electrónico de contacto principal
+      pt_BR: Endereço de e-mail de contato principal
+      ko_KR: 기본 연락처 이메일 주소
     llm_description: Primary contact email address for the recipient
     form: llm
 
@@ -77,11 +137,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Account Number
-      zh_Hans: 账户号码
+      en_US: Bank Account Number
+      zh_Hans: 银行账号
+      ja_JP: 銀行口座番号
+      fr_FR: Numéro de compte bancaire
+      es_ES: Número de cuenta bancaria
+      pt_BR: Número da conta bancária
+      ko_KR: 은행 계좌번호
     human_description:
-      en_US: Bank account number for ACH/wire
-      zh_Hans: ACH/电汇的银行账户号码
+      en_US: New bank account number
+      zh_Hans: 新的银行账号
+      ja_JP: 新しい銀行口座番号
+      fr_FR: Nouveau numéro de compte bancaire
+      es_ES: Nuevo número de cuenta bancaria
+      pt_BR: Novo número da conta bancária
+      ko_KR: 새 은행 계좌번호
     llm_description: Bank account number for electronic payments
     form: llm
 
@@ -90,10 +160,20 @@ parameters:
     required: false
     label:
       en_US: Routing Number
-      zh_Hans: 路由号码
+      zh_Hans: 银行代码
+      ja_JP: ルーティング番号
+      fr_FR: Numéro de routage
+      es_ES: Número de ruta
+      pt_BR: Número de roteamento
+      ko_KR: 라우팅 번호
     human_description:
-      en_US: Bank routing number
-      zh_Hans: 银行路由号码
+      en_US: New 9-digit bank routing number
+      zh_Hans: 新的 9 位银行代码
+      ja_JP: 新しい 9 桁の銀行ルーティング番号
+      fr_FR: Nouveau numéro de routage bancaire à 9 chiffres
+      es_ES: Nuevo número de ruta bancaria de 9 dígitos
+      pt_BR: Novo número de roteamento bancário de 9 dígitos
+      ko_KR: 새 9자리 은행 라우팅 번호
     llm_description: Bank routing number for ACH/wire transfers
     form: llm
 
@@ -103,20 +183,40 @@ parameters:
     label:
       en_US: Account Type
       zh_Hans: 账户类型
+      ja_JP: 口座種類
+      fr_FR: Type de compte
+      es_ES: Tipo de cuenta
+      pt_BR: Tipo de conta
+      ko_KR: 계좌 유형
     human_description:
       en_US: Type of bank account
       zh_Hans: 银行账户类型
+      ja_JP: 銀行口座の種類
+      fr_FR: Type de compte bancaire
+      es_ES: Tipo de cuenta bancaria
+      pt_BR: Tipo de conta bancária
+      ko_KR: 은행 계좌 유형
     llm_description: Type of bank account (checking or savings)
     form: llm
     options:
       - value: checking
         label:
-          en_US: Checking
+          en_US: Checking Account
           zh_Hans: 支票账户
+          ja_JP: 当座預金
+          fr_FR: Compte courant
+          es_ES: Cuenta corriente
+          pt_BR: Conta corrente
+          ko_KR: 당좌 계좌
       - value: savings
         label:
-          en_US: Savings
+          en_US: Savings Account
           zh_Hans: 储蓄账户
+          ja_JP: 普通預金
+          fr_FR: Compte d'épargne
+          es_ES: Cuenta de ahorro
+          pt_BR: Conta poupança
+          ko_KR: 저축 계좌
 
 output_schema:
   type: object

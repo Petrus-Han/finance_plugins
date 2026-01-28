@@ -2,17 +2,24 @@ identity:
   name: query_entities
   author: petrus
   label:
-    en_US: Query Entities
-    zh_Hans: 查询实体
-  human_description:
-    en_US: Query Entities
-    zh_Hans: 查询实体
+    en_US: Advanced Search
+    zh_Hans: 高级搜索
+    ja_JP: 高度な検索
+    fr_FR: Recherche avancée
+    es_ES: Búsqueda avanzada
+    pt_BR: Pesquisa avançada
+    ko_KR: 고급 검색
   icon: icon.svg
 
 description:
   human:
-    en_US: Run custom SQL-like queries against any QuickBooks entity
-    zh_Hans: 对任何 QuickBooks 实体运行自定义类 SQL 查询
+    en_US: Search any type of QuickBooks data using custom filters. For power users who need precise queries.
+    zh_Hans: 使用自定义筛选条件搜索任何类型的 QuickBooks 数据。适合需要精确查询的高级用户。
+    ja_JP: カスタムフィルターで任意のQuickBooksデータを検索。精密なクエリが必要な上級ユーザー向け。
+    fr_FR: Recherchez tout type de données QuickBooks avec des filtres personnalisés. Pour les utilisateurs avancés qui ont besoin de requêtes précises.
+    es_ES: Busque cualquier tipo de datos de QuickBooks usando filtros personalizados. Para usuarios avanzados que necesitan consultas precisas.
+    pt_BR: Pesquise qualquer tipo de dados do QuickBooks usando filtros personalizados. Para usuários avançados que precisam de consultas precisas.
+    ko_KR: 사용자 지정 필터를 사용하여 모든 유형의 QuickBooks 데이터를 검색합니다. 정밀한 쿼리가 필요한 고급 사용자를 위한 기능입니다.
   llm: A flexible tool to query any QuickBooks entity using SQL-like syntax
 
 parameters:
@@ -20,11 +27,21 @@ parameters:
     type: select
     required: false
     label:
-      en_US: Entity Type
-      zh_Hans: 实体类型
+      en_US: Data Type
+      zh_Hans: 数据类型
+      ja_JP: データタイプ
+      fr_FR: Type de données
+      es_ES: Tipo de datos
+      pt_BR: Tipo de dados
+      ko_KR: 데이터 유형
     human_description:
-      en_US: Entity Type
-      zh_Hans: 实体类型
+      en_US: What type of data are you searching for?
+      zh_Hans: 您要搜索什么类型的数据？
+      ja_JP: どの種類のデータを検索しますか？
+      fr_FR: Quel type de données recherchez-vous ?
+      es_ES: ¿Qué tipo de datos está buscando?
+      pt_BR: Que tipo de dados você está procurando?
+      ko_KR: 어떤 유형의 데이터를 검색하고 있습니까?
     llm_description: The type of entity to query. Required if not using custom_query.
     form: llm
     options:

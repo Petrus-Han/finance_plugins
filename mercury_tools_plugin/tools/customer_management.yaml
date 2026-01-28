@@ -2,14 +2,24 @@ identity:
   name: customer_management
   author: petrus
   label:
-    en_US: Customer Management
-    zh_Hans: 客户管理
+    en_US: Manage Invoicing Customers
+    zh_Hans: 管理发票客户
+    ja_JP: 請求顧客を管理
+    fr_FR: Gérer les clients de facturation
+    es_ES: Gestionar clientes de facturación
+    pt_BR: Gerenciar clientes de faturamento
+    ko_KR: 청구 고객 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, or delete customers for Accounts Receivable
-    zh_Hans: 创建、读取、更新或删除应收账款客户
+    en_US: Add, view, edit, or remove customers that you send invoices to. Manage their contact details and billing address.
+    zh_Hans: 添加、查看、编辑或删除您发送发票的客户。管理他们的联系方式和账单地址。
+    ja_JP: 請求書を送付する顧客の追加、表示、編集、削除。連絡先と請求先住所を管理。
+    fr_FR: Ajoutez, consultez, modifiez ou supprimez les clients auxquels vous envoyez des factures. Gérez leurs coordonnées et adresse de facturation.
+    es_ES: Agregue, vea, edite o elimine clientes a los que envía facturas. Gestione sus datos de contacto y dirección de facturación.
+    pt_BR: Adicione, visualize, edite ou remova clientes para os quais você envia faturas. Gerencie suas informações de contato e endereço de cobrança.
+    ko_KR: 청구서를 보내는 고객을 추가, 조회, 편집 또는 삭제합니다. 연락처 정보와 청구 주소를 관리합니다.
   llm: A tool to manage AR customers - supports list all, get by ID, create, update, and delete operations
 
 parameters:
@@ -17,44 +27,89 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: The operation to perform
-      zh_Hans: 要执行的操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: list, get, create, update, or delete"
     form: llm
     options:
       - value: list
         label:
-          en_US: List All Customers
-          zh_Hans: 列出所有客户
+          en_US: View All Customers
+          zh_Hans: 查看所有客户
+          ja_JP: 全顧客を表示
+          fr_FR: Voir tous les clients
+          es_ES: Ver todos los clientes
+          pt_BR: Ver todos os clientes
+          ko_KR: 모든 고객 보기
       - value: get
         label:
-          en_US: Get Customer
-          zh_Hans: 获取客户
+          en_US: View Customer Details
+          zh_Hans: 查看客户详情
+          ja_JP: 顧客詳細を表示
+          fr_FR: Voir les détails du client
+          es_ES: Ver detalles del cliente
+          pt_BR: Ver detalhes do cliente
+          ko_KR: 고객 상세 보기
       - value: create
         label:
-          en_US: Create Customer
-          zh_Hans: 创建客户
+          en_US: Add New Customer
+          zh_Hans: 添加新客户
+          ja_JP: 新規顧客を追加
+          fr_FR: Ajouter un nouveau client
+          es_ES: Agregar nuevo cliente
+          pt_BR: Adicionar novo cliente
+          ko_KR: 새 고객 추가
       - value: update
         label:
-          en_US: Update Customer
-          zh_Hans: 更新客户
+          en_US: Edit Customer
+          zh_Hans: 编辑客户
+          ja_JP: 顧客を編集
+          fr_FR: Modifier le client
+          es_ES: Editar cliente
+          pt_BR: Editar cliente
+          ko_KR: 고객 편집
       - value: delete
         label:
-          en_US: Delete Customer
+          en_US: Remove Customer
           zh_Hans: 删除客户
+          ja_JP: 顧客を削除
+          fr_FR: Supprimer le client
+          es_ES: Eliminar cliente
+          pt_BR: Remover cliente
+          ko_KR: 고객 삭제
 
   - name: customer_id
     type: string
     required: false
     label:
-      en_US: Customer ID
-      zh_Hans: 客户 ID
+      en_US: Customer
+      zh_Hans: 客户
+      ja_JP: 顧客
+      fr_FR: Client
+      es_ES: Cliente
+      pt_BR: Cliente
+      ko_KR: 고객
     human_description:
-      en_US: Customer ID (required for get, update, delete)
-      zh_Hans: 客户 ID（获取、更新、删除时必填）
+      en_US: Select the customer (required for view, edit, or remove)
+      zh_Hans: 选择客户（查看、编辑或删除时必填）
+      ja_JP: 顧客を選択（表示、編集、削除時に必須）
+      fr_FR: Sélectionnez le client (requis pour voir, modifier ou supprimer)
+      es_ES: Seleccione el cliente (requerido para ver, editar o eliminar)
+      pt_BR: Selecione o cliente (necessário para ver, editar ou remover)
+      ko_KR: 고객을 선택하세요 (조회, 편집 또는 삭제 시 필수)
     llm_description: The UUID of the customer. Required for get, update, and delete operations.
     form: llm
 
@@ -64,9 +119,19 @@ parameters:
     label:
       en_US: Customer Name
       zh_Hans: 客户名称
+      ja_JP: 顧客名
+      fr_FR: Nom du client
+      es_ES: Nombre del cliente
+      pt_BR: Nome do cliente
+      ko_KR: 고객 이름
     human_description:
-      en_US: Customer name (required for create/update)
-      zh_Hans: 客户名称（创建/更新时必填）
+      en_US: Name of the person or company
+      zh_Hans: 个人或公司名称
+      ja_JP: 個人または会社名
+      fr_FR: Nom de la personne ou de l'entreprise
+      es_ES: Nombre de la persona o empresa
+      pt_BR: Nome da pessoa ou empresa
+      ko_KR: 개인 또는 회사 이름
     llm_description: The name of the customer. Required for create and update operations.
     form: llm
 
@@ -76,9 +141,19 @@ parameters:
     label:
       en_US: Email
       zh_Hans: 邮箱
+      ja_JP: メール
+      fr_FR: E-mail
+      es_ES: Correo electrónico
+      pt_BR: E-mail
+      ko_KR: 이메일
     human_description:
-      en_US: Customer email (required for create/update)
-      zh_Hans: 客户邮箱（创建/更新时必填）
+      en_US: Where to send invoices
+      zh_Hans: 发票发送地址
+      ja_JP: 請求書の送付先
+      fr_FR: Où envoyer les factures
+      es_ES: Dónde enviar las facturas
+      pt_BR: Para onde enviar as faturas
+      ko_KR: 청구서를 보낼 주소
     llm_description: The email address of the customer. Required for create and update operations.
     form: llm
 
@@ -86,11 +161,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Address Line 1
-      zh_Hans: 地址行 1
+      en_US: Street Address
+      zh_Hans: 街道地址
+      ja_JP: 住所
+      fr_FR: Adresse
+      es_ES: Dirección
+      pt_BR: Endereço
+      ko_KR: 도로명 주소
     human_description:
-      en_US: Primary street address
-      zh_Hans: 主要街道地址
+      en_US: Street address line 1
+      zh_Hans: 街道地址第 1 行
+      ja_JP: 住所 1 行目
+      fr_FR: Adresse ligne 1
+      es_ES: Línea de dirección 1
+      pt_BR: Linha de endereço 1
+      ko_KR: 주소 1행
     llm_description: Primary street address line
     form: llm
 
@@ -99,10 +184,20 @@ parameters:
     required: false
     label:
       en_US: Address Line 2
-      zh_Hans: 地址行 2
+      zh_Hans: 地址第 2 行
+      ja_JP: 住所 2 行目
+      fr_FR: Adresse ligne 2
+      es_ES: Línea de dirección 2
+      pt_BR: Linha de endereço 2
+      ko_KR: 주소 2행
     human_description:
-      en_US: Secondary street address (optional)
-      zh_Hans: 次要街道地址（可选）
+      en_US: Apartment, suite, unit, etc. (optional)
+      zh_Hans: 公寓、套房、单元等（可选）
+      ja_JP: アパート、スイート、ユニットなど（オプション）
+      fr_FR: Appartement, suite, unité, etc. (optionnel)
+      es_ES: Apartamento, suite, unidad, etc. (opcional)
+      pt_BR: Apartamento, suíte, unidade, etc. (opcional)
+      ko_KR: 아파트, 스위트, 유닛 등 (선택사항)
     llm_description: Secondary street address line (optional)
     form: llm
 
@@ -112,9 +207,19 @@ parameters:
     label:
       en_US: City
       zh_Hans: 城市
+      ja_JP: 市区町村
+      fr_FR: Ville
+      es_ES: Ciudad
+      pt_BR: Cidade
+      ko_KR: 도시
     human_description:
-      en_US: City name
-      zh_Hans: 城市名称
+      en_US: City
+      zh_Hans: 城市
+      ja_JP: 市区町村
+      fr_FR: Ville
+      es_ES: Ciudad
+      pt_BR: Cidade
+      ko_KR: 도시
     llm_description: City name for the address
     form: llm
 
@@ -122,11 +227,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: State/Region
-      zh_Hans: 州/地区
+      en_US: State
+      zh_Hans: 州/省
+      ja_JP: 都道府県
+      fr_FR: État/Région
+      es_ES: Estado
+      pt_BR: Estado
+      ko_KR: 주/도
     human_description:
-      en_US: State, province, or region
-      zh_Hans: 州、省或地区
+      en_US: State or region (e.g., CA, NY)
+      zh_Hans: 州或省份（如 CA、NY）
+      ja_JP: "都道府県（例：CA、NY）"
+      fr_FR: État ou région (ex. CA, NY)
+      es_ES: Estado o región (ej. CA, NY)
+      pt_BR: Estado ou região (ex. CA, NY)
+      ko_KR: "주 또는 지역 (예: CA, NY)"
     llm_description: State, province, or region code
     form: llm
 
@@ -134,11 +249,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Postal Code
+      en_US: ZIP Code
       zh_Hans: 邮政编码
+      ja_JP: 郵便番号
+      fr_FR: Code postal
+      es_ES: Código postal
+      pt_BR: CEP
+      ko_KR: 우편번호
     human_description:
-      en_US: Postal or ZIP code
+      en_US: ZIP or postal code
       zh_Hans: 邮政编码
+      ja_JP: 郵便番号
+      fr_FR: Code postal
+      es_ES: Código postal
+      pt_BR: CEP
+      ko_KR: 우편번호
     llm_description: Postal or ZIP code
     form: llm
 
@@ -146,11 +271,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Country Code
-      zh_Hans: 国家代码
+      en_US: Country
+      zh_Hans: 国家
+      ja_JP: 国
+      fr_FR: Pays
+      es_ES: País
+      pt_BR: País
+      ko_KR: 국가
     human_description:
-      en_US: ISO 3166-1 alpha-2 country code (e.g., US)
-      zh_Hans: ISO 3166-1 alpha-2 国家代码（如 US）
+      en_US: Country code (e.g., US, CA, GB)
+      zh_Hans: 国家代码（如 US、CA、GB）
+      ja_JP: "国コード（例：US、CA、GB）"
+      fr_FR: Code pays (ex. US, CA, GB)
+      es_ES: Código de país (ej. US, CA, GB)
+      pt_BR: Código do país (ex. US, CA, GB)
+      ko_KR: "국가 코드 (예: US, CA, GB)"
     llm_description: Country code in ISO 3166-1 alpha-2 format (e.g., US, CA, GB)
     form: llm
 
@@ -159,11 +294,21 @@ parameters:
     required: false
     default: false
     label:
-      en_US: Resend Open Invoices
-      zh_Hans: 重发未付发票
+      en_US: Resend Invoices
+      zh_Hans: 重发发票
+      ja_JP: 請求書を再送
+      fr_FR: Renvoyer les factures
+      es_ES: Reenviar facturas
+      pt_BR: Reenviar faturas
+      ko_KR: 청구서 재발송
     human_description:
-      en_US: Whether to resend open invoices after update
-      zh_Hans: 更新后是否重发未付发票
+      en_US: Resend any unpaid invoices to the updated email address
+      zh_Hans: 将所有未付发票重新发送到更新后的邮箱地址
+      ja_JP: 未払いの請求書を更新されたメールアドレスに再送信
+      fr_FR: Renvoyer les factures impayées à la nouvelle adresse e-mail
+      es_ES: Reenviar facturas pendientes a la dirección de correo actualizada
+      pt_BR: Reenviar faturas pendentes para o novo endereço de e-mail
+      ko_KR: 미결제 청구서를 업데이트된 이메일 주소로 재발송
     llm_description: Whether to resend open invoices to the customer after updating their information. Only used for update operation.
     form: llm
 

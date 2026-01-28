@@ -2,13 +2,23 @@ identity:
   name: get_journal_entry
   author: petrus
   label:
-    en_US: Get Journal Entry
-    zh_Hans: 获取日记账分录
+    en_US: View Journal Entries
+    zh_Hans: 查看日记账分录
+    ja_JP: 仕訳を表示
+    fr_FR: Voir écritures comptables
+    es_ES: Ver asientos contables
+    pt_BR: Ver lançamentos contábeis
+    ko_KR: 분개 보기
 
 description:
   human:
-    en_US: Retrieve journal entry by ID or query multiple entries
-    zh_Hans: 通过 ID 获取日记账分录或查询多条分录
+    en_US: Look up a specific journal entry or search for entries by date or amount.
+    zh_Hans: 查找特定的日记账分录或按日期或金额搜索分录。
+    ja_JP: 特定の仕訳を検索、または日付や金額で仕訳を検索。
+    fr_FR: Recherchez une écriture comptable spécifique ou recherchez par date ou montant.
+    es_ES: Busque un asiento contable específico o busque por fecha o monto.
+    pt_BR: Pesquise um lançamento contábil específico ou pesquise por data ou valor.
+    ko_KR: 특정 분개를 조회하거나 날짜 또는 금액으로 분개를 검색하세요.
   llm: Retrieve a specific journal entry by ID, or query multiple journal entries with optional filters.
 
 parameters:

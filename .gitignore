@@ -56,3 +56,5 @@ plan.md
 # Credentials
 .credentials
 .credential
+*.debug.pid
+.debug.pid
