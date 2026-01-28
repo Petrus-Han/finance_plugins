@@ -25,7 +25,7 @@ extra:
 parameters:
 - name: account_type
   form: form
-  type: string
+  type: select
   required: false
   label:
     en_US: Category Type
@@ -36,21 +36,158 @@ parameters:
     pt_BR: Tipo de categoria
     ko_KR: 카테고리 유형
   human_description:
-    en_US: Filter by type - Bank, Expense, Income, etc. Leave empty to see all.
-    zh_Hans: 按类型筛选 - 银行、费用、收入等。留空查看全部。
-    ja_JP: タイプでフィルター - 銀行、経費、収入など。空欄ですべて表示。
-    fr_FR: Filtrer par type - Banque, Dépense, Revenu, etc. Laisser vide pour tout voir.
-    es_ES: Filtrar por tipo - Banco, Gasto, Ingreso, etc. Dejar vacío para ver todo.
-    pt_BR: Filtrar por tipo - Banco, Despesa, Receita, etc. Deixar vazio para ver tudo.
-    ko_KR: 유형별 필터 - 은행, 비용, 수입 등. 비워두면 전체 표시.
-  placeholder:
-    en_US: e.g., Expense, Bank, Income
-    zh_Hans: 如：Expense, Bank, Income
-    ja_JP: "例：Expense, Bank, Income"
-    fr_FR: ex. Expense, Bank, Income
-    es_ES: ej., Expense, Bank, Income
-    pt_BR: ex., Expense, Bank, Income
-    ko_KR: "예: Expense, Bank, Income"
+    en_US: Filter by account type. Leave empty to see all accounts.
+    zh_Hans: 按账户类型筛选。留空查看全部账户。
+    ja_JP: 勘定タイプでフィルター。空欄ですべての勘定を表示。
+    fr_FR: Filtrer par type de compte. Laisser vide pour voir tous les comptes.
+    es_ES: Filtrar por tipo de cuenta. Dejar vacío para ver todas las cuentas.
+    pt_BR: Filtrar por tipo de conta. Deixar vazio para ver todas as contas.
+    ko_KR: 계정 유형별 필터. 비워두면 모든 계정 표시.
+  options:
+    - value: ""
+      label:
+        en_US: All Types
+        zh_Hans: 全部类型
+        ja_JP: すべてのタイプ
+        fr_FR: Tous les types
+        es_ES: Todos los tipos
+        pt_BR: Todos os tipos
+        ko_KR: 모든 유형
+    - value: Bank
+      label:
+        en_US: Bank
+        zh_Hans: 银行账户
+        ja_JP: 銀行
+        fr_FR: Banque
+        es_ES: Banco
+        pt_BR: Banco
+        ko_KR: 은행
+    - value: Accounts Receivable
+      label:
+        en_US: Accounts Receivable
+        zh_Hans: 应收账款
+        ja_JP: 売掛金
+        fr_FR: Comptes clients
+        es_ES: Cuentas por cobrar
+        pt_BR: Contas a receber
+        ko_KR: 매출채권
+    - value: Other Current Asset
+      label:
+        en_US: Other Current Asset
+        zh_Hans: 其他流动资产
+        ja_JP: その他流動資産
+        fr_FR: Autres actifs courants
+        es_ES: Otros activos corrientes
+        pt_BR: Outros ativos circulantes
+        ko_KR: 기타유동자산
+    - value: Fixed Asset
+      label:
+        en_US: Fixed Asset
+        zh_Hans: 固定资产
+        ja_JP: 固定資産
+        fr_FR: Immobilisations
+        es_ES: Activo fijo
+        pt_BR: Ativo fixo
+        ko_KR: 고정자산
+    - value: Other Asset
+      label:
+        en_US: Other Asset
+        zh_Hans: 其他资产
+        ja_JP: その他資産
+        fr_FR: Autres actifs
+        es_ES: Otros activos
+        pt_BR: Outros ativos
+        ko_KR: 기타자산
+    - value: Accounts Payable
+      label:
+        en_US: Accounts Payable
+        zh_Hans: 应付账款
+        ja_JP: 買掛金
+        fr_FR: Comptes fournisseurs
+        es_ES: Cuentas por pagar
+        pt_BR: Contas a pagar
+        ko_KR: 매입채무
+    - value: Credit Card
+      label:
+        en_US: Credit Card
+        zh_Hans: 信用卡
+        ja_JP: クレジットカード
+        fr_FR: Carte de crédit
+        es_ES: Tarjeta de crédito
+        pt_BR: Cartão de crédito
+        ko_KR: 신용카드
+    - value: Other Current Liability
+      label:
+        en_US: Other Current Liability
+        zh_Hans: 其他流动负债
+        ja_JP: その他流動負債
+        fr_FR: Autres passifs courants
+        es_ES: Otros pasivos corrientes
+        pt_BR: Outros passivos circulantes
+        ko_KR: 기타유동부채
+    - value: Long Term Liability
+      label:
+        en_US: Long Term Liability
+        zh_Hans: 长期负债
+        ja_JP: 長期負債
+        fr_FR: Passifs à long terme
+        es_ES: Pasivo a largo plazo
+        pt_BR: Passivo de longo prazo
+        ko_KR: 장기부채
+    - value: Equity
+      label:
+        en_US: Equity
+        zh_Hans: 权益
+        ja_JP: 資本
+        fr_FR: Capitaux propres
+        es_ES: Patrimonio
+        pt_BR: Patrimônio líquido
+        ko_KR: 자본
+    - value: Income
+      label:
+        en_US: Income
+        zh_Hans: 收入
+        ja_JP: 収益
+        fr_FR: Revenus
+        es_ES: Ingresos
+        pt_BR: Receita
+        ko_KR: 수입
+    - value: Other Income
+      label:
+        en_US: Other Income
+        zh_Hans: 其他收入
+        ja_JP: その他収益
+        fr_FR: Autres revenus
+        es_ES: Otros ingresos
+        pt_BR: Outras receitas
+        ko_KR: 기타수입
+    - value: Expense
+      label:
+        en_US: Expense
+        zh_Hans: 费用
+        ja_JP: 費用
+        fr_FR: Dépenses
+        es_ES: Gastos
+        pt_BR: Despesas
+        ko_KR: 비용
+    - value: Other Expense
+      label:
+        en_US: Other Expense
+        zh_Hans: 其他费用
+        ja_JP: その他費用
+        fr_FR: Autres dépenses
+        es_ES: Otros gastos
+        pt_BR: Outras despesas
+        ko_KR: 기타비용
+    - value: Cost of Goods Sold
+      label:
+        en_US: Cost of Goods Sold
+        zh_Hans: 销货成本
+        ja_JP: 売上原価
+        fr_FR: Coût des marchandises vendues
+        es_ES: Costo de bienes vendidos
+        pt_BR: Custo das mercadorias vendidas
+        ko_KR: 매출원가
 output_schema:
   type: object
   properties:
