@@ -2,17 +2,24 @@ identity:
   name: payment_management
   author: petrus
   label:
-    en_US: Payment Management
-    zh_Hans: 收款管理
-  human_description:
-    en_US: Payment Management
-    zh_Hans: 收款管理
+    en_US: Manage Customer Payments
+    zh_Hans: 管理客户付款
+    ja_JP: 顧客支払い管理
+    fr_FR: Gérer paiements clients
+    es_ES: Gestionar pagos de clientes
+    pt_BR: Gerenciar pagamentos de clientes
+    ko_KR: 고객 결제 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, delete, or void payments from customers
-    zh_Hans: 创建、读取、更新、删除或作废客户付款
+    en_US: Record payments you receive from customers. Link payments to invoices, or record deposits directly.
+    zh_Hans: 记录从客户收到的付款。将付款关联到发票，或直接记录存款。
+    ja_JP: 顧客からの支払いを記録。請求書への紐付けや直接入金の記録が可能。
+    fr_FR: Enregistrez les paiements reçus de vos clients. Liez les paiements aux factures ou enregistrez les dépôts directement.
+    es_ES: Registre pagos recibidos de clientes. Vincule pagos a facturas o registre depósitos directamente.
+    pt_BR: Registre pagamentos recebidos de clientes. Vincule pagamentos a faturas ou registre depósitos diretamente.
+    ko_KR: 고객으로부터 받은 결제를 기록합니다. 결제를 청구서에 연결하거나 직접 입금을 기록하세요.
   llm: A tool to manage customer payments in QuickBooks - supports create, read, update, delete, void, and query operations
 
 parameters:
@@ -20,57 +27,78 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: The operation to perform
-      zh_Hans: 要执行的操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, update, delete, void, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Payment
-          zh_Hans: 创建付款
-        human_description:
-          en_US: Create Payment
-          zh_Hans: 创建付款
+          en_US: Record Payment
+          zh_Hans: 记录付款
+          ja_JP: 支払いを記録
+          fr_FR: Enregistrer paiement
+          es_ES: Registrar pago
+          pt_BR: Registrar pagamento
+          ko_KR: 결제 기록
       - value: read
         label:
-          en_US: Read Payment
-          zh_Hans: 读取付款
-        human_description:
-          en_US: Read Payment
-          zh_Hans: 读取付款
+          en_US: View Payment
+          zh_Hans: 查看付款
+          ja_JP: 支払いを表示
+          fr_FR: Voir paiement
+          es_ES: Ver pago
+          pt_BR: Ver pagamento
+          ko_KR: 결제 보기
       - value: update
         label:
-          en_US: Update Payment
-          zh_Hans: 更新付款
-        human_description:
-          en_US: Update Payment
-          zh_Hans: 更新付款
+          en_US: Edit Payment
+          zh_Hans: 编辑付款
+          ja_JP: 支払いを編集
+          fr_FR: Modifier paiement
+          es_ES: Editar pago
+          pt_BR: Editar pagamento
+          ko_KR: 결제 편집
       - value: delete
         label:
           en_US: Delete Payment
           zh_Hans: 删除付款
-        human_description:
-          en_US: Delete Payment
-          zh_Hans: 删除付款
+          ja_JP: 支払いを削除
+          fr_FR: Supprimer paiement
+          es_ES: Eliminar pago
+          pt_BR: Excluir pagamento
+          ko_KR: 결제 삭제
       - value: void
         label:
           en_US: Void Payment
           zh_Hans: 作废付款
-        human_description:
-          en_US: Void Payment
-          zh_Hans: 作废付款
+          ja_JP: 支払いを無効化
+          fr_FR: Annuler paiement
+          es_ES: Anular pago
+          pt_BR: Anular pagamento
+          ko_KR: 결제 무효화
       - value: query
         label:
-          en_US: Query Payments
-          zh_Hans: 查询付款
-
-        human_description:
-          en_US: Query Payments
-          zh_Hans: 查询付款
+          en_US: Search Payments
+          zh_Hans: 搜索付款
+          ja_JP: 支払いを検索
+          fr_FR: Rechercher paiements
+          es_ES: Buscar pagos
+          pt_BR: Pesquisar pagamentos
+          ko_KR: 결제 검색
   - name: payment_id
     type: string
     required: false

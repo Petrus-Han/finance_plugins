@@ -2,75 +2,106 @@ identity:
   name: create_bill
   author: petrus
   label:
-    en_US: Create Bill
-    zh_Hans: 创建账单
-  human_description:
-    en_US: Create Bill
-    zh_Hans: 创建账单
+    en_US: Record Bill
+    zh_Hans: 记录账单
+    ja_JP: 請求書を記録
+    fr_FR: Enregistrer facture fournisseur
+    es_ES: Registrar factura
+    pt_BR: Registrar conta
+    ko_KR: 청구서 기록
 description:
   human:
-    en_US: Create a new bill (accounts payable) in QuickBooks Online from a vendor.
-    zh_Hans: 在 QuickBooks Online 中从供应商创建新的应付账款。
-  llm: Create a new bill in QuickBooks Online representing money owed to a vendor.
-    Returns the created bill details including ID and total amount.
+    en_US: Record a bill from a vendor that you need to pay later. Use this when you receive an invoice from a supplier or contractor.
+    zh_Hans: 记录需要稍后支付的供应商账单。当您收到供应商或承包商的发票时使用。
+    ja_JP: 後で支払う必要がある取引先からの請求書を記録。サプライヤーや契約業者から請求書を受け取った時に使用。
+    fr_FR: Enregistrez une facture fournisseur que vous devez payer plus tard. Utilisez lors de la réception d'une facture d'un fournisseur ou prestataire.
+    es_ES: Registre una factura de un proveedor que debe pagar más tarde. Use cuando reciba una factura de un proveedor o contratista.
+    pt_BR: Registre uma conta de um fornecedor que você precisa pagar depois. Use quando receber uma fatura de um fornecedor ou prestador.
+    ko_KR: 나중에 지불해야 할 공급업체의 청구서를 기록합니다. 공급업체나 계약자로부터 청구서를 받았을 때 사용하세요.
+  llm: Create a new bill in QuickBooks Online representing money owed to a vendor. Returns the created bill details including ID and total amount.
 parameters:
 - name: vendor_id
   type: string
   required: true
   label:
-    en_US: Vendor ID
-    zh_Hans: 供应商 ID
+    en_US: Vendor
+    zh_Hans: 供应商
+    ja_JP: 取引先
+    fr_FR: Fournisseur
+    es_ES: Proveedor
+    pt_BR: Fornecedor
+    ko_KR: 공급업체
   human_description:
-    en_US: The QuickBooks vendor ID for the bill
-    zh_Hans: 账单的 QuickBooks 供应商 ID
+    en_US: Who sent you this bill?
+    zh_Hans: 谁发给您这张账单？
+    ja_JP: 誰からの請求書ですか？
+    fr_FR: Qui vous a envoyé cette facture ?
+    es_ES: ¿Quién le envió esta factura?
+    pt_BR: Quem enviou esta conta?
+    ko_KR: 누가 이 청구서를 보냈습니까?
   llm_description: The QuickBooks Online vendor ID (numeric string)
   form: llm
 - name: line_items
   type: string
   required: true
   label:
-    en_US: Line Items (JSON)
-    zh_Hans: 行项目（JSON）
+    en_US: Bill Items
+    zh_Hans: 账单项目
+    ja_JP: 請求項目
+    fr_FR: Lignes de facture
+    es_ES: Artículos de factura
+    pt_BR: Itens da conta
+    ko_KR: 청구서 항목
   human_description:
-    en_US: 'JSON array of line items. Each item: {amount, description, account_id,
-      customer_id, billable_status}'
-    zh_Hans: '行项目的 JSON 数组。每项: {amount, description, account_id, customer_id, billable_status}'
-  llm_description: 'JSON array of bill line items. Each item should have:
-
-    - amount (required): Line total amount
-
-    - description (optional): Line description
-
-    - account_id (optional): Expense account ID
-
-    - customer_id (optional): Customer ID if billable
-
-    - billable_status (optional): Billable, NotBillable, or HasBeenBilled
-
-    Example: [{"amount": 500, "description": "Office supplies", "account_id": "64"}]
-
-    '
+    en_US: What are you being charged for? (JSON format with amount, description, account_id)
+    zh_Hans: 您被收取什么费用？（JSON 格式，包含 amount、description、account_id）
+    ja_JP: "何の請求ですか？（JSON形式: amount, description, account_id）"
+    fr_FR: Pour quoi êtes-vous facturé ? (Format JSON avec amount, description, account_id)
+    es_ES: ¿Qué le están cobrando? (Formato JSON con amount, description, account_id)
+    pt_BR: O que estão cobrando? (Formato JSON com amount, description, account_id)
+    ko_KR: "무엇에 대한 청구입니까? (JSON 형식: amount, description, account_id)"
+  llm_description: 'JSON array of bill line items. Each item should have: amount (required), description (optional), account_id (optional), customer_id (optional), billable_status (optional). Example: [{"amount": 500, "description": "Office supplies", "account_id": "64"}]'
   form: llm
 - name: txn_date
   type: string
   required: false
   label:
-    en_US: Transaction Date
-    zh_Hans: 交易日期
+    en_US: Bill Date
+    zh_Hans: 账单日期
+    ja_JP: 請求日
+    fr_FR: Date de facture
+    es_ES: Fecha de factura
+    pt_BR: Data da conta
+    ko_KR: 청구서 날짜
   human_description:
-    en_US: Bill date (YYYY-MM-DD format)
-    zh_Hans: 账单日期（YYYY-MM-DD 格式）
+    en_US: Date on the bill (YYYY-MM-DD, defaults to today)
+    zh_Hans: 账单上的日期（YYYY-MM-DD，默认为今天）
+    ja_JP: 請求書の日付（YYYY-MM-DD、デフォルトは今日）
+    fr_FR: Date sur la facture (AAAA-MM-JJ, par défaut aujourd'hui)
+    es_ES: Fecha en la factura (AAAA-MM-DD, por defecto hoy)
+    pt_BR: Data na conta (AAAA-MM-DD, padrão é hoje)
+    ko_KR: 청구서의 날짜 (YYYY-MM-DD, 기본값은 오늘)
   llm_description: Bill date in YYYY-MM-DD format. Defaults to today if not provided.
   form: llm
 - name: due_date
   type: string
   required: false
   label:
-    en_US: Due Date
-    zh_Hans: 到期日期
+    en_US: Payment Due
+    zh_Hans: 付款截止
+    ja_JP: 支払期限
+    fr_FR: Échéance
+    es_ES: Fecha de vencimiento
+    pt_BR: Vencimento
+    ko_KR: 결제 기한
   human_description:
-    en_US: Payment due date (YYYY-MM-DD format)
-    zh_Hans: 付款到期日期（YYYY-MM-DD 格式）
+    en_US: When do you need to pay this? (YYYY-MM-DD)
+    zh_Hans: 您需要在何时支付？（YYYY-MM-DD）
+    ja_JP: いつまでに支払いますか？（YYYY-MM-DD）
+    fr_FR: Quand devez-vous payer ? (AAAA-MM-JJ)
+    es_ES: ¿Cuándo debe pagar esto? (AAAA-MM-DD)
+    pt_BR: Quando você precisa pagar? (AAAA-MM-DD)
+    ko_KR: 언제까지 결제해야 합니까? (YYYY-MM-DD)
   llm_description: Payment due date in YYYY-MM-DD format
   form: llm
 - name: doc_number
@@ -79,9 +110,19 @@ parameters:
   label:
     en_US: Reference Number
     zh_Hans: 参考编号
+    ja_JP: 参照番号
+    fr_FR: Numéro de référence
+    es_ES: Número de referencia
+    pt_BR: Número de referência
+    ko_KR: 참조 번호
   human_description:
-    en_US: Bill reference/document number
-    zh_Hans: 账单参考/文档编号
+    en_US: Vendor's invoice number for your reference
+    zh_Hans: 供应商的发票编号供您参考
+    ja_JP: 取引先の請求書番号（参照用）
+    fr_FR: Numéro de facture du fournisseur pour référence
+    es_ES: Número de factura del proveedor para su referencia
+    pt_BR: Número da fatura do fornecedor para sua referência
+    ko_KR: 참조용 공급업체 청구서 번호
   llm_description: Bill reference number or vendor invoice number
   form: llm
 - name: private_note
@@ -89,23 +130,42 @@ parameters:
   required: false
   label:
     en_US: Private Note
-    zh_Hans: 内部备注
+    zh_Hans: 私人备注
+    ja_JP: 社内メモ
+    fr_FR: Note privée
+    es_ES: Nota privada
+    pt_BR: Nota privada
+    ko_KR: 비공개 메모
   human_description:
-    en_US: Internal note
-    zh_Hans: 内部备注
+    en_US: Internal note for your records
+    zh_Hans: 仅供内部记录的备注
+    ja_JP: 社内記録用のメモ
+    fr_FR: Note interne pour vos dossiers
+    es_ES: Nota interna para sus registros
+    pt_BR: Nota interna para seus registros
+    ko_KR: 내부 기록용 메모
   llm_description: Internal note for the bill
   form: llm
 - name: ap_account_id
   type: string
   required: false
   label:
-    en_US: AP Account ID
-    zh_Hans: 应付账款账户 ID
+    en_US: Accounts Payable Account
+    zh_Hans: 应付账款账户
+    ja_JP: 買掛金勘定
+    fr_FR: Compte fournisseurs
+    es_ES: Cuenta por pagar
+    pt_BR: Conta a pagar
+    ko_KR: 매입채무 계정
   human_description:
-    en_US: Accounts Payable account ID (uses default if not specified)
-    zh_Hans: 应付账款账户 ID（不指定则使用默认）
-  llm_description: Optional Accounts Payable account ID. Uses default AP account if
-    not specified.
+    en_US: Which AP account to use (uses default if not specified)
+    zh_Hans: 使用哪个应付账款账户（不指定则使用默认）
+    ja_JP: 使用する買掛金勘定（指定なしの場合はデフォルト）
+    fr_FR: Quel compte fournisseurs utiliser (par défaut si non spécifié)
+    es_ES: Qué cuenta por pagar usar (usa la predeterminada si no se especifica)
+    pt_BR: Qual conta a pagar usar (usa o padrão se não especificado)
+    ko_KR: 어떤 매입채무 계정을 사용할지 (지정하지 않으면 기본값 사용)
+  llm_description: Optional Accounts Payable account ID. Uses default AP account if not specified.
   form: llm
 extra:
   python:

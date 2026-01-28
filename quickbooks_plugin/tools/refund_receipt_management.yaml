@@ -2,17 +2,24 @@ identity:
   name: refund_receipt_management
   author: petrus
   label:
-    en_US: Refund Receipt Management
-    zh_Hans: 退款收据管理
-  human_description:
-    en_US: Refund Receipt Management
-    zh_Hans: 退款收据管理
+    en_US: Manage Refunds
+    zh_Hans: 管理退款
+    ja_JP: 返金管理
+    fr_FR: Gérer remboursements
+    es_ES: Gestionar reembolsos
+    pt_BR: Gerenciar reembolsos
+    ko_KR: 환불 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, or delete refund receipts
-    zh_Hans: 创建、读取或删除退款收据
+    en_US: Process refunds back to customers. Use when giving money back for a returned item or cancelled service.
+    zh_Hans: 处理退款给客户。当退还退货商品或取消服务的款项时使用。
+    ja_JP: 顧客への返金を処理。返品や キャンセルされたサービスの返金に使用。
+    fr_FR: Traitez les remboursements aux clients. Utilisez pour rembourser un article retourné ou un service annulé.
+    es_ES: Procese reembolsos a clientes. Use cuando devuelva dinero por un artículo devuelto o servicio cancelado.
+    pt_BR: Processe reembolsos para clientes. Use ao devolver dinheiro por item devolvido ou serviço cancelado.
+    ko_KR: 고객에게 환불을 처리합니다. 반품된 상품이나 취소된 서비스에 대해 돈을 돌려줄 때 사용하세요.
   llm: A tool to manage refund receipts in QuickBooks - for processing customer refunds
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, delete, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Refund Receipt
-          zh_Hans: 创建退款收据
-        human_description:
-          en_US: Create Refund Receipt
-          zh_Hans: 创建退款收据
+          en_US: Issue Refund
+          zh_Hans: 发放退款
+          ja_JP: 返金を発行
+          fr_FR: Émettre remboursement
+          es_ES: Emitir reembolso
+          pt_BR: Emitir reembolso
+          ko_KR: 환불 발급
       - value: read
         label:
-          en_US: Read Refund Receipt
-          zh_Hans: 读取退款收据
-        human_description:
-          en_US: Read Refund Receipt
-          zh_Hans: 读取退款收据
+          en_US: View Refund
+          zh_Hans: 查看退款
+          ja_JP: 返金を表示
+          fr_FR: Voir remboursement
+          es_ES: Ver reembolso
+          pt_BR: Ver reembolso
+          ko_KR: 환불 보기
       - value: delete
         label:
-          en_US: Delete Refund Receipt
-          zh_Hans: 删除退款收据
-        human_description:
-          en_US: Delete Refund Receipt
-          zh_Hans: 删除退款收据
+          en_US: Delete Refund
+          zh_Hans: 删除退款
+          ja_JP: 返金を削除
+          fr_FR: Supprimer remboursement
+          es_ES: Eliminar reembolso
+          pt_BR: Excluir reembolso
+          ko_KR: 환불 삭제
       - value: query
         label:
-          en_US: Query Refund Receipts
-          zh_Hans: 查询退款收据
-
-        human_description:
-          en_US: Query Refund Receipts
-          zh_Hans: 查询退款收据
+          en_US: Search Refunds
+          zh_Hans: 搜索退款
+          ja_JP: 返金を検索
+          fr_FR: Rechercher remboursements
+          es_ES: Buscar reembolsos
+          pt_BR: Pesquisar reembolsos
+          ko_KR: 환불 검색
   - name: refund_receipt_id
     type: string
     required: false

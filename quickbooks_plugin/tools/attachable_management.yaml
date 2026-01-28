@@ -2,17 +2,24 @@ identity:
   name: attachable_management
   author: petrus
   label:
-    en_US: Attachable Management
-    zh_Hans: 附件管理
-  human_description:
-    en_US: Attachable Management
-    zh_Hans: 附件管理
+    en_US: Manage Attachments
+    zh_Hans: 管理附件
+    ja_JP: 添付ファイル管理
+    fr_FR: Gérer pièces jointes
+    es_ES: Gestionar adjuntos
+    pt_BR: Gerenciar anexos
+    ko_KR: 첨부파일 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, or delete attachments and notes
-    zh_Hans: 创建、读取、更新或删除附件和备注
+    en_US: Add notes or download files attached to invoices, bills, and other transactions.
+    zh_Hans: 为发票、账单和其他交易添加备注或下载附件。
+    ja_JP: 請求書、支払い、その他の取引にメモを追加したり添付ファイルをダウンロード。
+    fr_FR: Ajoutez des notes ou téléchargez les fichiers joints aux factures, factures fournisseurs et autres transactions.
+    es_ES: Agregue notas o descargue archivos adjuntos a facturas, cuentas y otras transacciones.
+    pt_BR: Adicione notas ou baixe arquivos anexados a faturas, contas e outras transações.
+    ko_KR: 청구서, 계산서 및 기타 거래에 메모를 추가하거나 첨부 파일을 다운로드합니다.
   llm: A tool to manage attachments (files and notes) linked to transactions in QuickBooks
 
 parameters:
@@ -20,57 +27,78 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create_note, read, update, delete, download, or query"
     form: llm
     options:
       - value: create_note
         label:
-          en_US: Create Note
-          zh_Hans: 创建备注
-        human_description:
-          en_US: Create Note
-          zh_Hans: 创建备注
+          en_US: Add Note
+          zh_Hans: 添加备注
+          ja_JP: メモを追加
+          fr_FR: Ajouter note
+          es_ES: Agregar nota
+          pt_BR: Adicionar nota
+          ko_KR: 메모 추가
       - value: read
         label:
-          en_US: Read Attachable
-          zh_Hans: 读取附件
-        human_description:
-          en_US: Read Attachable
-          zh_Hans: 读取附件
+          en_US: View Attachment
+          zh_Hans: 查看附件
+          ja_JP: 添付を表示
+          fr_FR: Voir pièce jointe
+          es_ES: Ver adjunto
+          pt_BR: Ver anexo
+          ko_KR: 첨부파일 보기
       - value: update
         label:
-          en_US: Update Attachable
-          zh_Hans: 更新附件
-        human_description:
-          en_US: Update Attachable
-          zh_Hans: 更新附件
+          en_US: Edit Attachment
+          zh_Hans: 编辑附件
+          ja_JP: 添付を編集
+          fr_FR: Modifier pièce jointe
+          es_ES: Editar adjunto
+          pt_BR: Editar anexo
+          ko_KR: 첨부파일 편집
       - value: delete
         label:
-          en_US: Delete Attachable
+          en_US: Delete Attachment
           zh_Hans: 删除附件
-        human_description:
-          en_US: Delete Attachable
-          zh_Hans: 删除附件
+          ja_JP: 添付を削除
+          fr_FR: Supprimer pièce jointe
+          es_ES: Eliminar adjunto
+          pt_BR: Excluir anexo
+          ko_KR: 첨부파일 삭제
       - value: download
         label:
-          en_US: Get Download URL
-          zh_Hans: 获取下载链接
-        human_description:
-          en_US: Get Download URL
-          zh_Hans: 获取下载链接
+          en_US: Download File
+          zh_Hans: 下载文件
+          ja_JP: ファイルをダウンロード
+          fr_FR: Télécharger fichier
+          es_ES: Descargar archivo
+          pt_BR: Baixar arquivo
+          ko_KR: 파일 다운로드
       - value: query
         label:
-          en_US: Query Attachables
-          zh_Hans: 查询附件
-
-        human_description:
-          en_US: Query Attachables
-          zh_Hans: 查询附件
+          en_US: Search Attachments
+          zh_Hans: 搜索附件
+          ja_JP: 添付を検索
+          fr_FR: Rechercher pièces jointes
+          es_ES: Buscar adjuntos
+          pt_BR: Pesquisar anexos
+          ko_KR: 첨부파일 검색
   - name: attachable_id
     type: string
     required: false

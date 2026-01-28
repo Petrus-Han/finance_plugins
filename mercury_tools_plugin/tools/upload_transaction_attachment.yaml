@@ -2,14 +2,24 @@ identity:
   name: upload_transaction_attachment
   author: petrus
   label:
-    en_US: Upload Transaction Attachment
-    zh_Hans: 上传交易附件
+    en_US: Attach File to Transaction
+    zh_Hans: 为交易添加附件
+    ja_JP: 取引にファイルを添付
+    fr_FR: Joindre un fichier à la transaction
+    es_ES: Adjuntar archivo a transacción
+    pt_BR: Anexar arquivo à transação
+    ko_KR: 거래에 파일 첨부
   icon: icon.svg
 
 description:
   human:
-    en_US: Upload an attachment to a transaction
-    zh_Hans: 上传附件到交易
+    en_US: Attach a receipt, invoice, or other document to a transaction for record-keeping.
+    zh_Hans: 将收据、发票或其他文件附加到交易中，便于记录保存。
+    ja_JP: 記録保管のために領収書、請求書、その他の書類を取引に添付。
+    fr_FR: Joignez un reçu, une facture ou un autre document à une transaction pour la tenue de registres.
+    es_ES: Adjunte un recibo, factura u otro documento a una transacción para mantener registros.
+    pt_BR: Anexe um recibo, fatura ou outro documento a uma transação para manter registros.
+    ko_KR: 기록 보관을 위해 영수증, 청구서 또는 기타 문서를 거래에 첨부합니다.
   llm: A tool to upload a file attachment to a Mercury transaction for documentation purposes
 
 parameters:
@@ -17,11 +27,21 @@ parameters:
     type: string
     required: true
     label:
-      en_US: Transaction ID
-      zh_Hans: 交易 ID
+      en_US: Transaction
+      zh_Hans: 交易
+      ja_JP: 取引
+      fr_FR: Transaction
+      es_ES: Transacción
+      pt_BR: Transação
+      ko_KR: 거래
     human_description:
-      en_US: The transaction ID to attach the file to
-      zh_Hans: 要附加文件的交易 ID
+      en_US: Select the transaction to attach the file to
+      zh_Hans: 选择要附加文件的交易
+      ja_JP: ファイルを添付する取引を選択
+      fr_FR: Sélectionnez la transaction à laquelle joindre le fichier
+      es_ES: Seleccione la transacción a la que adjuntar el archivo
+      pt_BR: Selecione a transação para anexar o arquivo
+      ko_KR: 파일을 첨부할 거래를 선택하세요
     llm_description: The UUID of the transaction to attach the file to
     form: llm
 
@@ -31,9 +51,19 @@ parameters:
     label:
       en_US: File
       zh_Hans: 文件
+      ja_JP: ファイル
+      fr_FR: Fichier
+      es_ES: Archivo
+      pt_BR: Arquivo
+      ko_KR: 파일
     human_description:
-      en_US: The file to upload
-      zh_Hans: 要上传的文件
+      en_US: Select the file to upload (PDF, image, etc.)
+      zh_Hans: 选择要上传的文件（PDF、图片等）
+      ja_JP: アップロードするファイルを選択（PDF、画像など）
+      fr_FR: Sélectionnez le fichier à téléverser (PDF, image, etc.)
+      es_ES: Seleccione el archivo a subir (PDF, imagen, etc.)
+      pt_BR: Selecione o arquivo para enviar (PDF, imagem, etc.)
+      ko_KR: 업로드할 파일을 선택하세요 (PDF, 이미지 등)
     llm_description: The file to upload as an attachment
     form: llm
 

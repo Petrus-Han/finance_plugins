@@ -2,23 +2,43 @@ identity:
   name: update_transaction
   author: alai-sudo
   label:
-    en_US: Update Transaction
-    zh_Hans: 更新交易
+    en_US: Add Note to Transaction
+    zh_Hans: 给交易添加备注
+    ja_JP: 取引にメモを追加
+    fr_FR: Ajouter une note à la transaction
+    es_ES: Agregar nota a transacción
+    pt_BR: Adicionar nota à transação
+    ko_KR: 거래에 메모 추가
 description:
   human:
-    en_US: Update metadata for a transaction (note, category).
-    zh_Hans: 更新交易的元数据（备注、分类）。
+    en_US: Add or update a private note or category for a transaction. Useful for bookkeeping and organization.
+    zh_Hans: 为交易添加或更新私人备注或分类。便于记账和整理。
+    ja_JP: 取引にプライベートメモやカテゴリを追加または更新。記帳や整理に便利。
+    fr_FR: Ajouter ou mettre à jour une note privée ou une catégorie pour une transaction. Utile pour la comptabilité.
+    es_ES: Agregar o actualizar una nota privada o categoría para una transacción. Útil para contabilidad.
+    pt_BR: Adicionar ou atualizar uma nota privada ou categoria para uma transação. Útil para contabilidade.
+    ko_KR: 거래에 개인 메모 또는 카테고리를 추가하거나 업데이트합니다. 장부 정리에 유용합니다.
   llm: Updates transaction metadata like internal notes and category. Cannot modify financial details.
 parameters:
   - name: transaction_id
     type: string
     required: true
     label:
-      en_US: Transaction ID
-      zh_Hans: 交易 ID
+      en_US: Transaction
+      zh_Hans: 交易
+      ja_JP: 取引
+      fr_FR: Transaction
+      es_ES: Transacción
+      pt_BR: Transação
+      ko_KR: 거래
     human_description:
-      en_US: The unique identifier of the transaction to update
-      zh_Hans: 要更新的交易的唯一标识符
+      en_US: Select the transaction to update
+      zh_Hans: 选择要更新的交易
+      ja_JP: 更新する取引を選択
+      fr_FR: Sélectionnez la transaction à mettre à jour
+      es_ES: Seleccione la transacción a actualizar
+      pt_BR: Selecione a transação para atualizar
+      ko_KR: 업데이트할 거래를 선택하세요
     llm_description: Mercury transaction ID (e.g., txn_xxx)
     form: llm
 
@@ -28,9 +48,19 @@ parameters:
     label:
       en_US: Note
       zh_Hans: 备注
+      ja_JP: メモ
+      fr_FR: Note
+      es_ES: Nota
+      pt_BR: Nota
+      ko_KR: 메모
     human_description:
-      en_US: Internal note for this transaction
-      zh_Hans: 此交易的内部备注
+      en_US: Add a private note for your records (only you can see this)
+      zh_Hans: 添加私人备注（仅您可见）
+      ja_JP: 記録用のプライベートメモを追加（自分だけが見られます）
+      fr_FR: Ajoutez une note privée pour vos dossiers (visible uniquement par vous)
+      es_ES: Agregue una nota privada para sus registros (solo usted puede verla)
+      pt_BR: Adicione uma nota privada para seus registros (somente você pode ver)
+      ko_KR: 기록용 개인 메모 추가 (본인만 볼 수 있음)
     llm_description: Internal note to add or update
     form: llm
 
@@ -38,11 +68,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Category ID
-      zh_Hans: 分类 ID
+      en_US: Category
+      zh_Hans: 分类
+      ja_JP: カテゴリ
+      fr_FR: Catégorie
+      es_ES: Categoría
+      pt_BR: Categoria
+      ko_KR: 카테고리
     human_description:
-      en_US: Mercury category ID to assign to this transaction
-      zh_Hans: 分配给此交易的 Mercury 分类 ID
+      en_US: Assign a category to this transaction for better organization
+      zh_Hans: 为此交易分配分类以便更好地整理
+      ja_JP: 整理のためにこの取引にカテゴリを割り当て
+      fr_FR: Attribuez une catégorie à cette transaction pour une meilleure organisation
+      es_ES: Asigne una categoría a esta transacción para mejor organización
+      pt_BR: Atribua uma categoria a esta transação para melhor organização
+      ko_KR: 더 나은 정리를 위해 이 거래에 카테고리를 지정하세요
     llm_description: The category ID to assign
     form: llm
 

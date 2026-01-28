@@ -2,13 +2,23 @@ identity:
   name: create_bank_account
   author: petrus
   label:
-    en_US: Create Bank Account
-    zh_Hans: 创建银行账户
+    en_US: Save Bank Account
+    zh_Hans: 保存银行账户
+    ja_JP: 銀行口座を保存
+    fr_FR: Enregistrer compte bancaire
+    es_ES: Guardar cuenta bancaria
+    pt_BR: Salvar conta bancária
+    ko_KR: 은행 계좌 저장
   icon: icon.svg
 description:
   human:
-    en_US: Create a reusable bank account for a customer for future ACH payments.
-    zh_Hans: 为客户创建可重复使用的银行账户，用于未来的 ACH 支付。
+    en_US: Store a customer's bank account so you can charge them again later without re-entering their details.
+    zh_Hans: 保存客户的银行账户，以便以后收款时无需重新输入账户信息。
+    ja_JP: 顧客の銀行口座を保存して、後で詳細を再入力せずに課金できるようにします。
+    fr_FR: Enregistrez le compte bancaire d'un client pour le débiter plus tard sans ressaisir ses coordonnées.
+    es_ES: Guarde la cuenta bancaria de un cliente para poder cobrarle después sin volver a ingresar sus datos.
+    pt_BR: Armazene a conta bancária de um cliente para poder cobrá-lo novamente sem reinserir os dados.
+    ko_KR: 고객의 은행 계좌를 저장하여 나중에 세부 정보를 다시 입력하지 않고 청구할 수 있습니다.
   llm: This tool creates and saves a bank account for a customer that can be reused
     for future payments without needing to provide the account details again.
 parameters:
@@ -18,9 +28,19 @@ parameters:
   label:
     en_US: Customer ID
     zh_Hans: 客户 ID
+    ja_JP: 顧客 ID
+    fr_FR: ID Client
+    es_ES: ID de Cliente
+    pt_BR: ID do Cliente
+    ko_KR: 고객 ID
   human_description:
-    en_US: QuickBooks customer ID
-    zh_Hans: QuickBooks 客户 ID
+    en_US: Which customer does this bank account belong to?
+    zh_Hans: 这个银行账户属于哪位客户？
+    ja_JP: この銀行口座はどの顧客のものですか？
+    fr_FR: À quel client appartient ce compte bancaire ?
+    es_ES: ¿A qué cliente pertenece esta cuenta bancaria?
+    pt_BR: A qual cliente pertence esta conta bancária?
+    ko_KR: 이 은행 계좌는 어느 고객의 것입니까?
   llm_description: The customer ID in QuickBooks system
   form: form
 - name: routing_number
@@ -28,10 +48,20 @@ parameters:
   required: true
   label:
     en_US: Routing Number
-    zh_Hans: 路由号码
+    zh_Hans: 银行路由号码
+    ja_JP: 銀行ルーティング番号
+    fr_FR: Numéro de routage
+    es_ES: Número de ruta
+    pt_BR: Número de roteamento
+    ko_KR: 라우팅 번호
   human_description:
-    en_US: 9-digit bank routing number
-    zh_Hans: 9 位银行路由号码
+    en_US: 9-digit number that identifies the bank
+    zh_Hans: 识别银行的 9 位数字
+    ja_JP: 銀行を識別する9桁の番号
+    fr_FR: Numéro à 9 chiffres qui identifie la banque
+    es_ES: Número de 9 dígitos que identifica el banco
+    pt_BR: Número de 9 dígitos que identifica o banco
+    ko_KR: 은행을 식별하는 9자리 숫자
   llm_description: 9-digit bank routing number
   form: form
 - name: account_number
@@ -40,9 +70,19 @@ parameters:
   label:
     en_US: Account Number
     zh_Hans: 账户号码
+    ja_JP: 口座番号
+    fr_FR: Numéro de compte
+    es_ES: Número de cuenta
+    pt_BR: Número da conta
+    ko_KR: 계좌 번호
   human_description:
-    en_US: Bank account number
-    zh_Hans: 银行账户号码
+    en_US: The customer's bank account number
+    zh_Hans: 客户的银行账户号码
+    ja_JP: 顧客の銀行口座番号
+    fr_FR: Le numéro de compte bancaire du client
+    es_ES: El número de cuenta bancaria del cliente
+    pt_BR: O número da conta bancária do cliente
+    ko_KR: 고객의 은행 계좌 번호
   llm_description: Bank account number
   form: form
 - name: account_type
@@ -53,24 +93,54 @@ parameters:
     label:
       en_US: Personal Checking
       zh_Hans: 个人支票账户
+      ja_JP: 個人当座預金
+      fr_FR: Compte courant personnel
+      es_ES: Cuenta corriente personal
+      pt_BR: Conta corrente pessoal
+      ko_KR: 개인 당좌 예금
   - value: PERSONAL_SAVINGS
     label:
       en_US: Personal Savings
       zh_Hans: 个人储蓄账户
+      ja_JP: 個人普通預金
+      fr_FR: Compte épargne personnel
+      es_ES: Cuenta de ahorro personal
+      pt_BR: Conta poupança pessoal
+      ko_KR: 개인 저축 예금
   - value: BUSINESS_CHECKING
     label:
       en_US: Business Checking
       zh_Hans: 企业支票账户
+      ja_JP: 法人当座預金
+      fr_FR: Compte courant professionnel
+      es_ES: Cuenta corriente comercial
+      pt_BR: Conta corrente empresarial
+      ko_KR: 기업 당좌 예금
   - value: BUSINESS_SAVINGS
     label:
       en_US: Business Savings
       zh_Hans: 企业储蓄账户
+      ja_JP: 法人普通預金
+      fr_FR: Compte épargne professionnel
+      es_ES: Cuenta de ahorro comercial
+      pt_BR: Conta poupança empresarial
+      ko_KR: 기업 저축 예금
   label:
     en_US: Account Type
     zh_Hans: 账户类型
+    ja_JP: 口座種別
+    fr_FR: Type de compte
+    es_ES: Tipo de cuenta
+    pt_BR: Tipo de conta
+    ko_KR: 계좌 유형
   human_description:
-    en_US: Type of bank account
-    zh_Hans: 银行账户类型
+    en_US: What type of bank account is this?
+    zh_Hans: 这是什么类型的银行账户？
+    ja_JP: どの種類の銀行口座ですか？
+    fr_FR: Quel type de compte bancaire est-ce ?
+    es_ES: ¿Qué tipo de cuenta bancaria es esta?
+    pt_BR: Que tipo de conta bancária é esta?
+    ko_KR: 어떤 종류의 은행 계좌입니까?
   llm_description: Select the type of bank account
   form: form
 - name: name
@@ -79,9 +149,19 @@ parameters:
   label:
     en_US: Account Holder Name
     zh_Hans: 账户持有人姓名
+    ja_JP: 口座名義人
+    fr_FR: Titulaire du compte
+    es_ES: Nombre del titular
+    pt_BR: Nome do titular
+    ko_KR: 계좌 소유자 이름
   human_description:
-    en_US: Full name of the account holder
-    zh_Hans: 账户持有人的完整姓名
+    en_US: Full name as it appears on the bank account
+    zh_Hans: 与银行账户上显示的完整姓名一致
+    ja_JP: 銀行口座に記載されている通りの氏名
+    fr_FR: Nom complet tel qu'il apparaît sur le compte bancaire
+    es_ES: Nombre completo tal como aparece en la cuenta bancaria
+    pt_BR: Nome completo como aparece na conta bancária
+    ko_KR: 은행 계좌에 표시된 대로의 전체 이름
   llm_description: Full name as it appears on the bank account
   form: form
 - name: phone
@@ -90,9 +170,19 @@ parameters:
   label:
     en_US: Phone Number
     zh_Hans: 电话号码
+    ja_JP: 電話番号
+    fr_FR: Numéro de téléphone
+    es_ES: Número de teléfono
+    pt_BR: Número de telefone
+    ko_KR: 전화번호
   human_description:
-    en_US: Optional phone number
-    zh_Hans: 可选的电话号码
+    en_US: Contact phone number (optional)
+    zh_Hans: 联系电话（可选）
+    ja_JP: 連絡先電話番号（オプション）
+    fr_FR: Numéro de téléphone de contact (optionnel)
+    es_ES: Número de teléfono de contacto (opcional)
+    pt_BR: Número de telefone para contato (opcional)
+    ko_KR: 연락처 전화번호 (선택사항)
   llm_description: Optional phone number for the account holder
   form: form
 output_schema:

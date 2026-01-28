@@ -2,17 +2,24 @@ identity:
   name: department_management
   author: petrus
   label:
-    en_US: Department Management
-    zh_Hans: 部门管理
-  human_description:
-    en_US: Department Management
-    zh_Hans: 部门管理
+    en_US: Manage Locations
+    zh_Hans: 管理位置
+    ja_JP: 拠点管理
+    fr_FR: Gérer emplacements
+    es_ES: Gestionar ubicaciones
+    pt_BR: Gerenciar locais
+    ko_KR: 위치 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, or query departments for tracking locations
-    zh_Hans: 创建、读取、更新或查询用于跟踪位置的部门
+    en_US: Create locations to track income and expenses by physical place (e.g., stores, offices, regions).
+    zh_Hans: 创建位置以按实体地点跟踪收入和支出（如门店、办公室、区域）。
+    ja_JP: 物理的な場所別（店舗、オフィス、地域など）で収入と支出を追跡する拠点を作成。
+    fr_FR: Créez des emplacements pour suivre les revenus et dépenses par lieu physique (ex. magasins, bureaux, régions).
+    es_ES: Cree ubicaciones para rastrear ingresos y gastos por lugar físico (ej., tiendas, oficinas, regiones).
+    pt_BR: Crie locais para rastrear receitas e despesas por local físico (ex., lojas, escritórios, regiões).
+    ko_KR: "물리적 장소별로 수입과 지출을 추적하는 위치를 만듭니다 (예: 매장, 사무실, 지역)."
   llm: A tool to manage departments in QuickBooks for tracking physical locations like stores or regions
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, update, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Department
-          zh_Hans: 创建部门
-        human_description:
-          en_US: Create Department
-          zh_Hans: 创建部门
+          en_US: Add Location
+          zh_Hans: 添加位置
+          ja_JP: 拠点を追加
+          fr_FR: Ajouter emplacement
+          es_ES: Agregar ubicación
+          pt_BR: Adicionar local
+          ko_KR: 위치 추가
       - value: read
         label:
-          en_US: Read Department
-          zh_Hans: 读取部门
-        human_description:
-          en_US: Read Department
-          zh_Hans: 读取部门
+          en_US: View Location
+          zh_Hans: 查看位置
+          ja_JP: 拠点を表示
+          fr_FR: Voir emplacement
+          es_ES: Ver ubicación
+          pt_BR: Ver local
+          ko_KR: 위치 보기
       - value: update
         label:
-          en_US: Update Department
-          zh_Hans: 更新部门
-        human_description:
-          en_US: Update Department
-          zh_Hans: 更新部门
+          en_US: Edit Location
+          zh_Hans: 编辑位置
+          ja_JP: 拠点を編集
+          fr_FR: Modifier emplacement
+          es_ES: Editar ubicación
+          pt_BR: Editar local
+          ko_KR: 위치 편집
       - value: query
         label:
-          en_US: Query Departments
-          zh_Hans: 查询部门
-
-        human_description:
-          en_US: Query Departments
-          zh_Hans: 查询部门
+          en_US: Search Locations
+          zh_Hans: 搜索位置
+          ja_JP: 拠点を検索
+          fr_FR: Rechercher emplacements
+          es_ES: Buscar ubicaciones
+          pt_BR: Pesquisar locais
+          ko_KR: 위치 검색
   - name: department_id
     type: string
     required: false

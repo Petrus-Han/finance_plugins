@@ -4,12 +4,22 @@ identity:
   label:
     en_US: Get Transactions
     zh_Hans: 获取交易记录
+    ja_JP: 取引履歴を取得
+    fr_FR: Obtenir les transactions
+    es_ES: Obtener transacciones
+    pt_BR: Obter transações
+    ko_KR: 거래 내역 조회
   icon: icon.svg
 
 description:
   human:
-    en_US: Retrieve transaction history for Mercury bank accounts with optional date filtering
-    zh_Hans: 获取 Mercury 银行账户的交易历史记录，支持日期过滤
+    en_US: Retrieve transaction history for Mercury bank accounts with optional date filtering and pagination
+    zh_Hans: 获取 Mercury 银行账户的交易历史记录，支持日期过滤和分页
+    ja_JP: Mercury 銀行口座の取引履歴を取得、日付フィルターとページネーション対応
+    fr_FR: Récupérer l'historique des transactions des comptes bancaires Mercury avec filtrage par date optionnel
+    es_ES: Obtener el historial de transacciones de cuentas bancarias Mercury con filtrado de fechas opcional
+    pt_BR: Obter histórico de transações das contas bancárias Mercury com filtragem de data opcional
+    ko_KR: Mercury 은행 계좌의 거래 내역을 조회하며, 날짜 필터링과 페이지네이션 지원
   llm: A tool to retrieve transactions for Mercury bank accounts. If account_id is not provided, fetches transactions for all accounts. Supports date range filtering and pagination.
 
 parameters:
@@ -19,9 +29,19 @@ parameters:
     label:
       en_US: Account ID
       zh_Hans: 账户 ID
+      ja_JP: 口座 ID
+      fr_FR: ID du compte
+      es_ES: ID de cuenta
+      pt_BR: ID da conta
+      ko_KR: 계좌 ID
     human_description:
       en_US: The Mercury account ID to retrieve transactions for. If not provided, fetches transactions for all accounts.
       zh_Hans: 要检索交易的 Mercury 账户 ID。如果不提供，将获取所有账户的交易。
+      ja_JP: 取引を取得する Mercury 口座 ID。未指定の場合、全口座の取引を取得。
+      fr_FR: L'ID du compte Mercury pour récupérer les transactions. Si non fourni, récupère toutes les transactions.
+      es_ES: ID de la cuenta Mercury para obtener transacciones. Si no se proporciona, obtiene todas las transacciones.
+      pt_BR: ID da conta Mercury para obter transações. Se não fornecido, obtém todas as transações.
+      ko_KR: 거래를 조회할 Mercury 계좌 ID. 미입력 시 모든 계좌의 거래를 조회합니다.
     llm_description: The Mercury account ID to retrieve transactions for. If not provided, fetches transactions for all accounts.
     form: llm
 
@@ -31,9 +51,19 @@ parameters:
     label:
       en_US: Start Date
       zh_Hans: 开始日期
+      ja_JP: 開始日
+      fr_FR: Date de début
+      es_ES: Fecha de inicio
+      pt_BR: Data inicial
+      ko_KR: 시작 날짜
     human_description:
-      en_US: Start date for filtering transactions (ISO 8601 format, e.g., 2026-01-01T00:00:00Z)
-      zh_Hans: 过滤交易的开始日期（ISO 8601 格式，例如 2026-01-01T00:00:00Z）
+      en_US: "Start date for filtering transactions (ISO 8601 format, e.g., 2026-01-01T00:00:00Z)"
+      zh_Hans: "过滤交易的开始日期（ISO 8601 格式，例如 2026-01-01T00:00:00Z）"
+      ja_JP: "取引フィルターの開始日（ISO 8601形式、例：2026-01-01T00:00:00Z）"
+      fr_FR: "Date de début pour filtrer les transactions (format ISO 8601, ex. 2026-01-01T00:00:00Z)"
+      es_ES: "Fecha de inicio para filtrar transacciones (formato ISO 8601, ej. 2026-01-01T00:00:00Z)"
+      pt_BR: "Data inicial para filtrar transações (formato ISO 8601, ex. 2026-01-01T00:00:00Z)"
+      ko_KR: "거래 필터링 시작 날짜 (ISO 8601 형식, 예: 2026-01-01T00:00:00Z)"
     llm_description: Optional start date for filtering transactions in ISO 8601 format (e.g., 2026-01-01T00:00:00Z)
     form: llm
 
@@ -43,9 +73,19 @@ parameters:
     label:
       en_US: End Date
       zh_Hans: 结束日期
+      ja_JP: 終了日
+      fr_FR: Date de fin
+      es_ES: Fecha de fin
+      pt_BR: Data final
+      ko_KR: 종료 날짜
     human_description:
-      en_US: End date for filtering transactions (ISO 8601 format, e.g., 2026-01-31T23:59:59Z)
-      zh_Hans: 过滤交易的结束日期（ISO 8601 格式，例如 2026-01-31T23:59:59Z）
+      en_US: "End date for filtering transactions (ISO 8601 format, e.g., 2026-01-31T23:59:59Z)"
+      zh_Hans: "过滤交易的结束日期（ISO 8601 格式，例如 2026-01-31T23:59:59Z）"
+      ja_JP: "取引フィルターの終了日（ISO 8601形式、例：2026-01-31T23:59:59Z）"
+      fr_FR: "Date de fin pour filtrer les transactions (format ISO 8601, ex. 2026-01-31T23:59:59Z)"
+      es_ES: "Fecha de fin para filtrar transacciones (formato ISO 8601, ej. 2026-01-31T23:59:59Z)"
+      pt_BR: "Data final para filtrar transações (formato ISO 8601, ex. 2026-01-31T23:59:59Z)"
+      ko_KR: "거래 필터링 종료 날짜 (ISO 8601 형식, 예: 2026-01-31T23:59:59Z)"
     llm_description: Optional end date for filtering transactions in ISO 8601 format (e.g., 2026-01-31T23:59:59Z)
     form: llm
 
@@ -56,9 +96,19 @@ parameters:
     label:
       en_US: Limit
       zh_Hans: 限制数量
+      ja_JP: 取得件数
+      fr_FR: Limite
+      es_ES: Límite
+      pt_BR: Limite
+      ko_KR: 조회 수
     human_description:
       en_US: Maximum number of transactions to return (default 100)
       zh_Hans: 返回的最大交易数量（默认 100）
+      ja_JP: 返却する取引の最大件数（デフォルト100）
+      fr_FR: Nombre maximum de transactions à retourner (défaut 100)
+      es_ES: Número máximo de transacciones a devolver (predeterminado 100)
+      pt_BR: Número máximo de transações a retornar (padrão 100)
+      ko_KR: 반환할 최대 거래 수 (기본값 100)
     llm_description: Maximum number of transactions to return (default 100)
     form: llm
 
@@ -69,9 +119,19 @@ parameters:
     label:
       en_US: Offset
       zh_Hans: 偏移量
+      ja_JP: オフセット
+      fr_FR: Décalage
+      es_ES: Desplazamiento
+      pt_BR: Deslocamento
+      ko_KR: 오프셋
     human_description:
       en_US: Number of transactions to skip for pagination (default 0)
       zh_Hans: 用于分页的跳过交易数量（默认 0）
+      ja_JP: ページネーション用のスキップ件数（デフォルト0）
+      fr_FR: Nombre de transactions à sauter pour la pagination (défaut 0)
+      es_ES: Número de transacciones a omitir para paginación (predeterminado 0)
+      pt_BR: Número de transações a pular para paginação (padrão 0)
+      ko_KR: 페이지네이션을 위해 건너뛸 거래 수 (기본값 0)
     llm_description: Number of transactions to skip for pagination (default 0)
     form: llm
 

@@ -2,13 +2,23 @@ identity:
   name: delete_bank_account
   author: petrus
   label:
-    en_US: Delete Bank Account
-    zh_Hans: 删除银行账户
+    en_US: Remove Bank Account
+    zh_Hans: 移除银行账户
+    ja_JP: 銀行口座を削除
+    fr_FR: Supprimer compte bancaire
+    es_ES: Eliminar cuenta bancaria
+    pt_BR: Remover conta bancária
+    ko_KR: 은행 계좌 삭제
   icon: icon.svg
 description:
   human:
-    en_US: Remove a bank account from a customer.
-    zh_Hans: 从客户中删除银行账户。
+    en_US: Delete a saved bank account that you no longer need for a customer.
+    zh_Hans: 删除您不再需要的客户银行账户。
+    ja_JP: 不要になった顧客の銀行口座を削除します。
+    fr_FR: Supprimez un compte bancaire enregistré dont vous n'avez plus besoin pour un client.
+    es_ES: Elimine una cuenta bancaria guardada que ya no necesita para un cliente.
+    pt_BR: Exclua uma conta bancária salva que você não precisa mais para um cliente.
+    ko_KR: 더 이상 필요하지 않은 고객의 저장된 은행 계좌를 삭제합니다.
   llm: This tool removes a saved bank account from a customer's profile.
 parameters:
 - name: customer_id
@@ -17,9 +27,19 @@ parameters:
   label:
     en_US: Customer ID
     zh_Hans: 客户 ID
+    ja_JP: 顧客 ID
+    fr_FR: ID Client
+    es_ES: ID de Cliente
+    pt_BR: ID do Cliente
+    ko_KR: 고객 ID
   human_description:
-    en_US: QuickBooks customer ID
-    zh_Hans: QuickBooks 客户 ID
+    en_US: Which customer's bank account do you want to remove?
+    zh_Hans: 您想移除哪位客户的银行账户？
+    ja_JP: どの顧客の銀行口座を削除しますか？
+    fr_FR: De quel client souhaitez-vous supprimer le compte bancaire ?
+    es_ES: ¿De qué cliente desea eliminar la cuenta bancaria?
+    pt_BR: De qual cliente você deseja remover a conta bancária?
+    ko_KR: 어느 고객의 은행 계좌를 삭제하시겠습니까?
   llm_description: The customer ID in QuickBooks system
   form: form
 - name: bank_account_id
@@ -28,9 +48,19 @@ parameters:
   label:
     en_US: Bank Account ID
     zh_Hans: 银行账户 ID
+    ja_JP: 銀行口座 ID
+    fr_FR: ID du compte bancaire
+    es_ES: ID de cuenta bancaria
+    pt_BR: ID da conta bancária
+    ko_KR: 은행 계좌 ID
   human_description:
-    en_US: ID of the bank account to delete
-    zh_Hans: 要删除的银行账户 ID
+    en_US: The ID of the bank account to remove
+    zh_Hans: 要移除的银行账户 ID
+    ja_JP: 削除する銀行口座のID
+    fr_FR: L'ID du compte bancaire à supprimer
+    es_ES: El ID de la cuenta bancaria a eliminar
+    pt_BR: O ID da conta bancária a remover
+    ko_KR: 삭제할 은행 계좌의 ID
   llm_description: The unique identifier of the bank account to remove
   form: form
 output_schema:

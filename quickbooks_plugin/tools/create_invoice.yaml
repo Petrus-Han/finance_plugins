@@ -4,74 +4,104 @@ identity:
   label:
     en_US: Create Invoice
     zh_Hans: 创建发票
-  human_description:
-    en_US: Create Invoice
-    zh_Hans: 创建发票
+    ja_JP: 請求書を作成
+    fr_FR: Créer facture
+    es_ES: Crear factura
+    pt_BR: Criar fatura
+    ko_KR: 청구서 작성
 description:
   human:
-    en_US: Create a new invoice in QuickBooks Online for a customer.
-    zh_Hans: 在 QuickBooks Online 中为客户创建新发票。
-  llm: Create a new invoice in QuickBooks Online. Requires a customer ID and line
-    items. Returns the created invoice details including ID and total amount.
+    en_US: Send an invoice to a customer for products or services. The customer can view and pay the invoice online.
+    zh_Hans: 向客户发送产品或服务的发票。客户可以在线查看和支付发票。
+    ja_JP: 製品やサービスの請求書を顧客に送信。顧客はオンラインで請求書を確認して支払いが可能です。
+    fr_FR: Envoyez une facture à un client pour des produits ou services. Le client peut consulter et payer la facture en ligne.
+    es_ES: Envíe una factura a un cliente por productos o servicios. El cliente puede ver y pagar la factura en línea.
+    pt_BR: Envie uma fatura a um cliente por produtos ou serviços. O cliente pode visualizar e pagar a fatura online.
+    ko_KR: 제품이나 서비스에 대한 청구서를 고객에게 보냅니다. 고객은 온라인으로 청구서를 확인하고 결제할 수 있습니다.
+  llm: Create a new invoice in QuickBooks Online. Requires a customer ID and line items. Returns the created invoice details including ID and total amount.
 parameters:
 - name: customer_id
   type: string
   required: true
   label:
-    en_US: Customer ID
-    zh_Hans: 客户 ID
+    en_US: Customer
+    zh_Hans: 客户
+    ja_JP: 顧客
+    fr_FR: Client
+    es_ES: Cliente
+    pt_BR: Cliente
+    ko_KR: 고객
   human_description:
-    en_US: The QuickBooks customer ID to invoice
-    zh_Hans: 要开票的 QuickBooks 客户 ID
+    en_US: Who are you billing?
+    zh_Hans: 您要向谁收款？
+    ja_JP: 誰に請求しますか？
+    fr_FR: À qui facturez-vous ?
+    es_ES: ¿A quién está facturando?
+    pt_BR: Para quem você está cobrando?
+    ko_KR: 누구에게 청구합니까?
   llm_description: The QuickBooks Online customer ID (numeric string)
   form: llm
 - name: line_items
   type: string
   required: true
   label:
-    en_US: Line Items (JSON)
-    zh_Hans: 行项目（JSON）
+    en_US: Items & Services
+    zh_Hans: 商品和服务
+    ja_JP: 商品・サービス
+    fr_FR: Articles et services
+    es_ES: Artículos y servicios
+    pt_BR: Itens e serviços
+    ko_KR: 항목 및 서비스
   human_description:
-    en_US: 'JSON array of line items. Each item: {amount, description, item_id, quantity,
-      unit_price}'
-    zh_Hans: '行项目的 JSON 数组。每项: {amount, description, item_id, quantity, unit_price}'
-  llm_description: 'JSON array of invoice line items. Each item should have:
-
-    - amount (required): Line total amount
-
-    - description (optional): Line description
-
-    - item_id (optional): QuickBooks item/product ID
-
-    - quantity (optional): Quantity
-
-    - unit_price (optional): Unit price
-
-    Example: [{"amount": 100, "description": "Consulting services", "quantity": 2,
-    "unit_price": 50}]
-
-    '
+    en_US: What are you charging for? (JSON format with amount, description, quantity, unit_price)
+    zh_Hans: 您要收取什么费用？（JSON 格式，包含 amount、description、quantity、unit_price）
+    ja_JP: "何を請求しますか？（JSON形式: amount, description, quantity, unit_price）"
+    fr_FR: Que facturez-vous ? (Format JSON avec amount, description, quantity, unit_price)
+    es_ES: ¿Qué está cobrando? (Formato JSON con amount, description, quantity, unit_price)
+    pt_BR: O que você está cobrando? (Formato JSON com amount, description, quantity, unit_price)
+    ko_KR: "무엇에 대해 청구합니까? (JSON 형식: amount, description, quantity, unit_price)"
+  llm_description: 'JSON array of invoice line items. Each item should have: amount (required), description (optional), item_id (optional), quantity (optional), unit_price (optional). Example: [{"amount": 100, "description": "Consulting services", "quantity": 2, "unit_price": 50}]'
   form: llm
 - name: txn_date
   type: string
   required: false
   label:
-    en_US: Transaction Date
-    zh_Hans: 交易日期
+    en_US: Invoice Date
+    zh_Hans: 发票日期
+    ja_JP: 請求日
+    fr_FR: Date de facture
+    es_ES: Fecha de factura
+    pt_BR: Data da fatura
+    ko_KR: 청구서 날짜
   human_description:
-    en_US: Invoice date (YYYY-MM-DD format)
-    zh_Hans: 发票日期（YYYY-MM-DD 格式）
+    en_US: Date of the invoice (YYYY-MM-DD, defaults to today)
+    zh_Hans: 发票日期（YYYY-MM-DD，默认为今天）
+    ja_JP: 請求書の日付（YYYY-MM-DD、デフォルトは今日）
+    fr_FR: Date de la facture (AAAA-MM-JJ, par défaut aujourd'hui)
+    es_ES: Fecha de la factura (AAAA-MM-DD, por defecto hoy)
+    pt_BR: Data da fatura (AAAA-MM-DD, padrão é hoje)
+    ko_KR: 청구서 날짜 (YYYY-MM-DD, 기본값은 오늘)
   llm_description: Invoice date in YYYY-MM-DD format. Defaults to today if not provided.
   form: llm
 - name: due_date
   type: string
   required: false
   label:
-    en_US: Due Date
-    zh_Hans: 到期日期
+    en_US: Payment Due
+    zh_Hans: 付款截止
+    ja_JP: 支払期限
+    fr_FR: Échéance
+    es_ES: Fecha de vencimiento
+    pt_BR: Vencimento
+    ko_KR: 결제 기한
   human_description:
-    en_US: Payment due date (YYYY-MM-DD format)
-    zh_Hans: 付款到期日期（YYYY-MM-DD 格式）
+    en_US: When should the customer pay? (YYYY-MM-DD)
+    zh_Hans: 客户应在何时付款？（YYYY-MM-DD）
+    ja_JP: いつまでに支払ってもらいますか？（YYYY-MM-DD）
+    fr_FR: Quand le client doit-il payer ? (AAAA-MM-JJ)
+    es_ES: ¿Cuándo debe pagar el cliente? (AAAA-MM-DD)
+    pt_BR: Quando o cliente deve pagar? (AAAA-MM-DD)
+    ko_KR: 고객이 언제까지 결제해야 합니까? (YYYY-MM-DD)
   llm_description: Payment due date in YYYY-MM-DD format
   form: llm
 - name: doc_number
@@ -80,20 +110,40 @@ parameters:
   label:
     en_US: Invoice Number
     zh_Hans: 发票编号
+    ja_JP: 請求書番号
+    fr_FR: Numéro de facture
+    es_ES: Número de factura
+    pt_BR: Número da fatura
+    ko_KR: 청구서 번호
   human_description:
-    en_US: Custom invoice number (auto-generated if not provided)
-    zh_Hans: 自定义发票编号（不提供则自动生成）
+    en_US: Custom invoice number (auto-generated if left empty)
+    zh_Hans: 自定义发票编号（留空则自动生成）
+    ja_JP: カスタム請求書番号（空の場合は自動生成）
+    fr_FR: Numéro de facture personnalisé (généré automatiquement si vide)
+    es_ES: Número de factura personalizado (se genera automáticamente si está vacío)
+    pt_BR: Número de fatura personalizado (gerado automaticamente se vazio)
+    ko_KR: 사용자 지정 청구서 번호 (비워두면 자동 생성)
   llm_description: Custom invoice number. Auto-generated by QuickBooks if not provided.
   form: llm
 - name: customer_memo
   type: string
   required: false
   label:
-    en_US: Customer Memo
-    zh_Hans: 客户备注
+    en_US: Message to Customer
+    zh_Hans: 给客户的消息
+    ja_JP: 顧客へのメッセージ
+    fr_FR: Message au client
+    es_ES: Mensaje al cliente
+    pt_BR: Mensagem ao cliente
+    ko_KR: 고객에게 보내는 메시지
   human_description:
-    en_US: Message visible to the customer
-    zh_Hans: 客户可见的消息
+    en_US: Note that appears on the invoice for the customer
+    zh_Hans: 发票上显示给客户的备注
+    ja_JP: 請求書に表示される顧客向けメモ
+    fr_FR: Note qui apparaît sur la facture pour le client
+    es_ES: Nota que aparece en la factura para el cliente
+    pt_BR: Nota que aparece na fatura para o cliente
+    ko_KR: 청구서에 표시되는 고객용 메모
   llm_description: Message that will be visible to the customer on the invoice
   form: llm
 - name: private_note
@@ -101,21 +151,41 @@ parameters:
   required: false
   label:
     en_US: Private Note
-    zh_Hans: 内部备注
+    zh_Hans: 私人备注
+    ja_JP: 社内メモ
+    fr_FR: Note privée
+    es_ES: Nota privada
+    pt_BR: Nota privada
+    ko_KR: 비공개 메모
   human_description:
-    en_US: Internal note (not visible to customer)
-    zh_Hans: 内部备注（客户不可见）
+    en_US: Internal note (only you can see this)
+    zh_Hans: 内部备注（仅您可见）
+    ja_JP: 社内メモ（自分だけに表示）
+    fr_FR: Note interne (visible uniquement par vous)
+    es_ES: Nota interna (solo usted puede verla)
+    pt_BR: Nota interna (apenas você pode ver)
+    ko_KR: 내부 메모 (본인만 볼 수 있음)
   llm_description: Internal note that is not visible to the customer
   form: llm
 - name: bill_email
   type: string
   required: false
   label:
-    en_US: Bill Email
-    zh_Hans: 账单邮箱
+    en_US: Send To Email
+    zh_Hans: 发送到邮箱
+    ja_JP: 送信先メール
+    fr_FR: Envoyer à l'e-mail
+    es_ES: Enviar al correo
+    pt_BR: Enviar para e-mail
+    ko_KR: 이메일로 보내기
   human_description:
-    en_US: Email address to send the invoice to
-    zh_Hans: 发送发票的邮箱地址
+    en_US: Customer's email address for receiving the invoice
+    zh_Hans: 接收发票的客户邮箱地址
+    ja_JP: 請求書を受け取る顧客のメールアドレス
+    fr_FR: Adresse e-mail du client pour recevoir la facture
+    es_ES: Dirección de correo electrónico del cliente para recibir la factura
+    pt_BR: Endereço de e-mail do cliente para receber a fatura
+    ko_KR: 청구서를 받을 고객 이메일 주소
   llm_description: Email address where the invoice will be sent
   form: llm
 extra:

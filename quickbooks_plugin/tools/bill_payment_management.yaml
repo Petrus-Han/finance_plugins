@@ -2,17 +2,24 @@ identity:
   name: bill_payment_management
   author: petrus
   label:
-    en_US: Bill Payment Management
-    zh_Hans: 账单付款管理
-  human_description:
-    en_US: Bill Payment Management
-    zh_Hans: 账单付款管理
+    en_US: Pay Vendor Bills
+    zh_Hans: 支付供应商账单
+    ja_JP: 取引先への支払い
+    fr_FR: Payer factures fournisseurs
+    es_ES: Pagar facturas de proveedores
+    pt_BR: Pagar contas de fornecedores
+    ko_KR: 공급업체 청구서 결제
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, delete, or void bill payments to vendors
-    zh_Hans: 创建、读取、更新、删除或作废供应商账单付款
+    en_US: Record payments you make to vendors for bills you owe. Pay by check or credit card.
+    zh_Hans: 记录您向供应商支付的账单付款。可通过支票或信用卡支付。
+    ja_JP: 取引先への支払いを記録。小切手またはクレジットカードで支払い可能。
+    fr_FR: Enregistrez les paiements que vous effectuez aux fournisseurs. Payez par chèque ou carte de crédit.
+    es_ES: Registre los pagos que hace a proveedores por facturas pendientes. Pague con cheque o tarjeta de crédito.
+    pt_BR: Registre pagamentos que você faz a fornecedores. Pague com cheque ou cartão de crédito.
+    ko_KR: 공급업체에 지불한 청구서 결제를 기록합니다. 수표 또는 신용카드로 결제하세요.
   llm: A tool to manage bill payments (payments to vendors) in QuickBooks
 
 parameters:
@@ -20,50 +27,69 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: The operation to perform
-      zh_Hans: 要执行的操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, update, delete, void, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Bill Payment
-          zh_Hans: 创建账单付款
-        human_description:
-          en_US: Create Bill Payment
-          zh_Hans: 创建账单付款
+          en_US: Pay a Bill
+          zh_Hans: 支付账单
+          ja_JP: 請求書を支払う
+          fr_FR: Payer une facture
+          es_ES: Pagar una factura
+          pt_BR: Pagar uma conta
+          ko_KR: 청구서 결제
       - value: read
         label:
-          en_US: Read Bill Payment
-          zh_Hans: 读取账单付款
-        human_description:
-          en_US: Read Bill Payment
-          zh_Hans: 读取账单付款
+          en_US: View Payment
+          zh_Hans: 查看付款
+          ja_JP: 支払いを表示
+          fr_FR: Voir paiement
+          es_ES: Ver pago
+          pt_BR: Ver pagamento
+          ko_KR: 결제 보기
       - value: delete
         label:
-          en_US: Delete Bill Payment
-          zh_Hans: 删除账单付款
-        human_description:
-          en_US: Delete Bill Payment
-          zh_Hans: 删除账单付款
+          en_US: Delete Payment
+          zh_Hans: 删除付款
+          ja_JP: 支払いを削除
+          fr_FR: Supprimer paiement
+          es_ES: Eliminar pago
+          pt_BR: Excluir pagamento
+          ko_KR: 결제 삭제
       - value: void
         label:
-          en_US: Void Bill Payment
-          zh_Hans: 作废账单付款
-        human_description:
-          en_US: Void Bill Payment
-          zh_Hans: 作废账单付款
+          en_US: Void Payment
+          zh_Hans: 作废付款
+          ja_JP: 支払いを無効化
+          fr_FR: Annuler paiement
+          es_ES: Anular pago
+          pt_BR: Anular pagamento
+          ko_KR: 결제 무효화
       - value: query
         label:
-          en_US: Query Bill Payments
-          zh_Hans: 查询账单付款
-
-        human_description:
-          en_US: Query Bill Payments
-          zh_Hans: 查询账单付款
+          en_US: Search Payments
+          zh_Hans: 搜索付款
+          ja_JP: 支払いを検索
+          fr_FR: Rechercher paiements
+          es_ES: Buscar pagos
+          pt_BR: Pesquisar pagamentos
+          ko_KR: 결제 검색
   - name: bill_payment_id
     type: string
     required: false

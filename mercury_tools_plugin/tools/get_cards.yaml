@@ -2,15 +2,25 @@ identity:
   name: get_cards
   author: petrus
   label:
-    en_US: Get Cards
-    zh_Hans: 获取信用卡列表
+    en_US: Get Employee Cards
+    zh_Hans: 获取员工信用卡
+    ja_JP: 従業員カードを取得
+    fr_FR: Obtenir les cartes employés
+    es_ES: Obtener tarjetas de empleados
+    pt_BR: Obter cartões de funcionários
+    ko_KR: 직원 카드 조회
   icon: icon.svg
 
 description:
   human:
-    en_US: Retrieve all cards (credit/debit) for Mercury bank accounts
-    zh_Hans: 获取 Mercury 银行账户的所有卡片（信用卡/借记卡）
-  llm: A tool to retrieve all cards associated with Mercury bank accounts. If account_id is not provided, fetches cards for all accounts.
+    en_US: Retrieve all employee credit/debit cards issued by Mercury. Returns cardholder name, card status, last 4 digits, and card network.
+    zh_Hans: 获取 Mercury 发行的所有员工信用卡/借记卡。返回持卡人姓名、卡片状态、卡号后4位和卡组织。
+    ja_JP: Mercury が発行したすべての従業員クレジット/デビットカードを取得。カード名義、ステータス、下4桁、カードネットワークを返します。
+    fr_FR: Récupérer toutes les cartes de crédit/débit des employés émises par Mercury. Retourne le nom du titulaire, le statut, les 4 derniers chiffres et le réseau.
+    es_ES: Obtener todas las tarjetas de crédito/débito de empleados emitidas por Mercury. Devuelve nombre del titular, estado, últimos 4 dígitos y red.
+    pt_BR: Obter todos os cartões de crédito/débito de funcionários emitidos pelo Mercury. Retorna nome do titular, status, últimos 4 dígitos e rede.
+    ko_KR: Mercury에서 발급한 모든 직원 신용/체크카드를 조회합니다. 카드 소유자 이름, 상태, 마지막 4자리, 카드 네트워크를 반환합니다.
+  llm: A tool to retrieve all credit/debit cards issued by Mercury for team members. Returns card details including cardholder name (nameOnCard), card status, last four digits, and card network (Visa/Mastercard). If account_id is not provided, fetches cards for all accounts. Use this tool when users ask about credit cards, employee cards, or team member cards.
 
 parameters:
   - name: account_id
@@ -19,9 +29,19 @@ parameters:
     label:
       en_US: Account ID
       zh_Hans: 账户 ID
+      ja_JP: 口座 ID
+      fr_FR: ID du compte
+      es_ES: ID de cuenta
+      pt_BR: ID da conta
+      ko_KR: 계좌 ID
     human_description:
       en_US: The Mercury account ID to get cards for. If not provided, fetches cards for all accounts.
       zh_Hans: 要获取卡片的 Mercury 账户 ID。如果不提供，将获取所有账户的卡片。
+      ja_JP: カードを取得する Mercury 口座 ID。未指定の場合、全口座のカードを取得。
+      fr_FR: L'ID du compte Mercury pour obtenir les cartes. Si non fourni, récupère les cartes de tous les comptes.
+      es_ES: ID de la cuenta Mercury para obtener tarjetas. Si no se proporciona, obtiene tarjetas de todas las cuentas.
+      pt_BR: ID da conta Mercury para obter cartões. Se não fornecido, obtém cartões de todas as contas.
+      ko_KR: 카드를 조회할 Mercury 계좌 ID. 미입력 시 모든 계좌의 카드를 조회합니다.
     llm_description: The UUID of the Mercury account to retrieve cards for. If not provided, fetches cards for all accounts.
     form: llm
 

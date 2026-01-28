@@ -4,10 +4,20 @@ identity:
   label:
     en_US: Get Recipient Details
     zh_Hans: 获取收款人详情
+    ja_JP: 受取人詳細を取得
+    fr_FR: Obtenir les détails du bénéficiaire
+    es_ES: Obtener detalles del beneficiario
+    pt_BR: Obter detalhes do beneficiário
+    ko_KR: 수취인 상세 조회
 description:
   human:
-    en_US: Retrieve detailed information about a specific payment recipient.
-    zh_Hans: 获取特定付款收款人的详细信息。
+    en_US: Retrieve detailed information about a specific payment recipient, including bank account and address.
+    zh_Hans: 获取特定付款收款人的详细信息，包括银行账户和地址。
+    ja_JP: 特定の支払い受取人の詳細情報（銀行口座、住所など）を取得。
+    fr_FR: Récupérer les informations détaillées d'un bénéficiaire spécifique, y compris le compte bancaire et l'adresse.
+    es_ES: Obtener información detallada de un beneficiario específico, incluyendo cuenta bancaria y dirección.
+    pt_BR: Obter informações detalhadas de um beneficiário específico, incluindo conta bancária e endereço.
+    ko_KR: 특정 결제 수취인의 상세 정보(은행 계좌, 주소 등)를 조회합니다.
   llm: Fetches complete details for a specific recipient by ID, including bank account info and address.
 parameters:
   - name: recipient_id
@@ -16,9 +26,19 @@ parameters:
     label:
       en_US: Recipient ID
       zh_Hans: 收款人 ID
+      ja_JP: 受取人 ID
+      fr_FR: ID du bénéficiaire
+      es_ES: ID del beneficiario
+      pt_BR: ID do beneficiário
+      ko_KR: 수취인 ID
     human_description:
       en_US: The unique identifier of the recipient
       zh_Hans: 收款人的唯一标识符
+      ja_JP: 受取人の一意識別子
+      fr_FR: L'identifiant unique du bénéficiaire
+      es_ES: El identificador único del beneficiario
+      pt_BR: O identificador único do beneficiário
+      ko_KR: 수취인의 고유 식별자
     llm_description: Mercury recipient ID (e.g., recipient_xxx)
     form: llm
 

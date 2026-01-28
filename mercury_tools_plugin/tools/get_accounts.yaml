@@ -2,15 +2,25 @@ identity:
   name: get_accounts
   author: petrus
   label:
-    en_US: Get Accounts
-    zh_Hans: 获取账户列表
+    en_US: Get Bank Accounts
+    zh_Hans: 获取银行账户列表
+    ja_JP: 銀行口座一覧を取得
+    fr_FR: Obtenir les comptes bancaires
+    es_ES: Obtener cuentas bancarias
+    pt_BR: Obter contas bancárias
+    ko_KR: 은행 계좌 목록 조회
   icon: icon.svg
 
 description:
   human:
-    en_US: Retrieve all Mercury bank accounts associated with your API token
-    zh_Hans: 获取与您的 API 令牌关联的所有 Mercury 银行账户
-  llm: A tool to retrieve all Mercury bank accounts including checking, savings, and treasury accounts with balance information
+    en_US: "Retrieve all Mercury bank accounts (checking, savings, treasury). Note: Does NOT include credit cards - use 'Get Employee Cards' for credit card info."
+    zh_Hans: "获取所有 Mercury 银行账户（支票、储蓄、国库账户）。注意：不包含信用卡，请使用「获取员工信用卡」查询信用卡。"
+    ja_JP: "すべての Mercury 銀行口座（当座、普通、財務）を取得。注意：クレジットカードは含まれません。クレジットカード情報は「従業員カード取得」を使用。"
+    fr_FR: "Récupérer tous les comptes bancaires Mercury (courant, épargne, trésorerie). Note : N'inclut PAS les cartes de crédit - utilisez 'Obtenir les cartes employés'."
+    es_ES: "Obtener todas las cuentas bancarias Mercury (corriente, ahorro, tesorería). Nota: NO incluye tarjetas de crédito - use 'Obtener tarjetas de empleados'."
+    pt_BR: "Obter todas as contas bancárias Mercury (corrente, poupança, tesouraria). Nota: NÃO inclui cartões de crédito - use 'Obter cartões de funcionários'."
+    ko_KR: "모든 Mercury 은행 계좌(당좌, 저축, 재무)를 조회합니다. 참고: 신용카드는 포함되지 않습니다. 신용카드 정보는 '직원 카드 조회'를 사용하세요."
+  llm: "A tool to retrieve all Mercury bank accounts including checking, savings, and treasury accounts with balance information. IMPORTANT: This endpoint returns bank accounts only, NOT credit cards. To get credit card information, use the get_cards tool instead."
 
 parameters: []
 

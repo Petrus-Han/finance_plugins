@@ -2,17 +2,24 @@ identity:
   name: estimate_management
   author: petrus
   label:
-    en_US: Estimate Management
-    zh_Hans: 报价单管理
-  human_description:
-    en_US: Estimate Management
-    zh_Hans: 报价单管理
+    en_US: Manage Estimates
+    zh_Hans: 管理报价单
+    ja_JP: 見積もり管理
+    fr_FR: Gérer devis
+    es_ES: Gestionar presupuestos
+    pt_BR: Gerenciar orçamentos
+    ko_KR: 견적서 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, or delete estimates (quotes)
-    zh_Hans: 创建、读取、更新或删除报价单
+    en_US: Create and send price quotes to potential customers. Convert accepted estimates into invoices.
+    zh_Hans: 为潜在客户创建并发送报价单。将已接受的报价单转换为发票。
+    ja_JP: 見込み客に見積もりを作成・送付。承諾された見積もりを請求書に変換。
+    fr_FR: Créez et envoyez des devis aux clients potentiels. Convertissez les devis acceptés en factures.
+    es_ES: Cree y envíe presupuestos a clientes potenciales. Convierta presupuestos aceptados en facturas.
+    pt_BR: Crie e envie orçamentos para clientes potenciais. Converta orçamentos aceitos em faturas.
+    ko_KR: 잠재 고객에게 견적서를 작성하고 보냅니다. 승인된 견적서를 청구서로 변환하세요.
   llm: A tool to manage estimates (quotes/proposals) in QuickBooks
 
 parameters:
@@ -20,11 +27,21 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, update, delete, or query"
     form: llm
     options:
@@ -32,31 +49,38 @@ parameters:
         label:
           en_US: Create Estimate
           zh_Hans: 创建报价单
-        human_description:
-          en_US: Create Estimate
-          zh_Hans: 创建报价单
+          ja_JP: 見積もりを作成
+          fr_FR: Créer devis
+          es_ES: Crear presupuesto
+          pt_BR: Criar orçamento
+          ko_KR: 견적서 작성
       - value: read
         label:
-          en_US: Read Estimate
-          zh_Hans: 读取报价单
-        human_description:
-          en_US: Read Estimate
-          zh_Hans: 读取报价单
+          en_US: View Estimate
+          zh_Hans: 查看报价单
+          ja_JP: 見積もりを表示
+          fr_FR: Voir devis
+          es_ES: Ver presupuesto
+          pt_BR: Ver orçamento
+          ko_KR: 견적서 보기
       - value: delete
         label:
           en_US: Delete Estimate
           zh_Hans: 删除报价单
-        human_description:
-          en_US: Delete Estimate
-          zh_Hans: 删除报价单
+          ja_JP: 見積もりを削除
+          fr_FR: Supprimer devis
+          es_ES: Eliminar presupuesto
+          pt_BR: Excluir orçamento
+          ko_KR: 견적서 삭제
       - value: query
         label:
-          en_US: Query Estimates
-          zh_Hans: 查询报价单
-
-        human_description:
-          en_US: Query Estimates
-          zh_Hans: 查询报价单
+          en_US: Search Estimates
+          zh_Hans: 搜索报价单
+          ja_JP: 見積もりを検索
+          fr_FR: Rechercher devis
+          es_ES: Buscar presupuestos
+          pt_BR: Pesquisar orçamentos
+          ko_KR: 견적서 검색
   - name: estimate_id
     type: string
     required: false
