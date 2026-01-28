@@ -125,6 +125,7 @@ Finance Plugins 是一组 Dify 插件，用于实现 Mercury 银行与 QuickBook
 - **禁止直接在 main 分支提交代码**：必须根据当前任务新建功能分支
 - **分支命名规范**：`feature/<功能名>`, `fix/<问题描述>`, `chore/<维护任务>`
 - **提交 PR 前必须确保**：单元测试和集成测试全部通过
+- **PR merge strategy**: Always use **Rebase and merge** to keep commit history clean and linear. Never create merge commits.
 - **PR 合并后删除功能分支**
 
 ## 注意事项
