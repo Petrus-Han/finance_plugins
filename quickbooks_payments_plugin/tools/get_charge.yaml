@@ -2,13 +2,23 @@ identity:
   name: get_charge
   author: petrus
   label:
-    en_US: Get Charge
-    zh_Hans: 获取支付信息
+    en_US: View Payment Details
+    zh_Hans: 查看付款详情
+    ja_JP: 支払い詳細を表示
+    fr_FR: Voir détails du paiement
+    es_ES: Ver detalles del pago
+    pt_BR: Ver detalhes do pagamento
+    ko_KR: 결제 상세 보기
   icon: icon.svg
 description:
   human:
-    en_US: Retrieve details of a specific payment charge by ID.
-    zh_Hans: 通过 ID 检索特定支付的详细信息。
+    en_US: Check the status and details of a payment you've processed.
+    zh_Hans: 查看您已处理的付款的状态和详情。
+    ja_JP: 処理した支払いの状態と詳細を確認します。
+    fr_FR: Vérifiez le statut et les détails d'un paiement que vous avez traité.
+    es_ES: Verifique el estado y los detalles de un pago que ha procesado.
+    pt_BR: Verifique o status e os detalhes de um pagamento que você processou.
+    ko_KR: 처리한 결제의 상태와 세부 정보를 확인합니다.
   llm: This tool retrieves the details of a specific payment charge including its
     status, amount, and other transaction information.
 parameters:
@@ -16,11 +26,21 @@ parameters:
   type: string
   required: true
   label:
-    en_US: Charge ID
-    zh_Hans: 支付 ID
+    en_US: Payment ID
+    zh_Hans: 付款 ID
+    ja_JP: 支払い ID
+    fr_FR: ID de paiement
+    es_ES: ID de pago
+    pt_BR: ID do pagamento
+    ko_KR: 결제 ID
   human_description:
-    en_US: The ID of the charge to retrieve
-    zh_Hans: 要检索的支付 ID
+    en_US: The ID you received when you processed the payment
+    zh_Hans: 处理付款时收到的 ID
+    ja_JP: 支払い処理時に受け取ったID
+    fr_FR: L'ID reçu lors du traitement du paiement
+    es_ES: El ID que recibió cuando procesó el pago
+    pt_BR: O ID que você recebeu ao processar o pagamento
+    ko_KR: 결제 처리 시 받은 ID
   llm_description: The unique identifier of the charge returned by create_charge
   form: form
 output_schema:

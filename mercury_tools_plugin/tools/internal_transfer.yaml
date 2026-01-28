@@ -4,10 +4,20 @@ identity:
   label:
     en_US: Internal Transfer
     zh_Hans: 内部转账
+    ja_JP: 内部振替
+    fr_FR: Virement interne
+    es_ES: Transferencia interna
+    pt_BR: Transferência interna
+    ko_KR: 내부 이체
 description:
   human:
-    en_US: Create an internal transfer between two Mercury accounts within the same organization.
-    zh_Hans: 在同一组织的两个 Mercury 账户之间创建内部转账。
+    en_US: Create an instant internal transfer between two Mercury accounts within the same organization.
+    zh_Hans: 在同一组织的两个 Mercury 账户之间创建即时内部转账。
+    ja_JP: 同一組織内の2つの Mercury 口座間で即時内部振替を作成。
+    fr_FR: Créer un virement interne instantané entre deux comptes Mercury de la même organisation.
+    es_ES: Crear una transferencia interna instantánea entre dos cuentas Mercury de la misma organización.
+    pt_BR: Criar uma transferência interna instantânea entre duas contas Mercury da mesma organização.
+    ko_KR: 같은 조직 내 두 Mercury 계좌 간 즉시 내부 이체를 생성합니다.
   llm: Create an internal fund transfer between two Mercury bank accounts owned by the same organization. This is instant and does not require approval.
 parameters:
   - name: from_account_id
@@ -16,9 +26,19 @@ parameters:
     label:
       en_US: From Account ID
       zh_Hans: 源账户 ID
+      ja_JP: 送金元口座 ID
+      fr_FR: ID du compte source
+      es_ES: ID de cuenta origen
+      pt_BR: ID da conta de origem
+      ko_KR: 출금 계좌 ID
     human_description:
       en_US: The Mercury account ID to transfer from
       zh_Hans: 转出的 Mercury 账户 ID
+      ja_JP: 送金元の Mercury 口座 ID
+      fr_FR: L'ID du compte Mercury source
+      es_ES: ID de la cuenta Mercury de origen
+      pt_BR: ID da conta Mercury de origem
+      ko_KR: 출금할 Mercury 계좌 ID
     llm_description: The source Mercury account ID (starts with 'acc_' or 'account_')
     form: llm
 
@@ -28,9 +48,19 @@ parameters:
     label:
       en_US: To Account ID
       zh_Hans: 目标账户 ID
+      ja_JP: 送金先口座 ID
+      fr_FR: ID du compte destination
+      es_ES: ID de cuenta destino
+      pt_BR: ID da conta de destino
+      ko_KR: 입금 계좌 ID
     human_description:
       en_US: The Mercury account ID to transfer to
       zh_Hans: 转入的 Mercury 账户 ID
+      ja_JP: 送金先の Mercury 口座 ID
+      fr_FR: L'ID du compte Mercury destination
+      es_ES: ID de la cuenta Mercury de destino
+      pt_BR: ID da conta Mercury de destino
+      ko_KR: 입금할 Mercury 계좌 ID
     llm_description: The destination Mercury account ID (starts with 'acc_' or 'account_')
     form: llm
 
@@ -40,9 +70,19 @@ parameters:
     label:
       en_US: Amount
       zh_Hans: 金额
+      ja_JP: 金額
+      fr_FR: Montant
+      es_ES: Monto
+      pt_BR: Valor
+      ko_KR: 금액
     human_description:
-      en_US: Amount to transfer (positive number)
-      zh_Hans: 转账金额（正数）
+      en_US: Amount to transfer (positive number in USD)
+      zh_Hans: 转账金额（正数，美元）
+      ja_JP: 振替金額（正の数、USD）
+      fr_FR: Montant à transférer (nombre positif en USD)
+      es_ES: Monto a transferir (número positivo en USD)
+      pt_BR: Valor a transferir (número positivo em USD)
+      ko_KR: 이체 금액 (양수, USD)
     llm_description: The amount to transfer in USD (must be positive)
     form: llm
 
@@ -52,9 +92,19 @@ parameters:
     label:
       en_US: Note
       zh_Hans: 备注
+      ja_JP: メモ
+      fr_FR: Note
+      es_ES: Nota
+      pt_BR: Nota
+      ko_KR: 메모
     human_description:
       en_US: Internal note for the transfer
       zh_Hans: 转账的内部备注
+      ja_JP: 振替の内部メモ
+      fr_FR: Note interne pour le virement
+      es_ES: Nota interna para la transferencia
+      pt_BR: Nota interna para a transferência
+      ko_KR: 이체에 대한 내부 메모
     llm_description: Optional internal note for the transfer
     form: llm
 
@@ -64,9 +114,19 @@ parameters:
     label:
       en_US: Idempotency Key
       zh_Hans: 幂等键
+      ja_JP: べき等キー
+      fr_FR: Clé d'idempotence
+      es_ES: Clave de idempotencia
+      pt_BR: Chave de idempotência
+      ko_KR: 멱등성 키
     human_description:
       en_US: Unique key to prevent duplicate transfers
       zh_Hans: 防止重复转账的唯一键
+      ja_JP: 重複振替を防ぐ一意のキー
+      fr_FR: Clé unique pour éviter les virements en double
+      es_ES: Clave única para evitar transferencias duplicadas
+      pt_BR: Chave única para evitar transferências duplicadas
+      ko_KR: 중복 이체 방지를 위한 고유 키
     llm_description: Optional unique key for request deduplication
     form: form
 

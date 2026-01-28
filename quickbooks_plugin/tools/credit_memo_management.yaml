@@ -2,17 +2,24 @@ identity:
   name: credit_memo_management
   author: petrus
   label:
-    en_US: Credit Memo Management
-    zh_Hans: 贷项通知单管理
-  human_description:
-    en_US: Credit Memo Management
-    zh_Hans: 贷项通知单管理
+    en_US: Manage Credit Memos
+    zh_Hans: 管理贷项通知单
+    ja_JP: クレジットメモ管理
+    fr_FR: Gérer avoirs
+    es_ES: Gestionar notas de crédito
+    pt_BR: Gerenciar notas de crédito
+    ko_KR: 크레딧 메모 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, or delete credit memos (refunds/credits)
-    zh_Hans: 创建、读取或删除贷项通知单（退款/贷记）
+    en_US: Issue credit to a customer's account. Use when a customer overpaid, returned items, or deserves a discount on a future purchase.
+    zh_Hans: 向客户账户发放贷记。当客户多付款、退货或应获得未来购买折扣时使用。
+    ja_JP: 顧客のアカウントにクレジットを発行。過払い、返品、または将来の購入への割引が必要な場合に使用。
+    fr_FR: Émettez un crédit sur le compte d'un client. Utilisez en cas de trop-perçu, retour d'articles ou remise sur un achat futur.
+    es_ES: Emita crédito a la cuenta de un cliente. Use cuando un cliente pagó de más, devolvió artículos o merece un descuento en una compra futura.
+    pt_BR: Emita crédito para a conta de um cliente. Use quando o cliente pagou a mais, devolveu itens ou merece desconto em uma compra futura.
+    ko_KR: 고객 계정에 크레딧을 발급합니다. 고객이 초과 지불했거나, 상품을 반품했거나, 향후 구매에서 할인을 받아야 할 때 사용하세요.
   llm: A tool to manage credit memos in QuickBooks - for issuing credits or refunds to customers
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, delete, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Credit Memo
-          zh_Hans: 创建贷项通知单
-        human_description:
-          en_US: Create Credit Memo
-          zh_Hans: 创建贷项通知单
+          en_US: Issue Credit
+          zh_Hans: 发放贷记
+          ja_JP: クレジットを発行
+          fr_FR: Émettre avoir
+          es_ES: Emitir crédito
+          pt_BR: Emitir crédito
+          ko_KR: 크레딧 발급
       - value: read
         label:
-          en_US: Read Credit Memo
-          zh_Hans: 读取贷项通知单
-        human_description:
-          en_US: Read Credit Memo
-          zh_Hans: 读取贷项通知单
+          en_US: View Credit Memo
+          zh_Hans: 查看贷项通知单
+          ja_JP: クレジットメモを表示
+          fr_FR: Voir avoir
+          es_ES: Ver nota de crédito
+          pt_BR: Ver nota de crédito
+          ko_KR: 크레딧 메모 보기
       - value: delete
         label:
           en_US: Delete Credit Memo
           zh_Hans: 删除贷项通知单
-        human_description:
-          en_US: Delete Credit Memo
-          zh_Hans: 删除贷项通知单
+          ja_JP: クレジットメモを削除
+          fr_FR: Supprimer avoir
+          es_ES: Eliminar nota de crédito
+          pt_BR: Excluir nota de crédito
+          ko_KR: 크레딧 메모 삭제
       - value: query
         label:
-          en_US: Query Credit Memos
-          zh_Hans: 查询贷项通知单
-
-        human_description:
-          en_US: Query Credit Memos
-          zh_Hans: 查询贷项通知单
+          en_US: Search Credit Memos
+          zh_Hans: 搜索贷项通知单
+          ja_JP: クレジットメモを検索
+          fr_FR: Rechercher avoirs
+          es_ES: Buscar notas de crédito
+          pt_BR: Pesquisar notas de crédito
+          ko_KR: 크레딧 메모 검색
   - name: credit_memo_id
     type: string
     required: false

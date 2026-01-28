@@ -2,17 +2,24 @@ identity:
   name: sales_receipt_management
   author: petrus
   label:
-    en_US: Sales Receipt Management
-    zh_Hans: 销售收据管理
-  human_description:
-    en_US: Sales Receipt Management
-    zh_Hans: 销售收据管理
+    en_US: Manage Sales Receipts
+    zh_Hans: 管理销售收据
+    ja_JP: 売上レシート管理
+    fr_FR: Gérer tickets de caisse
+    es_ES: Gestionar recibos de venta
+    pt_BR: Gerenciar recibos de venda
+    ko_KR: 판매 영수증 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, or delete sales receipts
-    zh_Hans: 创建、读取或删除销售收据
+    en_US: Record sales where you received payment immediately (cash, credit card at time of sale). No invoice needed.
+    zh_Hans: 记录立即收到付款的销售（销售时的现金、信用卡）。无需发票。
+    ja_JP: 即時支払いの売上を記録（販売時の現金、クレジットカード）。請求書不要。
+    fr_FR: Enregistrez les ventes avec paiement immédiat (espèces, carte au moment de la vente). Pas de facture nécessaire.
+    es_ES: Registre ventas con pago inmediato (efectivo, tarjeta al momento de la venta). No necesita factura.
+    pt_BR: Registre vendas com pagamento imediato (dinheiro, cartão no momento da venda). Sem necessidade de fatura.
+    ko_KR: 즉시 결제를 받은 판매를 기록합니다 (판매 시점의 현금, 신용카드). 청구서가 필요 없습니다.
   llm: A tool to manage sales receipts in QuickBooks - for immediate payment sales
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, delete, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Sales Receipt
-          zh_Hans: 创建销售收据
-        human_description:
-          en_US: Create Sales Receipt
-          zh_Hans: 创建销售收据
+          en_US: Record Sale
+          zh_Hans: 记录销售
+          ja_JP: 売上を記録
+          fr_FR: Enregistrer vente
+          es_ES: Registrar venta
+          pt_BR: Registrar venda
+          ko_KR: 판매 기록
       - value: read
         label:
-          en_US: Read Sales Receipt
-          zh_Hans: 读取销售收据
-        human_description:
-          en_US: Read Sales Receipt
-          zh_Hans: 读取销售收据
+          en_US: View Receipt
+          zh_Hans: 查看收据
+          ja_JP: レシートを表示
+          fr_FR: Voir ticket
+          es_ES: Ver recibo
+          pt_BR: Ver recibo
+          ko_KR: 영수증 보기
       - value: delete
         label:
-          en_US: Delete Sales Receipt
-          zh_Hans: 删除销售收据
-        human_description:
-          en_US: Delete Sales Receipt
-          zh_Hans: 删除销售收据
+          en_US: Delete Receipt
+          zh_Hans: 删除收据
+          ja_JP: レシートを削除
+          fr_FR: Supprimer ticket
+          es_ES: Eliminar recibo
+          pt_BR: Excluir recibo
+          ko_KR: 영수증 삭제
       - value: query
         label:
-          en_US: Query Sales Receipts
-          zh_Hans: 查询销售收据
-
-        human_description:
-          en_US: Query Sales Receipts
-          zh_Hans: 查询销售收据
+          en_US: Search Receipts
+          zh_Hans: 搜索收据
+          ja_JP: レシートを検索
+          fr_FR: Rechercher tickets
+          es_ES: Buscar recibos
+          pt_BR: Pesquisar recibos
+          ko_KR: 영수증 검색
   - name: sales_receipt_id
     type: string
     required: false

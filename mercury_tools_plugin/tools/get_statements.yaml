@@ -3,13 +3,23 @@ identity:
   author: petrus
   label:
     en_US: Get Statements
-    zh_Hans: 获取账单列表
+    zh_Hans: 获取月度账单
+    ja_JP: 明細書を取得
+    fr_FR: Obtenir les relevés
+    es_ES: Obtener extractos
+    pt_BR: Obter extratos
+    ko_KR: 명세서 조회
   icon: icon.svg
 
 description:
   human:
-    en_US: Retrieve monthly statements for Mercury bank accounts
-    zh_Hans: 获取 Mercury 银行账户的月度账单列表
+    en_US: Retrieve monthly bank statements for Mercury accounts. Use Download Statement to get the PDF.
+    zh_Hans: '获取 Mercury 账户的月度银行账单。使用"下载账单"获取 PDF 文件。'
+    ja_JP: Mercury 口座の月次銀行明細書を取得。PDF は「明細書ダウンロード」で取得。
+    fr_FR: Récupérer les relevés bancaires mensuels des comptes Mercury. Utilisez Télécharger le relevé pour le PDF.
+    es_ES: Obtener extractos bancarios mensuales de cuentas Mercury. Use Descargar extracto para el PDF.
+    pt_BR: Obter extratos bancários mensais das contas Mercury. Use Baixar extrato para o PDF.
+    ko_KR: Mercury 계좌의 월별 은행 명세서를 조회합니다. PDF는 '명세서 다운로드'를 사용하세요.
   llm: A tool to retrieve monthly account statements for Mercury bank accounts. If account_id is not provided, fetches statements for all accounts.
 
 parameters:
@@ -19,9 +29,19 @@ parameters:
     label:
       en_US: Account ID
       zh_Hans: 账户 ID
+      ja_JP: 口座 ID
+      fr_FR: ID du compte
+      es_ES: ID de cuenta
+      pt_BR: ID da conta
+      ko_KR: 계좌 ID
     human_description:
       en_US: The Mercury account ID to get statements for. If not provided, fetches statements for all accounts.
       zh_Hans: 要获取账单的 Mercury 账户 ID。如果不提供，将获取所有账户的账单。
+      ja_JP: 明細書を取得する Mercury 口座 ID。未指定の場合、全口座の明細書を取得。
+      fr_FR: L'ID du compte Mercury pour obtenir les relevés. Si non fourni, récupère les relevés de tous les comptes.
+      es_ES: ID de la cuenta Mercury para obtener extractos. Si no se proporciona, obtiene extractos de todas las cuentas.
+      pt_BR: ID da conta Mercury para obter extratos. Se não fornecido, obtém extratos de todas as contas.
+      ko_KR: 명세서를 조회할 Mercury 계좌 ID. 미입력 시 모든 계좌의 명세서를 조회합니다.
     llm_description: The UUID of the Mercury account to retrieve statements for. If not provided, fetches statements for all accounts.
     form: llm
 

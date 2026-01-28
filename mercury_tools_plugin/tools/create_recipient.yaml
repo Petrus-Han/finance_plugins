@@ -2,12 +2,22 @@ identity:
   name: create_recipient
   author: alai-sudo
   label:
-    en_US: Create Recipient
-    zh_Hans: 创建收款人
+    en_US: Add New Recipient
+    zh_Hans: 添加新收款人
+    ja_JP: 新規受取人を追加
+    fr_FR: Ajouter un bénéficiaire
+    es_ES: Agregar beneficiario
+    pt_BR: Adicionar beneficiário
+    ko_KR: 새 수취인 추가
 description:
   human:
-    en_US: Create a new payment recipient in Mercury for sending payments.
-    zh_Hans: 在 Mercury 中创建新的付款收款人以发送付款。
+    en_US: Add a new person or company to your Mercury contacts for sending payments via bank transfer, wire, or check.
+    zh_Hans: 将新的个人或公司添加到您的 Mercury 联系人中，以便通过银行转账、电汇或支票付款。
+    ja_JP: 銀行振込、電信送金、小切手で支払うために、新しい個人または会社を Mercury 連絡先に追加。
+    fr_FR: Ajoutez une nouvelle personne ou entreprise à vos contacts Mercury pour envoyer des paiements par virement, transfert télégraphique ou chèque.
+    es_ES: Agregue una nueva persona o empresa a sus contactos Mercury para enviar pagos por transferencia bancaria, transferencia telegráfica o cheque.
+    pt_BR: Adicione uma nova pessoa ou empresa aos seus contatos Mercury para enviar pagamentos via transferência bancária, transferência eletrônica ou cheque.
+    ko_KR: 은행 이체, 전신 송금 또는 수표로 결제하기 위해 Mercury 연락처에 새로운 개인 또는 회사를 추가합니다.
   llm: Creates a new recipient (payee) that can receive payments. Requires name and payment method details.
 parameters:
   - name: name
@@ -16,9 +26,19 @@ parameters:
     label:
       en_US: Recipient Name
       zh_Hans: 收款人名称
+      ja_JP: 受取人名
+      fr_FR: Nom du bénéficiaire
+      es_ES: Nombre del beneficiario
+      pt_BR: Nome do beneficiário
+      ko_KR: 수취인 이름
     human_description:
-      en_US: Name of the recipient (person or company)
-      zh_Hans: 收款人名称（个人或公司）
+      en_US: Enter the name of the person or company
+      zh_Hans: 输入个人或公司名称
+      ja_JP: 個人または会社名を入力
+      fr_FR: Entrez le nom de la personne ou de l'entreprise
+      es_ES: Ingrese el nombre de la persona o empresa
+      pt_BR: Digite o nome da pessoa ou empresa
+      ko_KR: 개인 또는 회사 이름을 입력하세요
     llm_description: The display name for this recipient
     form: llm
 
@@ -29,33 +49,68 @@ parameters:
     label:
       en_US: Payment Method
       zh_Hans: 付款方式
+      ja_JP: 支払方法
+      fr_FR: Mode de paiement
+      es_ES: Método de pago
+      pt_BR: Método de pagamento
+      ko_KR: 결제 방법
     human_description:
-      en_US: How to pay this recipient
-      zh_Hans: 如何向该收款人付款
+      en_US: Choose how you'll pay this recipient
+      zh_Hans: 选择向该收款人付款的方式
+      ja_JP: この受取人への支払方法を選択
+      fr_FR: Choisissez comment vous paierez ce bénéficiaire
+      es_ES: Elija cómo pagará a este beneficiario
+      pt_BR: Escolha como você pagará este beneficiário
+      ko_KR: 이 수취인에게 결제할 방법을 선택하세요
     options:
       - value: ach
         label:
-          en_US: ACH Transfer
-          zh_Hans: ACH 转账
+          en_US: Bank Transfer (ACH)
+          zh_Hans: 银行转账 (ACH)
+          ja_JP: 銀行振込 (ACH)
+          fr_FR: Virement bancaire (ACH)
+          es_ES: Transferencia bancaria (ACH)
+          pt_BR: Transferência bancária (ACH)
+          ko_KR: 은행 이체 (ACH)
       - value: wire
         label:
           en_US: Wire Transfer
           zh_Hans: 电汇
+          ja_JP: 電信送金
+          fr_FR: Virement télégraphique
+          es_ES: Transferencia telegráfica
+          pt_BR: Transferência eletrônica
+          ko_KR: 전신 송금
       - value: check
         label:
-          en_US: Check
-          zh_Hans: 支票
+          en_US: Check (Mailed)
+          zh_Hans: 支票（邮寄）
+          ja_JP: 小切手（郵送）
+          fr_FR: Chèque (envoyé par courrier)
+          es_ES: Cheque (enviado por correo)
+          pt_BR: Cheque (enviado pelo correio)
+          ko_KR: 수표 (우편 발송)
     form: form
 
   - name: account_number
     type: string
     required: false
     label:
-      en_US: Account Number
-      zh_Hans: 账户号码
+      en_US: Bank Account Number
+      zh_Hans: 银行账号
+      ja_JP: 銀行口座番号
+      fr_FR: Numéro de compte bancaire
+      es_ES: Número de cuenta bancaria
+      pt_BR: Número da conta bancária
+      ko_KR: 은행 계좌번호
     human_description:
-      en_US: Bank account number (required for ACH/wire)
-      zh_Hans: 银行账户号码（ACH/电汇必填）
+      en_US: Recipient's bank account number (required for bank transfer or wire)
+      zh_Hans: 收款人的银行账号（银行转账或电汇必填）
+      ja_JP: 受取人の銀行口座番号（銀行振込または電信送金に必要）
+      fr_FR: Numéro de compte bancaire du bénéficiaire (requis pour virement bancaire ou télégraphique)
+      es_ES: Número de cuenta bancaria del beneficiario (requerido para transferencia bancaria o telegráfica)
+      pt_BR: Número da conta bancária do beneficiário (necessário para transferência bancária ou eletrônica)
+      ko_KR: 수취인의 은행 계좌번호 (은행 이체 또는 전신 송금 시 필수)
     llm_description: The bank account number for electronic payments
     form: llm
 
@@ -64,10 +119,20 @@ parameters:
     required: false
     label:
       en_US: Routing Number
-      zh_Hans: 路由号码
+      zh_Hans: 银行代码
+      ja_JP: ルーティング番号
+      fr_FR: Numéro de routage
+      es_ES: Número de ruta
+      pt_BR: Número de roteamento
+      ko_KR: 라우팅 번호
     human_description:
-      en_US: ABA routing number (required for ACH/wire)
-      zh_Hans: ABA 路由号码（ACH/电汇必填）
+      en_US: 9-digit bank routing number (required for bank transfer or wire)
+      zh_Hans: 9 位银行代码（银行转账或电汇必填）
+      ja_JP: 9 桁の銀行ルーティング番号（銀行振込または電信送金に必要）
+      fr_FR: Numéro de routage bancaire à 9 chiffres (requis pour virement bancaire ou télégraphique)
+      es_ES: Número de ruta bancaria de 9 dígitos (requerido para transferencia bancaria o telegráfica)
+      pt_BR: Número de roteamento bancário de 9 dígitos (necessário para transferência bancária ou eletrônica)
+      ko_KR: 9자리 은행 라우팅 번호 (은행 이체 또는 전신 송금 시 필수)
     llm_description: The 9-digit ABA routing number
     form: llm
 
@@ -78,29 +143,59 @@ parameters:
     label:
       en_US: Account Type
       zh_Hans: 账户类型
+      ja_JP: 口座種類
+      fr_FR: Type de compte
+      es_ES: Tipo de cuenta
+      pt_BR: Tipo de conta
+      ko_KR: 계좌 유형
     human_description:
-      en_US: Type of bank account
-      zh_Hans: 银行账户类型
+      en_US: Type of recipient's bank account
+      zh_Hans: 收款人的银行账户类型
+      ja_JP: 受取人の銀行口座の種類
+      fr_FR: Type de compte bancaire du bénéficiaire
+      es_ES: Tipo de cuenta bancaria del beneficiario
+      pt_BR: Tipo de conta bancária do beneficiário
+      ko_KR: 수취인의 은행 계좌 유형
     options:
       - value: checking
         label:
-          en_US: Checking
+          en_US: Checking Account
           zh_Hans: 支票账户
+          ja_JP: 当座預金
+          fr_FR: Compte courant
+          es_ES: Cuenta corriente
+          pt_BR: Conta corrente
+          ko_KR: 당좌 계좌
       - value: savings
         label:
-          en_US: Savings
+          en_US: Savings Account
           zh_Hans: 储蓄账户
+          ja_JP: 普通預金
+          fr_FR: Compte d'épargne
+          es_ES: Cuenta de ahorro
+          pt_BR: Conta poupança
+          ko_KR: 저축 계좌
     form: form
 
   - name: email
     type: string
     required: false
     label:
-      en_US: Email
-      zh_Hans: 电子邮件
+      en_US: Email Address
+      zh_Hans: 电子邮箱
+      ja_JP: メールアドレス
+      fr_FR: Adresse e-mail
+      es_ES: Correo electrónico
+      pt_BR: Endereço de e-mail
+      ko_KR: 이메일 주소
     human_description:
-      en_US: Contact email for the recipient
-      zh_Hans: 收款人的联系邮箱
+      en_US: Recipient's email for payment notifications
+      zh_Hans: 收款人的邮箱，用于接收付款通知
+      ja_JP: 支払い通知用の受取人のメールアドレス
+      fr_FR: E-mail du bénéficiaire pour les notifications de paiement
+      es_ES: Correo electrónico del beneficiario para notificaciones de pago
+      pt_BR: E-mail do beneficiário para notificações de pagamento
+      ko_KR: 결제 알림을 받을 수취인의 이메일
     llm_description: Email address for payment notifications
     form: llm
 
@@ -110,9 +205,19 @@ parameters:
     label:
       en_US: Street Address
       zh_Hans: 街道地址
+      ja_JP: 住所
+      fr_FR: Adresse
+      es_ES: Dirección
+      pt_BR: Endereço
+      ko_KR: 도로명 주소
     human_description:
-      en_US: Street address (required for check payments)
-      zh_Hans: 街道地址（支票付款必填）
+      en_US: Street address (required if paying by check)
+      zh_Hans: 街道地址（支票付款时必填）
+      ja_JP: 住所（小切手払いの場合は必須）
+      fr_FR: Adresse (requise pour paiement par chèque)
+      es_ES: Dirección (requerida para pago con cheque)
+      pt_BR: Endereço (necessário para pagamento por cheque)
+      ko_KR: 도로명 주소 (수표 결제 시 필수)
     form: llm
 
   - name: city
@@ -121,31 +226,61 @@ parameters:
     label:
       en_US: City
       zh_Hans: 城市
+      ja_JP: 市区町村
+      fr_FR: Ville
+      es_ES: Ciudad
+      pt_BR: Cidade
+      ko_KR: 도시
     human_description:
-      en_US: City (required for check payments)
-      zh_Hans: 城市（支票付款必填）
+      en_US: City (required if paying by check)
+      zh_Hans: 城市（支票付款时必填）
+      ja_JP: 市区町村（小切手払いの場合は必須）
+      fr_FR: Ville (requise pour paiement par chèque)
+      es_ES: Ciudad (requerida para pago con cheque)
+      pt_BR: Cidade (necessária para pagamento por cheque)
+      ko_KR: 도시 (수표 결제 시 필수)
     form: llm
 
   - name: region
     type: string
     required: false
     label:
-      en_US: State/Region
-      zh_Hans: 州/地区
+      en_US: State
+      zh_Hans: 州/省
+      ja_JP: 都道府県
+      fr_FR: État/Région
+      es_ES: Estado
+      pt_BR: Estado
+      ko_KR: 주/도
     human_description:
-      en_US: State or region code (e.g., CA, NY)
-      zh_Hans: 州或地区代码（如 CA, NY）
+      en_US: State or region (e.g., CA, NY, TX)
+      zh_Hans: 州或省份（如 CA, NY）
+      ja_JP: "都道府県（例：CA, NY）"
+      fr_FR: État ou région (ex. CA, NY)
+      es_ES: Estado o región (ej. CA, NY)
+      pt_BR: Estado ou região (ex. CA, NY)
+      ko_KR: "주 또는 지역 (예: CA, NY)"
     form: llm
 
   - name: postal_code
     type: string
     required: false
     label:
-      en_US: Postal Code
+      en_US: ZIP Code
       zh_Hans: 邮政编码
+      ja_JP: 郵便番号
+      fr_FR: Code postal
+      es_ES: Código postal
+      pt_BR: CEP
+      ko_KR: 우편번호
     human_description:
       en_US: ZIP or postal code
-      zh_Hans: ZIP 或邮政编码
+      zh_Hans: 邮政编码
+      ja_JP: 郵便番号
+      fr_FR: Code postal
+      es_ES: Código postal
+      pt_BR: CEP
+      ko_KR: 우편번호
     form: llm
 
   - name: country
@@ -155,9 +290,19 @@ parameters:
     label:
       en_US: Country
       zh_Hans: 国家
+      ja_JP: 国
+      fr_FR: Pays
+      es_ES: País
+      pt_BR: País
+      ko_KR: 국가
     human_description:
-      en_US: Country code (ISO 3166-1, default US)
-      zh_Hans: 国家代码（ISO 3166-1，默认 US）
+      en_US: "Country (default: United States)"
+      zh_Hans: 国家（默认：美国）
+      ja_JP: 国（デフォルト：米国）
+      fr_FR: "Pays (par défaut : États-Unis)"
+      es_ES: "País (predeterminado: Estados Unidos)"
+      pt_BR: "País (padrão: Estados Unidos)"
+      ko_KR: "국가 (기본값: 미국)"
     form: form
 
 output_schema:

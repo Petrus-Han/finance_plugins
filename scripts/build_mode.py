@@ -36,10 +36,16 @@ LABEL_PATTERN = re.compile(
 )
 
 
+def get_indent_level(line: str) -> int:
+    """Get the indentation level of a line (number of leading spaces)."""
+    return len(line) - len(line.lstrip())
+
+
 def process_file(file_path: Path, mode: str) -> tuple[bool, str]:
     """
     Process a YAML file to add/remove [DEBUG] suffix from labels.
-    Uses regex replacement to preserve original formatting.
+    Only modifies the top-level 'label:' block in manifest.yaml,
+    not nested labels in credentials_schema, help, etc.
 
     Returns (changed, message) tuple.
     """
@@ -53,47 +59,63 @@ def process_file(file_path: Path, mode: str) -> tuple[bool, str]:
     new_lines = []
     changed = False
     in_label_block = False
+    label_block_indent = -1  # Track the indentation of the 'label:' line
 
     for line in lines:
-        # Detect if we're entering a label block
         stripped = line.strip()
-        if stripped.startswith("label:"):
+        current_indent = get_indent_level(line)
+
+        # Detect if we're entering a label block
+        if stripped.startswith("label:") and not stripped.startswith("labels:"):
             in_label_block = True
+            label_block_indent = current_indent
             new_lines.append(line)
             continue
 
-        # Detect if we're exiting a label block (non-indented line after label:)
-        if in_label_block and stripped and not line.startswith(" ") and not line.startswith("\t"):
-            in_label_block = False
+        # Detect if we're exiting a label block
+        # Exit when we see a non-empty line at the same or lower indent level
+        if in_label_block and stripped:
+            if current_indent <= label_block_indent:
+                in_label_block = False
+                label_block_indent = -1
 
-        # Process label lines
+        # Process label lines - only direct children of 'label:' block
         if in_label_block:
-            match = LABEL_PATTERN.match(line)
-            if match:
-                indent = match.group(1)
-                lang = match.group(2)
-                label_text = match.group(3).strip()
-                has_debug = match.group(4) is not None
+            # Only process lines that are exactly one indent level deeper than 'label:'
+            expected_indent = label_block_indent + 2  # YAML typically uses 2-space indent
+            if current_indent == expected_indent:
+                match = LABEL_PATTERN.match(line)
+                if match:
+                    indent = match.group(1)
+                    lang = match.group(2)
+                    label_text = match.group(3).strip()
+                    has_debug = match.group(4) is not None
 
-                # Remove existing [DEBUG] from label text if present
-                if label_text.endswith("[DEBUG]"):
-                    label_text = label_text[:-7].strip()
+                    # Remove quotes if present (for consistency)
+                    if label_text.startswith('"') and label_text.endswith('"'):
+                        label_text = label_text[1:-1]
+                    elif label_text.startswith("'") and label_text.endswith("'"):
+                        label_text = label_text[1:-1]
 
-                if mode == "debug" and not has_debug:
-                    # Add [DEBUG]
-                    new_line = f"{indent}{lang}: {label_text} [DEBUG]"
-                    if new_line != line:
-                        changed = True
-                    new_lines.append(new_line)
-                elif mode == "release" and has_debug:
-                    # Remove [DEBUG]
-                    new_line = f"{indent}{lang}: {label_text}"
-                    if new_line != line:
-                        changed = True
-                    new_lines.append(new_line)
-                else:
-                    new_lines.append(line)
-                continue
+                    # Remove existing [DEBUG] from label text if present
+                    if label_text.endswith("[DEBUG]"):
+                        label_text = label_text[:-7].strip()
+
+                    if mode == "debug" and not has_debug:
+                        # Add [DEBUG]
+                        new_line = f"{indent}{lang}: {label_text} [DEBUG]"
+                        if new_line != line:
+                            changed = True
+                        new_lines.append(new_line)
+                    elif mode == "release" and has_debug:
+                        # Remove [DEBUG]
+                        new_line = f"{indent}{lang}: {label_text}"
+                        if new_line != line:
+                            changed = True
+                        new_lines.append(new_line)
+                    else:
+                        new_lines.append(line)
+                    continue
 
         new_lines.append(line)
 
@@ -142,6 +164,9 @@ def check_plugin_mode(plugin_name: str) -> str:
 def set_plugin_mode(plugin_name: str, mode: str) -> tuple[bool, list[str]]:
     """
     Set plugin mode (debug or release).
+    Only modifies manifest.yaml's top-level label to avoid cluttering
+    the UI with [DEBUG] tags on every label in the plugin.
+
     Returns (changed, messages) tuple.
     """
     plugin_dir = PROJECT_ROOT / plugin_name
@@ -149,20 +174,12 @@ def set_plugin_mode(plugin_name: str, mode: str) -> tuple[bool, list[str]]:
     messages = []
     any_changed = False
 
-    # Process manifest.yaml
+    # Only process manifest.yaml (top-level label only)
+    # Provider labels are not modified to keep the UI clean
     changed, msg = process_file(manifest_path, mode)
     messages.append(f"  manifest.yaml: {msg}")
     if changed:
         any_changed = True
-
-    # Process provider/*.yaml
-    provider_path = get_provider_yaml_path(plugin_dir)
-    if provider_path:
-        changed, msg = process_file(provider_path, mode)
-        rel_path = provider_path.relative_to(plugin_dir)
-        messages.append(f"  {rel_path}: {msg}")
-        if changed:
-            any_changed = True
 
     return any_changed, messages
 

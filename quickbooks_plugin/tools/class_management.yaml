@@ -2,17 +2,24 @@ identity:
   name: class_management
   author: petrus
   label:
-    en_US: Class Management
-    zh_Hans: 类别管理
-  human_description:
-    en_US: Class Management
-    zh_Hans: 类别管理
+    en_US: Manage Classes
+    zh_Hans: 管理业务类别
+    ja_JP: クラス管理
+    fr_FR: Gérer classes
+    es_ES: Gestionar clases
+    pt_BR: Gerenciar classes
+    ko_KR: 클래스 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, or query classes for tracking business segments
-    zh_Hans: 创建、读取、更新或查询用于跟踪业务分部的类别
+    en_US: Create categories to track income and expenses by business segment (e.g., by product line, service type, or project).
+    zh_Hans: 创建类别以按业务分部跟踪收入和支出（如按产品线、服务类型或项目）。
+    ja_JP: 事業セグメント別（製品ライン、サービスタイプ、プロジェクト別など）で収入と支出を追跡するカテゴリを作成。
+    fr_FR: Créez des catégories pour suivre les revenus et dépenses par segment (ex. ligne de produits, type de service, projet).
+    es_ES: Cree categorías para rastrear ingresos y gastos por segmento de negocio (ej., por línea de producto, tipo de servicio o proyecto).
+    pt_BR: Crie categorias para rastrear receitas e despesas por segmento de negócio (ex., por linha de produto, tipo de serviço ou projeto).
+    ko_KR: "비즈니스 세그먼트별로 수입과 지출을 추적하는 카테고리를 만듭니다 (예: 제품 라인, 서비스 유형 또는 프로젝트별)."
   llm: A tool to manage classes in QuickBooks for tracking different business segments
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, update, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Class
-          zh_Hans: 创建类别
-        human_description:
-          en_US: Create Class
-          zh_Hans: 创建类别
+          en_US: Add Class
+          zh_Hans: 添加类别
+          ja_JP: クラスを追加
+          fr_FR: Ajouter classe
+          es_ES: Agregar clase
+          pt_BR: Adicionar classe
+          ko_KR: 클래스 추가
       - value: read
         label:
-          en_US: Read Class
-          zh_Hans: 读取类别
-        human_description:
-          en_US: Read Class
-          zh_Hans: 读取类别
+          en_US: View Class
+          zh_Hans: 查看类别
+          ja_JP: クラスを表示
+          fr_FR: Voir classe
+          es_ES: Ver clase
+          pt_BR: Ver classe
+          ko_KR: 클래스 보기
       - value: update
         label:
-          en_US: Update Class
-          zh_Hans: 更新类别
-        human_description:
-          en_US: Update Class
-          zh_Hans: 更新类别
+          en_US: Edit Class
+          zh_Hans: 编辑类别
+          ja_JP: クラスを編集
+          fr_FR: Modifier classe
+          es_ES: Editar clase
+          pt_BR: Editar classe
+          ko_KR: 클래스 편집
       - value: query
         label:
-          en_US: Query Classes
-          zh_Hans: 查询类别
-
-        human_description:
-          en_US: Query Classes
-          zh_Hans: 查询类别
+          en_US: Search Classes
+          zh_Hans: 搜索类别
+          ja_JP: クラスを検索
+          fr_FR: Rechercher classes
+          es_ES: Buscar clases
+          pt_BR: Pesquisar classes
+          ko_KR: 클래스 검색
   - name: class_id
     type: string
     required: false

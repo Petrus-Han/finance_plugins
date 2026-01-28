@@ -4,12 +4,22 @@ identity:
   label:
     en_US: Download Invoice PDF
     zh_Hans: 下载发票 PDF
+    ja_JP: 請求書 PDF をダウンロード
+    fr_FR: Télécharger la facture PDF
+    es_ES: Descargar factura PDF
+    pt_BR: Baixar fatura PDF
+    ko_KR: 청구서 PDF 다운로드
   icon: icon.svg
 
 description:
   human:
-    en_US: Download an AR invoice as PDF
-    zh_Hans: 下载应收账款发票 PDF
+    en_US: Download an invoice as a PDF file for your records or to share with customers.
+    zh_Hans: 下载发票 PDF 文件，用于存档或分享给客户。
+    ja_JP: 記録用または顧客との共有用に請求書を PDF ファイルでダウンロード。
+    fr_FR: Téléchargez une facture au format PDF pour vos archives ou pour la partager avec les clients.
+    es_ES: Descargue una factura como archivo PDF para sus registros o para compartir con clientes.
+    pt_BR: Baixe uma fatura como arquivo PDF para seus registros ou para compartilhar com clientes.
+    ko_KR: 기록 보관 또는 고객과 공유하기 위해 청구서를 PDF 파일로 다운로드합니다.
   llm: A tool to download an AR invoice as a PDF file
 
 parameters:
@@ -17,11 +27,21 @@ parameters:
     type: string
     required: true
     label:
-      en_US: Invoice ID
-      zh_Hans: 发票 ID
+      en_US: Invoice
+      zh_Hans: 发票
+      ja_JP: 請求書
+      fr_FR: Facture
+      es_ES: Factura
+      pt_BR: Fatura
+      ko_KR: 청구서
     human_description:
-      en_US: The invoice ID to download
-      zh_Hans: 要下载的发票 ID
+      en_US: Select the invoice to download as PDF
+      zh_Hans: 选择要下载为 PDF 的发票
+      ja_JP: PDF としてダウンロードする請求書を選択
+      fr_FR: Sélectionnez la facture à télécharger en PDF
+      es_ES: Seleccione la factura a descargar como PDF
+      pt_BR: Selecione a fatura para baixar como PDF
+      ko_KR: PDF로 다운로드할 청구서를 선택하세요
     llm_description: The UUID of the invoice to download as PDF
     form: llm
 

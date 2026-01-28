@@ -2,14 +2,24 @@ identity:
   name: upload_recipient_attachment
   author: petrus
   label:
-    en_US: Upload Recipient Attachment
-    zh_Hans: 上传收款人附件
+    en_US: Attach File to Recipient
+    zh_Hans: 为收款人添加附件
+    ja_JP: 受取人にファイルを添付
+    fr_FR: Joindre un fichier au bénéficiaire
+    es_ES: Adjuntar archivo al beneficiario
+    pt_BR: Anexar arquivo ao beneficiário
+    ko_KR: 수취인에게 파일 첨부
   icon: icon.svg
 
 description:
   human:
-    en_US: Upload an attachment to a recipient
-    zh_Hans: 上传附件到收款人
+    en_US: Attach a W-9, contract, or other document to a recipient's profile for record-keeping.
+    zh_Hans: 将 W-9 表格、合同或其他文件附加到收款人资料中，便于记录保存。
+    ja_JP: 記録保管のために W-9、契約書、その他の書類を受取人のプロフィールに添付。
+    fr_FR: Joignez un W-9, un contrat ou un autre document au profil d'un bénéficiaire pour la tenue de registres.
+    es_ES: Adjunte un W-9, contrato u otro documento al perfil de un beneficiario para mantener registros.
+    pt_BR: Anexe um W-9, contrato ou outro documento ao perfil de um beneficiário para manter registros.
+    ko_KR: 기록 보관을 위해 W-9, 계약서 또는 기타 문서를 수취인 프로필에 첨부합니다.
   llm: A tool to upload a file attachment to a Mercury recipient for documentation purposes
 
 parameters:
@@ -17,11 +27,21 @@ parameters:
     type: string
     required: true
     label:
-      en_US: Recipient ID
-      zh_Hans: 收款人 ID
+      en_US: Recipient
+      zh_Hans: 收款人
+      ja_JP: 受取人
+      fr_FR: Bénéficiaire
+      es_ES: Beneficiario
+      pt_BR: Beneficiário
+      ko_KR: 수취인
     human_description:
-      en_US: The recipient ID to attach the file to
-      zh_Hans: 要附加文件的收款人 ID
+      en_US: Select the recipient to attach the file to
+      zh_Hans: 选择要附加文件的收款人
+      ja_JP: ファイルを添付する受取人を選択
+      fr_FR: Sélectionnez le bénéficiaire auquel joindre le fichier
+      es_ES: Seleccione el beneficiario al que adjuntar el archivo
+      pt_BR: Selecione o beneficiário para anexar o arquivo
+      ko_KR: 파일을 첨부할 수취인을 선택하세요
     llm_description: The UUID of the recipient to attach the file to
     form: llm
 
@@ -31,9 +51,19 @@ parameters:
     label:
       en_US: File
       zh_Hans: 文件
+      ja_JP: ファイル
+      fr_FR: Fichier
+      es_ES: Archivo
+      pt_BR: Arquivo
+      ko_KR: 파일
     human_description:
-      en_US: The file to upload
-      zh_Hans: 要上传的文件
+      en_US: Select the file to upload (PDF, image, etc.)
+      zh_Hans: 选择要上传的文件（PDF、图片等）
+      ja_JP: アップロードするファイルを選択（PDF、画像など）
+      fr_FR: Sélectionnez le fichier à téléverser (PDF, image, etc.)
+      es_ES: Seleccione el archivo a subir (PDF, imagen, etc.)
+      pt_BR: Selecione o arquivo para enviar (PDF, imagem, etc.)
+      ko_KR: 업로드할 파일을 선택하세요 (PDF, 이미지 등)
     llm_description: The file to upload as an attachment
     form: llm
 

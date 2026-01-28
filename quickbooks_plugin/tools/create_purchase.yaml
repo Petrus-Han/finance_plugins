@@ -2,17 +2,23 @@ identity:
   name: create_purchase
   author: petrus
   label:
-    en_US: Create Purchase
-    zh_Hans: 创建采购
-  human_description:
-    en_US: Create Purchase
-    zh_Hans: 创建采购
+    en_US: Record Expense
+    zh_Hans: 记录支出
+    ja_JP: 経費を記録
+    fr_FR: Enregistrer dépense
+    es_ES: Registrar gasto
+    pt_BR: Registrar despesa
+    ko_KR: 비용 기록
 description:
   human:
-    en_US: Record a new purchase (expense) in QuickBooks.
-    zh_Hans: 在 QuickBooks 中记录新的采购（费用）。
-  llm: Create a purchase transaction in QuickBooks to record business expenses paid
-    from a bank account to a vendor.
+    en_US: Record a business expense (purchase). Use this when you've paid for something with your business bank account or credit card.
+    zh_Hans: 记录业务支出（采购）。当您使用企业银行账户或信用卡付款时使用。
+    ja_JP: 事業経費（仕入れ）を記録。ビジネス銀行口座やクレジットカードで支払った時に使用。
+    fr_FR: Enregistrez une dépense professionnelle (achat). Utilisez ceci lorsque vous avez payé avec votre compte bancaire ou carte de crédit professionnel.
+    es_ES: Registre un gasto empresarial (compra). Use esto cuando haya pagado con su cuenta bancaria o tarjeta de crédito empresarial.
+    pt_BR: Registre uma despesa empresarial (compra). Use quando você pagou com sua conta bancária ou cartão de crédito empresarial.
+    ko_KR: 비즈니스 비용(구매)을 기록합니다. 사업용 은행 계좌나 신용카드로 결제했을 때 사용하세요.
+  llm: Create a purchase transaction in QuickBooks to record business expenses paid from a bank account to a vendor.
 extra:
   python:
     source: tools/create_purchase.py
@@ -22,22 +28,42 @@ parameters:
   type: string
   required: true
   label:
-    en_US: Bank Account ID
-    zh_Hans: 银行账户 ID
+    en_US: Payment Account
+    zh_Hans: 付款账户
+    ja_JP: 支払い口座
+    fr_FR: Compte de paiement
+    es_ES: Cuenta de pago
+    pt_BR: Conta de pagamento
+    ko_KR: 결제 계좌
   human_description:
-    en_US: The QuickBooks bank account ID
-    zh_Hans: QuickBooks 银行账户 ID
+    en_US: The bank account or credit card used for payment
+    zh_Hans: 用于付款的银行账户或信用卡
+    ja_JP: 支払いに使用した銀行口座またはクレジットカード
+    fr_FR: Le compte bancaire ou la carte de crédit utilisé pour le paiement
+    es_ES: La cuenta bancaria o tarjeta de crédito usada para el pago
+    pt_BR: A conta bancária ou cartão de crédito usado para pagamento
+    ko_KR: 결제에 사용된 은행 계좌 또는 신용카드
   llm_description: The QuickBooks account ID for the bank account used for payment
 - name: expense_account_id
   form: llm
   type: string
   required: true
   label:
-    en_US: Expense Account ID
-    zh_Hans: 费用账户 ID
+    en_US: Expense Category
+    zh_Hans: 费用类别
+    ja_JP: 経費カテゴリ
+    fr_FR: Catégorie de dépense
+    es_ES: Categoría de gasto
+    pt_BR: Categoria de despesa
+    ko_KR: 비용 카테고리
   human_description:
-    en_US: The QuickBooks expense account ID
-    zh_Hans: QuickBooks 费用账户 ID
+    en_US: What type of expense is this? (e.g., Office Supplies, Travel, Software)
+    zh_Hans: 这是什么类型的费用？（如：办公用品、差旅、软件）
+    ja_JP: "この経費の種類は？（例：事務用品、出張、ソフトウェア）"
+    fr_FR: Quel type de dépense ? (ex. Fournitures, Voyage, Logiciel)
+    es_ES: ¿Qué tipo de gasto es? (ej., Suministros, Viaje, Software)
+    pt_BR: Que tipo de despesa é? (ex., Suprimentos, Viagem, Software)
+    ko_KR: "어떤 유형의 비용입니까? (예: 사무용품, 출장, 소프트웨어)"
   llm_description: The QuickBooks account ID for the expense category
 - name: amount
   form: llm
@@ -46,31 +72,61 @@ parameters:
   label:
     en_US: Amount
     zh_Hans: 金额
+    ja_JP: 金額
+    fr_FR: Montant
+    es_ES: Monto
+    pt_BR: Valor
+    ko_KR: 금액
   human_description:
-    en_US: Purchase amount
-    zh_Hans: 采购金额
+    en_US: How much did you spend?
+    zh_Hans: 您花了多少钱？
+    ja_JP: いくら使いましたか？
+    fr_FR: Combien avez-vous dépensé ?
+    es_ES: ¿Cuánto gastó?
+    pt_BR: Quanto você gastou?
+    ko_KR: 얼마를 지출했습니까?
   llm_description: The purchase amount (positive number)
 - name: txn_date
   form: llm
   type: string
   required: false
   label:
-    en_US: Transaction Date
-    zh_Hans: 交易日期
+    en_US: Date
+    zh_Hans: 日期
+    ja_JP: 日付
+    fr_FR: Date
+    es_ES: Fecha
+    pt_BR: Data
+    ko_KR: 날짜
   human_description:
-    en_US: Transaction date (YYYY-MM-DD format)
-    zh_Hans: 交易日期（YYYY-MM-DD 格式）
+    en_US: When did this happen? (YYYY-MM-DD, defaults to today)
+    zh_Hans: 什么时候发生的？（YYYY-MM-DD，默认为今天）
+    ja_JP: いつ発生しましたか？（YYYY-MM-DD、デフォルトは今日）
+    fr_FR: Quand cela s'est-il produit ? (AAAA-MM-JJ, par défaut aujourd'hui)
+    es_ES: ¿Cuándo ocurrió? (AAAA-MM-DD, por defecto hoy)
+    pt_BR: Quando aconteceu? (AAAA-MM-DD, padrão é hoje)
+    ko_KR: 언제 발생했습니까? (YYYY-MM-DD, 기본값은 오늘)
   llm_description: Transaction date in YYYY-MM-DD format. Defaults to today.
 - name: vendor_id
   form: llm
   type: string
   required: false
   label:
-    en_US: Vendor ID
-    zh_Hans: 供应商 ID
+    en_US: Vendor
+    zh_Hans: 供应商
+    ja_JP: 取引先
+    fr_FR: Fournisseur
+    es_ES: Proveedor
+    pt_BR: Fornecedor
+    ko_KR: 공급업체
   human_description:
-    en_US: Optional vendor ID
-    zh_Hans: 可选的供应商 ID
+    en_US: Who did you pay? (optional)
+    zh_Hans: 您付款给谁？（可选）
+    ja_JP: 誰に支払いましたか？（オプション）
+    fr_FR: À qui avez-vous payé ? (optionnel)
+    es_ES: ¿A quién pagó? (opcional)
+    pt_BR: Para quem você pagou? (opcional)
+    ko_KR: 누구에게 지불했습니까? (선택사항)
   llm_description: QuickBooks vendor ID if this purchase is from a vendor
 - name: description
   form: llm
@@ -79,20 +135,40 @@ parameters:
   label:
     en_US: Description
     zh_Hans: 描述
+    ja_JP: 説明
+    fr_FR: Description
+    es_ES: Descripción
+    pt_BR: Descrição
+    ko_KR: 설명
   human_description:
-    en_US: Purchase description
-    zh_Hans: 采购描述
+    en_US: What was this purchase for?
+    zh_Hans: 这笔采购是用于什么？
+    ja_JP: この購入は何のため？
+    fr_FR: À quoi servait cet achat ?
+    es_ES: ¿Para qué fue esta compra?
+    pt_BR: Para que foi esta compra?
+    ko_KR: 이 구매는 무엇을 위한 것입니까?
   llm_description: Description of the purchase
 - name: note
   form: llm
   type: string
   required: false
   label:
-    en_US: Note
-    zh_Hans: 备注
-  human_description:
-    en_US: Private note
+    en_US: Private Note
     zh_Hans: 私人备注
+    ja_JP: 社内メモ
+    fr_FR: Note privée
+    es_ES: Nota privada
+    pt_BR: Nota privada
+    ko_KR: 비공개 메모
+  human_description:
+    en_US: Internal note (not visible to vendor)
+    zh_Hans: 内部备注（对供应商不可见）
+    ja_JP: 社内メモ（取引先には非表示）
+    fr_FR: Note interne (non visible par le fournisseur)
+    es_ES: Nota interna (no visible para el proveedor)
+    pt_BR: Nota interna (não visível para o fornecedor)
+    ko_KR: 내부 메모 (공급업체에 보이지 않음)
   llm_description: Internal note for this purchase
 - name: payment_type
   form: llm
@@ -100,11 +176,21 @@ parameters:
   required: false
   default: CreditCard
   label:
-    en_US: Payment Type
-    zh_Hans: 付款类型
+    en_US: Payment Method
+    zh_Hans: 付款方式
+    ja_JP: 支払い方法
+    fr_FR: Mode de paiement
+    es_ES: Método de pago
+    pt_BR: Forma de pagamento
+    ko_KR: 결제 방법
   human_description:
-    en_US: Payment type (Cash, Check, CreditCard)
-    zh_Hans: 付款类型（现金、支票、信用卡）
+    en_US: How did you pay? (Cash, Check, or CreditCard)
+    zh_Hans: 您如何付款？（现金、支票或信用卡）
+    ja_JP: 支払い方法は？（現金、小切手、クレジットカード）
+    fr_FR: Comment avez-vous payé ? (Espèces, Chèque ou Carte)
+    es_ES: ¿Cómo pagó? (Efectivo, Cheque o Tarjeta)
+    pt_BR: Como você pagou? (Dinheiro, Cheque ou Cartão)
+    ko_KR: 어떻게 결제했습니까? (현금, 수표 또는 신용카드)
   llm_description: Payment method (Cash, Check, or CreditCard)
 output_schema:
   type: object

@@ -2,18 +2,23 @@ identity:
   name: get_chart_of_accounts
   author: petrus
   label:
-    en_US: Get Chart of Accounts
-    zh_Hans: 获取会计科目表
-  human_description:
-    en_US: Get Chart of Accounts
-    zh_Hans: 获取会计科目表
+    en_US: View Account Categories
+    zh_Hans: 查看账户分类
+    ja_JP: 勘定科目を表示
+    fr_FR: Voir les catégories de comptes
+    es_ES: Ver categorías de cuentas
+    pt_BR: Ver categorias de contas
+    ko_KR: 계정 카테고리 보기
 description:
   human:
-    en_US: Fetch your QuickBooks Chart of Accounts, optionally filtered by type.
-    zh_Hans: 获取您的 QuickBooks 会计科目表，可选择按类型过滤。
-  llm: Retrieve the list of accounts from QuickBooks Chart of Accounts, including
-    account IDs, names, types, and status. Can be filtered by account type (e.g.,
-    Expense, Bank, Income).
+    en_US: View your accounting categories (Chart of Accounts) - bank accounts, expense categories, income sources, etc. Useful for setting up transactions.
+    zh_Hans: 查看您的会计分类（会计科目表）- 银行账户、费用类别、收入来源等。设置交易时很有用。
+    ja_JP: 会計カテゴリ（勘定科目表）を表示 - 銀行口座、経費カテゴリ、収入源など。取引設定に便利です。
+    fr_FR: Consultez vos catégories comptables (Plan comptable) - comptes bancaires, catégories de dépenses, sources de revenus, etc. Utile pour configurer les transactions.
+    es_ES: Vea sus categorías contables (Plan de cuentas) - cuentas bancarias, categorías de gastos, fuentes de ingresos, etc. Útil para configurar transacciones.
+    pt_BR: Veja suas categorias contábeis (Plano de contas) - contas bancárias, categorias de despesas, fontes de receita, etc. Útil para configurar transações.
+    ko_KR: 회계 카테고리(계정과목표) 보기 - 은행 계좌, 비용 카테고리, 수입원 등. 거래 설정에 유용합니다.
+  llm: Retrieve the list of accounts from QuickBooks Chart of Accounts, including account IDs, names, types, and status. Can be filtered by account type (e.g., Expense, Bank, Income).
 extra:
   python:
     source: tools/get_chart_of_accounts.py
@@ -23,13 +28,29 @@ parameters:
   type: string
   required: false
   label:
-    en_US: Account Type
-    zh_Hans: 科目类型
+    en_US: Category Type
+    zh_Hans: 分类类型
+    ja_JP: カテゴリタイプ
+    fr_FR: Type de catégorie
+    es_ES: Tipo de categoría
+    pt_BR: Tipo de categoria
+    ko_KR: 카테고리 유형
   human_description:
-    en_US: Filter by account type (e.g., Expense, Bank, Income)
-    zh_Hans: 按账户类型筛选（如：费用、银行、收入）
+    en_US: Filter by type - Bank, Expense, Income, etc. Leave empty to see all.
+    zh_Hans: 按类型筛选 - 银行、费用、收入等。留空查看全部。
+    ja_JP: タイプでフィルター - 銀行、経費、収入など。空欄ですべて表示。
+    fr_FR: Filtrer par type - Banque, Dépense, Revenu, etc. Laisser vide pour tout voir.
+    es_ES: Filtrar por tipo - Banco, Gasto, Ingreso, etc. Dejar vacío para ver todo.
+    pt_BR: Filtrar por tipo - Banco, Despesa, Receita, etc. Deixar vazio para ver tudo.
+    ko_KR: 유형별 필터 - 은행, 비용, 수입 등. 비워두면 전체 표시.
   placeholder:
     en_US: e.g., Expense, Bank, Income
+    zh_Hans: 如：Expense, Bank, Income
+    ja_JP: "例：Expense, Bank, Income"
+    fr_FR: ex. Expense, Bank, Income
+    es_ES: ej., Expense, Bank, Income
+    pt_BR: ex., Expense, Bank, Income
+    ko_KR: "예: Expense, Bank, Income"
 output_schema:
   type: object
   properties:

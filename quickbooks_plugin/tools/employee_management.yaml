@@ -2,17 +2,24 @@ identity:
   name: employee_management
   author: petrus
   label:
-    en_US: Employee Management
-    zh_Hans: 员工管理
-  human_description:
-    en_US: Employee Management
-    zh_Hans: 员工管理
+    en_US: Manage Employees
+    zh_Hans: 管理员工
+    ja_JP: 従業員管理
+    fr_FR: Gérer employés
+    es_ES: Gestionar empleados
+    pt_BR: Gerenciar funcionários
+    ko_KR: 직원 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update, or query employees
-    zh_Hans: 创建、读取、更新或查询员工
+    en_US: Add or update employee information. Employees can be assigned to transactions for tracking labor costs.
+    zh_Hans: 添加或更新员工信息。员工可以分配到交易中用于跟踪人工成本。
+    ja_JP: 従業員情報を追加・更新。従業員を取引に割り当てて人件費を追跡可能。
+    fr_FR: Ajoutez ou mettez à jour les informations des employés. Les employés peuvent être assignés aux transactions pour suivre les coûts de main-d'œuvre.
+    es_ES: Agregue o actualice información de empleados. Los empleados pueden asignarse a transacciones para rastrear costos laborales.
+    pt_BR: Adicione ou atualize informações de funcionários. Funcionários podem ser atribuídos a transações para rastrear custos de mão de obra.
+    ko_KR: 직원 정보를 추가하거나 업데이트합니다. 직원을 거래에 할당하여 인건비를 추적할 수 있습니다.
   llm: A tool to manage employees in QuickBooks
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, update, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Employee
-          zh_Hans: 创建员工
-        human_description:
-          en_US: Create Employee
-          zh_Hans: 创建员工
+          en_US: Add Employee
+          zh_Hans: 添加员工
+          ja_JP: 従業員を追加
+          fr_FR: Ajouter employé
+          es_ES: Agregar empleado
+          pt_BR: Adicionar funcionário
+          ko_KR: 직원 추가
       - value: read
         label:
-          en_US: Read Employee
-          zh_Hans: 读取员工
-        human_description:
-          en_US: Read Employee
-          zh_Hans: 读取员工
+          en_US: View Employee
+          zh_Hans: 查看员工
+          ja_JP: 従業員を表示
+          fr_FR: Voir employé
+          es_ES: Ver empleado
+          pt_BR: Ver funcionário
+          ko_KR: 직원 보기
       - value: update
         label:
-          en_US: Update Employee
-          zh_Hans: 更新员工
-        human_description:
-          en_US: Update Employee
-          zh_Hans: 更新员工
+          en_US: Edit Employee
+          zh_Hans: 编辑员工
+          ja_JP: 従業員を編集
+          fr_FR: Modifier employé
+          es_ES: Editar empleado
+          pt_BR: Editar funcionário
+          ko_KR: 직원 편집
       - value: query
         label:
-          en_US: Query Employees
-          zh_Hans: 查询员工
-
-        human_description:
-          en_US: Query Employees
-          zh_Hans: 查询员工
+          en_US: Search Employees
+          zh_Hans: 搜索员工
+          ja_JP: 従業員を検索
+          fr_FR: Rechercher employés
+          es_ES: Buscar empleados
+          pt_BR: Pesquisar funcionários
+          ko_KR: 직원 검색
   - name: employee_id
     type: string
     required: false

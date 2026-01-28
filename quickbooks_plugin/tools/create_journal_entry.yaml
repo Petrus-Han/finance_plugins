@@ -4,11 +4,21 @@ identity:
   label:
     en_US: Create Journal Entry
     zh_Hans: 创建日记账分录
+    ja_JP: 仕訳を作成
+    fr_FR: Créer écriture comptable
+    es_ES: Crear asiento contable
+    pt_BR: Criar lançamento contábil
+    ko_KR: 분개 작성
 
 description:
   human:
-    en_US: Create a new journal entry with debit and credit lines (supports up to 4 lines)
-    zh_Hans: 创建包含借方和贷方分录行的新日记账分录（最多支持4行）
+    en_US: Create a manual accounting entry with debit and credit lines. Use for adjustments, corrections, or transactions not covered by other tools. Debits must equal credits.
+    zh_Hans: 创建包含借方和贷方的手动会计分录。用于调整、更正或其他工具未涵盖的交易。借方必须等于贷方。
+    ja_JP: 借方と貸方の手動仕訳を作成。調整、訂正、または他のツールでカバーされない取引に使用。借方と貸方は一致する必要があります。
+    fr_FR: Créez une écriture comptable manuelle avec lignes de débit et crédit. Pour les ajustements, corrections ou transactions non couvertes par d'autres outils. Les débits doivent égaler les crédits.
+    es_ES: Cree un asiento contable manual con líneas de débito y crédito. Use para ajustes, correcciones o transacciones no cubiertas por otras herramientas. Los débitos deben igualar los créditos.
+    pt_BR: Crie um lançamento contábil manual com linhas de débito e crédito. Use para ajustes, correções ou transações não cobertas por outras ferramentas. Os débitos devem igualar os créditos.
+    ko_KR: 차변과 대변이 있는 수동 회계 분개를 작성합니다. 조정, 수정 또는 다른 도구에서 다루지 않는 거래에 사용하세요. 차변과 대변이 일치해야 합니다.
   llm: Create a journal entry in QuickBooks. Supports up to 4 lines. Total debits must equal total credits. Use get_chart_of_accounts to find account IDs first.
 
 parameters:

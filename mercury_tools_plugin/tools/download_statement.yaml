@@ -4,12 +4,22 @@ identity:
   label:
     en_US: Download Statement PDF
     zh_Hans: 下载账单 PDF
+    ja_JP: 明細書 PDF をダウンロード
+    fr_FR: Télécharger le relevé PDF
+    es_ES: Descargar extracto PDF
+    pt_BR: Baixar extrato PDF
+    ko_KR: 명세서 PDF 다운로드
   icon: icon.svg
 
 description:
   human:
-    en_US: Download a Mercury account statement as PDF
-    zh_Hans: 下载 Mercury 银行账单 PDF 文件
+    en_US: Download a monthly bank statement as a PDF file for your records or accounting.
+    zh_Hans: 下载月度银行账单 PDF 文件，用于存档或会计记录。
+    ja_JP: 記録または会計のために月次銀行明細書を PDF ファイルでダウンロード。
+    fr_FR: Téléchargez un relevé bancaire mensuel au format PDF pour vos archives ou votre comptabilité.
+    es_ES: Descargue un extracto bancario mensual como archivo PDF para sus registros o contabilidad.
+    pt_BR: Baixe um extrato bancário mensal como arquivo PDF para seus registros ou contabilidade.
+    ko_KR: 기록 또는 회계를 위해 월별 은행 명세서를 PDF 파일로 다운로드합니다.
   llm: A tool to download a Mercury bank account statement as a PDF file. Use the statement_id from get_statements tool.
 
 parameters:
@@ -17,11 +27,21 @@ parameters:
     type: string
     required: true
     label:
-      en_US: Statement ID
-      zh_Hans: 账单 ID
+      en_US: Statement
+      zh_Hans: 账单
+      ja_JP: 明細書
+      fr_FR: Relevé
+      es_ES: Extracto
+      pt_BR: Extrato
+      ko_KR: 명세서
     human_description:
-      en_US: The statement ID to download (from get_statements)
-      zh_Hans: 要下载的账单 ID（从获取账单列表获得）
+      en_US: 'Select the statement to download (use "Get Statements" first to see available statements)'
+      zh_Hans: '选择要下载的账单（请先使用"获取月度账单"查看可用账单）'
+      ja_JP: ダウンロードする明細書を選択（まず「明細書を取得」で利用可能な明細書を確認）
+      fr_FR: Sélectionnez le relevé à télécharger (utilisez d'abord « Obtenir les relevés » pour voir les relevés disponibles)
+      es_ES: 'Seleccione el extracto a descargar (use primero "Obtener extractos" para ver los extractos disponibles)'
+      pt_BR: 'Selecione o extrato para baixar (use primeiro "Obter extratos" para ver os extratos disponíveis)'
+      ko_KR: '다운로드할 명세서를 선택하세요 (먼저 "명세서 조회"를 사용하여 이용 가능한 명세서를 확인하세요)'
     llm_description: The UUID of the statement to download as PDF. Get this from the get_statements tool response.
     form: llm
 

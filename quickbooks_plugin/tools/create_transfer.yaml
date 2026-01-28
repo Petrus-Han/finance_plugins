@@ -2,38 +2,64 @@ identity:
   name: create_transfer
   author: alai-sudo
   label:
-    en_US: Create Transfer
-    zh_Hans: 创建转账
-  human_description:
-    en_US: Create Transfer
-    zh_Hans: 创建转账
+    en_US: Transfer Between Accounts
+    zh_Hans: 账户间转账
+    ja_JP: 口座間送金
+    fr_FR: Transfert entre comptes
+    es_ES: Transferir entre cuentas
+    pt_BR: Transferir entre contas
+    ko_KR: 계좌 간 이체
 description:
   human:
-    en_US: Create a transfer between two QuickBooks bank accounts.
-    zh_Hans: 在两个 QuickBooks 银行账户之间创建转账。
-  llm: Creates a transfer transaction to move money between bank accounts. Used for
-    internal account transfers.
+    en_US: Move money between your bank accounts. Use this to record transfers from checking to savings, or between any two accounts.
+    zh_Hans: 在银行账户之间转移资金。用于记录支票账户到储蓄账户或任意两个账户之间的转账。
+    ja_JP: 銀行口座間で資金を移動。普通預金から定期預金、または任意の2口座間の振替を記録。
+    fr_FR: Déplacez de l'argent entre vos comptes bancaires. Utilisez pour enregistrer les transferts entre comptes courant et épargne, ou entre deux comptes.
+    es_ES: Mueva dinero entre sus cuentas bancarias. Use para registrar transferencias de cuenta corriente a ahorros, o entre dos cuentas.
+    pt_BR: Mova dinheiro entre suas contas bancárias. Use para registrar transferências da conta corrente para poupança, ou entre quaisquer duas contas.
+    ko_KR: 은행 계좌 간에 돈을 이동합니다. 당좌예금에서 저축예금으로, 또는 두 계좌 간 이체를 기록할 때 사용하세요.
+  llm: Creates a transfer transaction to move money between bank accounts. Used for internal account transfers.
 parameters:
 - name: from_account_id
   type: string
   required: true
   label:
-    en_US: From Account ID
-    zh_Hans: 转出账户 ID
+    en_US: From Account
+    zh_Hans: 转出账户
+    ja_JP: 送金元口座
+    fr_FR: Depuis le compte
+    es_ES: Desde cuenta
+    pt_BR: Da conta
+    ko_KR: 출금 계좌
   human_description:
-    en_US: The source account ID
-    zh_Hans: 转出的账户 ID
+    en_US: Which account are you transferring money from?
+    zh_Hans: 您从哪个账户转出资金？
+    ja_JP: どの口座から送金しますか？
+    fr_FR: Depuis quel compte transférez-vous l'argent ?
+    es_ES: ¿De qué cuenta transfiere el dinero?
+    pt_BR: De qual conta você está transferindo o dinheiro?
+    ko_KR: 어느 계좌에서 이체합니까?
   llm_description: QuickBooks account ID for the source account
   form: llm
 - name: to_account_id
   type: string
   required: true
   label:
-    en_US: To Account ID
-    zh_Hans: 转入账户 ID
+    en_US: To Account
+    zh_Hans: 转入账户
+    ja_JP: 送金先口座
+    fr_FR: Vers le compte
+    es_ES: A cuenta
+    pt_BR: Para a conta
+    ko_KR: 입금 계좌
   human_description:
-    en_US: The destination account ID
-    zh_Hans: 转入的账户 ID
+    en_US: Which account are you transferring money to?
+    zh_Hans: 您将资金转入哪个账户？
+    ja_JP: どの口座に送金しますか？
+    fr_FR: Vers quel compte transférez-vous l'argent ?
+    es_ES: ¿A qué cuenta transfiere el dinero?
+    pt_BR: Para qual conta você está transferindo o dinheiro?
+    ko_KR: 어느 계좌로 이체합니까?
   llm_description: QuickBooks account ID for the destination account
   form: llm
 - name: amount
@@ -42,20 +68,40 @@ parameters:
   label:
     en_US: Amount
     zh_Hans: 金额
+    ja_JP: 金額
+    fr_FR: Montant
+    es_ES: Monto
+    pt_BR: Valor
+    ko_KR: 금액
   human_description:
-    en_US: Transfer amount
-    zh_Hans: 转账金额
+    en_US: How much are you transferring?
+    zh_Hans: 您要转账多少？
+    ja_JP: いくら送金しますか？
+    fr_FR: Combien transférez-vous ?
+    es_ES: ¿Cuánto está transfiriendo?
+    pt_BR: Quanto você está transferindo?
+    ko_KR: 얼마를 이체합니까?
   llm_description: Amount to transfer (positive number)
   form: llm
 - name: txn_date
   type: string
   required: false
   label:
-    en_US: Transaction Date
-    zh_Hans: 交易日期
+    en_US: Date
+    zh_Hans: 日期
+    ja_JP: 日付
+    fr_FR: Date
+    es_ES: Fecha
+    pt_BR: Data
+    ko_KR: 날짜
   human_description:
-    en_US: Date of the transfer (YYYY-MM-DD format, defaults to today)
-    zh_Hans: 转账日期（YYYY-MM-DD 格式，默认为今天）
+    en_US: When was the transfer made? (YYYY-MM-DD, defaults to today)
+    zh_Hans: 转账日期？（YYYY-MM-DD，默认为今天）
+    ja_JP: いつ送金しましたか？（YYYY-MM-DD、デフォルトは今日）
+    fr_FR: Quand le transfert a-t-il été effectué ? (AAAA-MM-JJ, par défaut aujourd'hui)
+    es_ES: ¿Cuándo se realizó la transferencia? (AAAA-MM-DD, por defecto hoy)
+    pt_BR: Quando a transferência foi feita? (AAAA-MM-DD, padrão é hoje)
+    ko_KR: 언제 이체했습니까? (YYYY-MM-DD, 기본값은 오늘)
   llm_description: Transaction date in YYYY-MM-DD format
   form: llm
 - name: note
@@ -64,9 +110,19 @@ parameters:
   label:
     en_US: Private Note
     zh_Hans: 私人备注
+    ja_JP: 社内メモ
+    fr_FR: Note privée
+    es_ES: Nota privada
+    pt_BR: Nota privada
+    ko_KR: 비공개 메모
   human_description:
-    en_US: Internal note for this transfer
-    zh_Hans: 此转账的内部备注
+    en_US: Internal note for your records
+    zh_Hans: 仅供内部记录的备注
+    ja_JP: 社内記録用のメモ
+    fr_FR: Note interne pour vos dossiers
+    es_ES: Nota interna para sus registros
+    pt_BR: Nota interna para seus registros
+    ko_KR: 내부 기록용 메모
   form: llm
 extra:
   python:

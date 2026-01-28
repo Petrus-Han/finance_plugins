@@ -2,13 +2,23 @@ identity:
   name: create_refund
   author: petrus
   label:
-    en_US: Create Refund
-    zh_Hans: 创建退款
+    en_US: Refund Payment
+    zh_Hans: 退款
+    ja_JP: 返金処理
+    fr_FR: Rembourser
+    es_ES: Reembolsar pago
+    pt_BR: Reembolsar pagamento
+    ko_KR: 환불 처리
   icon: icon.svg
 description:
   human:
-    en_US: Refund a previously captured payment charge.
-    zh_Hans: 退款之前已捕获的支付。
+    en_US: Return money to a customer for a payment you've already processed. You can refund the full amount or just part of it.
+    zh_Hans: 将已处理付款的金额退还给客户。您可以全额退款或部分退款。
+    ja_JP: 処理済みの支払いについて、顧客にお金を返金します。全額または一部を返金できます。
+    fr_FR: Retournez de l'argent à un client pour un paiement déjà traité. Remboursement total ou partiel possible.
+    es_ES: Devuelva dinero a un cliente por un pago ya procesado. Puede reembolsar el monto total o solo una parte.
+    pt_BR: Devolva dinheiro a um cliente por um pagamento já processado. Você pode reembolsar o valor total ou apenas parte dele.
+    ko_KR: 이미 처리한 결제에 대해 고객에게 돈을 돌려줍니다. 전액 또는 일부만 환불할 수 있습니다.
   llm: This tool creates a refund for a previously captured charge. You can refund
     the full amount or a partial amount.
 parameters:
@@ -16,11 +26,21 @@ parameters:
   type: string
   required: true
   label:
-    en_US: Charge ID
-    zh_Hans: 支付 ID
+    en_US: Original Payment ID
+    zh_Hans: 原付款 ID
+    ja_JP: 元の支払いID
+    fr_FR: ID du paiement original
+    es_ES: ID del pago original
+    pt_BR: ID do pagamento original
+    ko_KR: 원래 결제 ID
   human_description:
-    en_US: The ID of the charge to refund
-    zh_Hans: 要退款的支付 ID
+    en_US: The ID of the payment you want to refund
+    zh_Hans: 您要退款的付款 ID
+    ja_JP: 返金したい支払いのID
+    fr_FR: L'ID du paiement que vous souhaitez rembourser
+    es_ES: El ID del pago que desea reembolsar
+    pt_BR: O ID do pagamento que você deseja reembolsar
+    ko_KR: 환불하려는 결제의 ID
   llm_description: The unique identifier of the charge to refund
   form: form
 - name: amount
@@ -29,9 +49,19 @@ parameters:
   label:
     en_US: Refund Amount
     zh_Hans: 退款金额
+    ja_JP: 返金金額
+    fr_FR: Montant du remboursement
+    es_ES: Monto a reembolsar
+    pt_BR: Valor do reembolso
+    ko_KR: 환불 금액
   human_description:
-    en_US: Amount to refund (leave empty for full refund)
-    zh_Hans: 退款金额（留空则全额退款）
+    en_US: How much to refund. Leave empty to refund the full amount.
+    zh_Hans: 退款金额。留空则全额退款。
+    ja_JP: 返金する金額。空のままで全額返金。
+    fr_FR: Montant à rembourser. Laissez vide pour un remboursement total.
+    es_ES: Cuánto reembolsar. Deje vacío para el monto total.
+    pt_BR: Quanto reembolsar. Deixe vazio para o valor total.
+    ko_KR: 환불할 금액. 전액 환불하려면 비워 두세요.
   llm_description: The amount to refund as a decimal string. Leave empty to refund
     the full charge amount.
   form: form
@@ -39,11 +69,21 @@ parameters:
   type: string
   required: false
   label:
-    en_US: Description
-    zh_Hans: 描述
+    en_US: Reason for Refund
+    zh_Hans: 退款原因
+    ja_JP: 返金理由
+    fr_FR: Motif du remboursement
+    es_ES: Motivo del reembolso
+    pt_BR: Motivo do reembolso
+    ko_KR: 환불 사유
   human_description:
-    en_US: Optional reason for the refund
-    zh_Hans: 可选的退款原因
+    en_US: Why are you issuing this refund? (optional)
+    zh_Hans: 您为什么要退款？（可选）
+    ja_JP: 返金の理由は？（オプション）
+    fr_FR: Pourquoi effectuez-vous ce remboursement ? (optionnel)
+    es_ES: ¿Por qué emite este reembolso? (opcional)
+    pt_BR: Por que você está emitindo este reembolso? (opcional)
+    ko_KR: 환불하는 이유가 무엇입니까? (선택사항)
   llm_description: Optional description or reason for this refund
   form: form
 output_schema:

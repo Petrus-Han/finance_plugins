@@ -2,14 +2,24 @@ identity:
   name: get_events
   author: petrus
   label:
-    en_US: Get Events (Polling)
-    zh_Hans: 获取事件（轮询）
+    en_US: Get Activity Log
+    zh_Hans: 获取活动日志
+    ja_JP: アクティビティログを取得
+    fr_FR: Obtenir le journal d'activité
+    es_ES: Obtener registro de actividad
+    pt_BR: Obter registro de atividades
+    ko_KR: 활동 로그 조회
   icon: icon.svg
 
 description:
   human:
-    en_US: Retrieve events tracking changes to Mercury resources. Supports cursor pagination and time-based filtering for polling mode.
-    zh_Hans: 获取追踪 Mercury 资源变更的事件。支持游标分页和时间过滤，适用于轮询模式。
+    en_US: View a log of recent changes to your transactions (created, updated, deleted). Useful for syncing with accounting systems.
+    zh_Hans: 查看交易的最近变更日志（创建、更新、删除）。适合与会计系统同步。
+    ja_JP: 取引の最近の変更ログ（作成、更新、削除）を表示。会計システムとの同期に便利。
+    fr_FR: Voir un journal des modifications récentes de vos transactions. Utile pour la synchronisation avec les systèmes comptables.
+    es_ES: Ver un registro de cambios recientes en sus transacciones. Útil para sincronizar con sistemas contables.
+    pt_BR: Ver um registro de alterações recentes em suas transações. Útil para sincronização com sistemas contábeis.
+    ko_KR: 거래의 최근 변경 로그(생성, 수정, 삭제)를 봅니다. 회계 시스템과 동기화에 유용합니다.
   llm: A tool to retrieve audit events showing how Mercury resources (transactions, etc.) have changed over time. Events are retained for 90 days. Supports cursor pagination (start_after/end_before) and time range filtering (start_time/end_time) for incremental polling.
 
 parameters:
@@ -19,9 +29,19 @@ parameters:
     label:
       en_US: Event ID
       zh_Hans: 事件 ID
+      ja_JP: イベント ID
+      fr_FR: ID de l'événement
+      es_ES: ID del evento
+      pt_BR: ID do evento
+      ko_KR: 이벤트 ID
     human_description:
-      en_US: Specific event ID to retrieve (optional, leave empty for list mode)
-      zh_Hans: 要获取的特定事件 ID（可选，留空进入列表模式）
+      en_US: Look up a specific event by ID (leave empty to see all recent events)
+      zh_Hans: 按 ID 查找特定事件（留空查看所有最近事件）
+      ja_JP: 特定のイベントを ID で検索（空のままで最近のイベントを全て表示）
+      fr_FR: Rechercher un événement spécifique par ID (laisser vide pour voir tous les événements récents)
+      es_ES: Buscar un evento específico por ID (dejar vacío para ver todos los eventos recientes)
+      pt_BR: Pesquisar um evento específico por ID (deixar vazio para ver todos os eventos recentes)
+      ko_KR: ID로 특정 이벤트 조회 (비워두면 모든 최근 이벤트 표시)
     llm_description: Optional event ID to retrieve a specific event. If not provided, returns events list with filtering.
     form: llm
 
@@ -29,11 +49,21 @@ parameters:
     type: select
     required: false
     label:
-      en_US: Resource Type
-      zh_Hans: 资源类型
+      en_US: Type
+      zh_Hans: 类型
+      ja_JP: 種類
+      fr_FR: Type
+      es_ES: Tipo
+      pt_BR: Tipo
+      ko_KR: 유형
     human_description:
-      en_US: Filter by resource type
+      en_US: Filter by type of resource
       zh_Hans: 按资源类型筛选
+      ja_JP: リソースの種類でフィルター
+      fr_FR: Filtrer par type de ressource
+      es_ES: Filtrar por tipo de recurso
+      pt_BR: Filtrar por tipo de recurso
+      ko_KR: 리소스 유형으로 필터링
     llm_description: Filter events by resource type (e.g., transaction)
     form: llm
     options:
@@ -41,41 +71,81 @@ parameters:
         label:
           en_US: Transaction
           zh_Hans: 交易
+          ja_JP: 取引
+          fr_FR: Transaction
+          es_ES: Transacción
+          pt_BR: Transação
+          ko_KR: 거래
 
   - name: event_type
     type: select
     required: false
     label:
-      en_US: Event Type
-      zh_Hans: 事件类型
+      en_US: Change Type
+      zh_Hans: 变更类型
+      ja_JP: 変更タイプ
+      fr_FR: Type de changement
+      es_ES: Tipo de cambio
+      pt_BR: Tipo de alteração
+      ko_KR: 변경 유형
     human_description:
-      en_US: Filter by event type (e.g., transaction.created)
-      zh_Hans: 按事件类型筛选（如 transaction.created）
+      en_US: Filter by what happened (created, updated, or deleted)
+      zh_Hans: 按发生的操作筛选（创建、更新或删除）
+      ja_JP: 発生した操作でフィルター（作成、更新、削除）
+      fr_FR: Filtrer par action (créé, mis à jour ou supprimé)
+      es_ES: Filtrar por acción (creado, actualizado o eliminado)
+      pt_BR: Filtrar por ação (criado, atualizado ou excluído)
+      ko_KR: 발생한 작업으로 필터링 (생성, 수정, 삭제)
     llm_description: Filter by specific event type
     form: llm
     options:
       - value: transaction.created
         label:
-          en_US: Transaction Created
-          zh_Hans: 交易创建
+          en_US: New Transactions
+          zh_Hans: 新建交易
+          ja_JP: 新規取引
+          fr_FR: Nouvelles transactions
+          es_ES: Nuevas transacciones
+          pt_BR: Novas transações
+          ko_KR: 새 거래
       - value: transaction.updated
         label:
-          en_US: Transaction Updated
+          en_US: Updated Transactions
           zh_Hans: 交易更新
+          ja_JP: 更新された取引
+          fr_FR: Transactions mises à jour
+          es_ES: Transacciones actualizadas
+          pt_BR: Transações atualizadas
+          ko_KR: 수정된 거래
       - value: transaction.deleted
         label:
-          en_US: Transaction Deleted
-          zh_Hans: 交易删除
+          en_US: Deleted Transactions
+          zh_Hans: 删除的交易
+          ja_JP: 削除された取引
+          fr_FR: Transactions supprimées
+          es_ES: Transacciones eliminadas
+          pt_BR: Transações excluídas
+          ko_KR: 삭제된 거래
 
   - name: start_time
     type: string
     required: false
     label:
-      en_US: Start Time
-      zh_Hans: 开始时间
+      en_US: From Date
+      zh_Hans: 开始日期
+      ja_JP: 開始日
+      fr_FR: Date de début
+      es_ES: Desde fecha
+      pt_BR: Data inicial
+      ko_KR: 시작 날짜
     human_description:
-      en_US: Start timestamp in ISO 8601 format (e.g., 2025-01-01T00:00:00Z)
-      zh_Hans: ISO 8601 格式的开始时间戳（如 2025-01-01T00:00:00Z）
+      en_US: "Show events from this date/time (format 2026-01-01T00:00:00Z)"
+      zh_Hans: "显示此日期/时间之后的事件（格式 2026-01-01T00:00:00Z）"
+      ja_JP: "この日時以降のイベントを表示（形式 2026-01-01T00:00:00Z）"
+      fr_FR: "Afficher les événements à partir de cette date/heure (format 2026-01-01T00:00:00Z)"
+      es_ES: "Mostrar eventos desde esta fecha/hora (formato 2026-01-01T00:00:00Z)"
+      pt_BR: "Mostrar eventos a partir desta data/hora (formato 2026-01-01T00:00:00Z)"
+      ko_KR: "이 날짜/시간 이후의 이벤트 표시 (형식 2026-01-01T00:00:00Z)"
     llm_description: Start timestamp (ISO 8601) for filtering events by time range
     form: llm
 
@@ -83,11 +153,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: End Time
-      zh_Hans: 结束时间
+      en_US: To Date
+      zh_Hans: 结束日期
+      ja_JP: 終了日
+      fr_FR: Date de fin
+      es_ES: Hasta fecha
+      pt_BR: Data final
+      ko_KR: 종료 날짜
     human_description:
-      en_US: End timestamp in ISO 8601 format (e.g., 2025-01-31T23:59:59Z)
-      zh_Hans: ISO 8601 格式的结束时间戳（如 2025-01-31T23:59:59Z）
+      en_US: "Show events up to this date/time (format 2026-01-31T23:59:59Z)"
+      zh_Hans: "显示到此日期/时间为止的事件（格式 2026-01-31T23:59:59Z）"
+      ja_JP: "この日時までのイベントを表示（形式 2026-01-31T23:59:59Z）"
+      fr_FR: "Afficher les événements jusqu'à cette date/heure (format 2026-01-31T23:59:59Z)"
+      es_ES: "Mostrar eventos hasta esta fecha/hora (formato 2026-01-31T23:59:59Z)"
+      pt_BR: "Mostrar eventos até esta data/hora (formato 2026-01-31T23:59:59Z)"
+      ko_KR: "이 날짜/시간까지의 이벤트 표시 (형식 2026-01-31T23:59:59Z)"
     llm_description: End timestamp (ISO 8601) for filtering events by time range
     form: llm
 
@@ -95,11 +175,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: Start After (Cursor)
-      zh_Hans: 游标起点
+      en_US: Continue From
+      zh_Hans: 继续位置
+      ja_JP: 続きから
+      fr_FR: Continuer depuis
+      es_ES: Continuar desde
+      pt_BR: Continuar de
+      ko_KR: 계속 위치
     human_description:
-      en_US: Cursor for forward pagination - use next_cursor from previous response
-      zh_Hans: 向前分页的游标 - 使用上次响应的 next_cursor
+      en_US: Continue from where you left off (use the next_cursor from previous results)
+      zh_Hans: 从上次中断处继续（使用上次结果中的 next_cursor）
+      ja_JP: 前回の続きから取得（前回の結果の next_cursor を使用）
+      fr_FR: Continuer là où vous vous êtes arrêté (utilisez next_cursor des résultats précédents)
+      es_ES: Continuar desde donde lo dejó (use next_cursor de los resultados anteriores)
+      pt_BR: Continuar de onde parou (use next_cursor dos resultados anteriores)
+      ko_KR: 중단한 곳에서 계속 (이전 결과의 next_cursor 사용)
     llm_description: Cursor from previous response (next_cursor) for forward pagination in polling mode
     form: llm
 
@@ -107,11 +197,21 @@ parameters:
     type: string
     required: false
     label:
-      en_US: End Before (Cursor)
-      zh_Hans: 游标终点
+      en_US: Go Back To
+      zh_Hans: 返回位置
+      ja_JP: 戻る位置
+      fr_FR: Revenir à
+      es_ES: Volver a
+      pt_BR: Voltar para
+      ko_KR: 돌아갈 위치
     human_description:
-      en_US: Cursor for backward pagination
-      zh_Hans: 向后分页的游标
+      en_US: Go back to earlier events (for backward navigation)
+      zh_Hans: 返回到更早的事件（用于向后浏览）
+      ja_JP: 以前のイベントに戻る（逆方向のナビゲーション用）
+      fr_FR: Revenir aux événements précédents (pour la navigation arrière)
+      es_ES: Volver a eventos anteriores (para navegación hacia atrás)
+      pt_BR: Voltar a eventos anteriores (para navegação para trás)
+      ko_KR: 이전 이벤트로 돌아가기 (역방향 탐색용)
     llm_description: Cursor for backward pagination
     form: llm
 
@@ -120,11 +220,21 @@ parameters:
     required: false
     default: 50
     label:
-      en_US: Limit
-      zh_Hans: 限制数量
+      en_US: How Many
+      zh_Hans: 数量
+      ja_JP: 件数
+      fr_FR: Combien
+      es_ES: Cuántos
+      pt_BR: Quantos
+      ko_KR: 개수
     human_description:
-      en_US: Maximum number of events to return (default 50, max 100)
-      zh_Hans: 返回的最大事件数量（默认 50，最大 100）
+      en_US: Number of events to show (default 50, maximum 100)
+      zh_Hans: 显示的事件数量（默认 50，最大 100）
+      ja_JP: 表示するイベント数（デフォルト 50、最大 100）
+      fr_FR: Nombre d'événements à afficher (défaut 50, maximum 100)
+      es_ES: Número de eventos a mostrar (predeterminado 50, máximo 100)
+      pt_BR: Número de eventos a mostrar (padrão 50, máximo 100)
+      ko_KR: 표시할 이벤트 수 (기본 50, 최대 100)
     llm_description: Maximum number of events to return per page (default 50)
     form: llm
 

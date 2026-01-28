@@ -2,17 +2,24 @@ identity:
   name: item_management
   author: petrus
   label:
-    en_US: Item Management
-    zh_Hans: 商品/服务管理
-  human_description:
-    en_US: Item Management
-    zh_Hans: 商品/服务管理
+    en_US: Manage Products & Services
+    zh_Hans: 管理产品和服务
+    ja_JP: 製品・サービス管理
+    fr_FR: Gérer produits et services
+    es_ES: Gestionar productos y servicios
+    pt_BR: Gerenciar produtos e serviços
+    ko_KR: 제품 및 서비스 관리
   icon: icon.svg
 
 description:
   human:
-    en_US: Create, read, update items (products, services, inventory)
-    zh_Hans: 创建、读取、更新商品（产品、服务、库存）
+    en_US: Add or edit the products and services you sell. Set prices, track inventory, and organize items by category.
+    zh_Hans: 添加或编辑您销售的产品和服务。设置价格、追踪库存并按类别组织商品。
+    ja_JP: 販売する製品やサービスを追加・編集。価格設定、在庫追跡、カテゴリ別整理が可能。
+    fr_FR: Ajoutez ou modifiez les produits et services que vous vendez. Définissez les prix, suivez l'inventaire et organisez par catégorie.
+    es_ES: Agregue o edite los productos y servicios que vende. Establezca precios, rastree inventario y organice por categoría.
+    pt_BR: Adicione ou edite os produtos e serviços que você vende. Defina preços, rastreie estoque e organize por categoria.
+    ko_KR: 판매하는 제품 및 서비스를 추가하거나 편집합니다. 가격 설정, 재고 추적 및 카테고리별 정리가 가능합니다.
   llm: A tool to manage items in QuickBooks - products, services, inventory, and categories
 
 parameters:
@@ -20,43 +27,60 @@ parameters:
     type: select
     required: true
     label:
-      en_US: Operation
+      en_US: Action
       zh_Hans: 操作
+      ja_JP: 操作
+      fr_FR: Action
+      es_ES: Acción
+      pt_BR: Ação
+      ko_KR: 작업
     human_description:
-      en_US: Operation
-      zh_Hans: 操作
+      en_US: What would you like to do?
+      zh_Hans: 您想做什么？
+      ja_JP: 何をしますか？
+      fr_FR: Que souhaitez-vous faire ?
+      es_ES: ¿Qué le gustaría hacer?
+      pt_BR: O que você gostaria de fazer?
+      ko_KR: 무엇을 하시겠습니까?
     llm_description: "Operation type: create, read, update, or query"
     form: llm
     options:
       - value: create
         label:
-          en_US: Create Item
-          zh_Hans: 创建商品
-        human_description:
-          en_US: Create Item
-          zh_Hans: 创建商品
+          en_US: Add Item
+          zh_Hans: 添加商品
+          ja_JP: 商品を追加
+          fr_FR: Ajouter article
+          es_ES: Agregar artículo
+          pt_BR: Adicionar item
+          ko_KR: 항목 추가
       - value: read
         label:
-          en_US: Read Item
-          zh_Hans: 读取商品
-        human_description:
-          en_US: Read Item
-          zh_Hans: 读取商品
+          en_US: View Item
+          zh_Hans: 查看商品
+          ja_JP: 商品を表示
+          fr_FR: Voir article
+          es_ES: Ver artículo
+          pt_BR: Ver item
+          ko_KR: 항목 보기
       - value: update
         label:
-          en_US: Update Item
-          zh_Hans: 更新商品
-        human_description:
-          en_US: Update Item
-          zh_Hans: 更新商品
+          en_US: Edit Item
+          zh_Hans: 编辑商品
+          ja_JP: 商品を編集
+          fr_FR: Modifier article
+          es_ES: Editar artículo
+          pt_BR: Editar item
+          ko_KR: 항목 편집
       - value: query
         label:
-          en_US: Query Items
-          zh_Hans: 查询商品
-
-        human_description:
-          en_US: Query Items
-          zh_Hans: 查询商品
+          en_US: Search Items
+          zh_Hans: 搜索商品
+          ja_JP: 商品を検索
+          fr_FR: Rechercher articles
+          es_ES: Buscar artículos
+          pt_BR: Pesquisar itens
+          ko_KR: 항목 검색
   - name: item_id
     type: string
     required: false

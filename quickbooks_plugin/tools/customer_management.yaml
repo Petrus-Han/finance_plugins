@@ -2,17 +2,23 @@ identity:
   name: customer_management
   author: alai-sudo
   label:
-    en_US: Customer Management
-    zh_Hans: 客户管理
-  human_description:
-    en_US: Customer Management
-    zh_Hans: 客户管理
+    en_US: Manage Customers
+    zh_Hans: 管理客户
+    ja_JP: 顧客を管理
+    fr_FR: Gérer les clients
+    es_ES: Gestionar clientes
+    pt_BR: Gerenciar clientes
+    ko_KR: 고객 관리
 description:
   human:
-    en_US: List, search, or create customers in QuickBooks Online.
-    zh_Hans: 在 QuickBooks Online 中列出、搜索或创建客户。
-  llm: Manages QuickBooks customers. Can list all customers, search by name, or create
-    new customers for tracking income sources.
+    en_US: View all customers, find a specific customer, or add new ones. Customers are people or businesses who pay you for goods or services.
+    zh_Hans: 查看所有客户、查找特定客户或添加新客户。客户是为您的商品或服务付款的个人或企业。
+    ja_JP: すべての顧客を表示、特定の顧客を検索、または新規追加。顧客は商品やサービスの代金を支払う個人や企業です。
+    fr_FR: Affichez tous les clients, trouvez un client spécifique ou ajoutez-en. Les clients sont des personnes ou entreprises qui vous paient pour des biens ou services.
+    es_ES: Vea todos los clientes, encuentre uno específico o agregue nuevos. Los clientes son personas o empresas que le pagan por bienes o servicios.
+    pt_BR: Veja todos os clientes, encontre um específico ou adicione novos. Clientes são pessoas ou empresas que pagam por seus bens ou serviços.
+    ko_KR: 모든 고객 보기, 특정 고객 찾기 또는 새 고객 추가. 고객은 상품이나 서비스 대가를 지불하는 개인 또는 기업입니다.
+  llm: Manages QuickBooks customers. Can list all customers, search by name, or create new customers for tracking income sources.
 parameters:
 - name: action
   type: select
@@ -20,41 +26,67 @@ parameters:
   label:
     en_US: Action
     zh_Hans: 操作
+    ja_JP: 操作
+    fr_FR: Action
+    es_ES: Acción
+    pt_BR: Ação
+    ko_KR: 작업
   human_description:
-    en_US: What operation to perform
-    zh_Hans: 要执行的操作
+    en_US: What would you like to do?
+    zh_Hans: 您想做什么？
+    ja_JP: 何をしますか？
+    fr_FR: Que souhaitez-vous faire ?
+    es_ES: ¿Qué le gustaría hacer?
+    pt_BR: O que você gostaria de fazer?
+    ko_KR: 무엇을 하시겠습니까?
   options:
   - value: list
     label:
-      en_US: List Customers
-      zh_Hans: 列出客户
-    human_description:
-      en_US: List Customers
-      zh_Hans: 列出客户
+      en_US: View All Customers
+      zh_Hans: 查看所有客户
+      ja_JP: 全顧客を表示
+      fr_FR: Voir tous les clients
+      es_ES: Ver todos los clientes
+      pt_BR: Ver todos os clientes
+      ko_KR: 모든 고객 보기
   - value: search
     label:
-      en_US: Search Customer
-      zh_Hans: 搜索客户
-    human_description:
-      en_US: Search Customer
-      zh_Hans: 搜索客户
+      en_US: Find Customer
+      zh_Hans: 查找客户
+      ja_JP: 顧客を検索
+      fr_FR: Rechercher client
+      es_ES: Buscar cliente
+      pt_BR: Buscar cliente
+      ko_KR: 고객 찾기
   - value: create
     label:
-      en_US: Create Customer
-      zh_Hans: 创建客户
-    human_description:
-      en_US: Create Customer
-      zh_Hans: 创建客户
+      en_US: Add New Customer
+      zh_Hans: 添加新客户
+      ja_JP: 新規顧客を追加
+      fr_FR: Ajouter client
+      es_ES: Agregar cliente
+      pt_BR: Adicionar cliente
+      ko_KR: 새 고객 추가
   form: form
 - name: display_name
   type: string
   required: false
   label:
-    en_US: Display Name
-    zh_Hans: 显示名称
+    en_US: Customer Name
+    zh_Hans: 客户名称
+    ja_JP: 顧客名
+    fr_FR: Nom du client
+    es_ES: Nombre del cliente
+    pt_BR: Nome do cliente
+    ko_KR: 고객 이름
   human_description:
-    en_US: Customer display name (required for create, used for search)
-    zh_Hans: 客户显示名称（创建时必填，搜索时使用）
+    en_US: Name to display (required when adding, used for search)
+    zh_Hans: 显示名称（添加时必填，搜索时使用）
+    ja_JP: 表示名（追加時必須、検索時使用）
+    fr_FR: Nom à afficher (requis pour l'ajout, utilisé pour la recherche)
+    es_ES: Nombre a mostrar (requerido al agregar, usado para buscar)
+    pt_BR: Nome a exibir (obrigatório ao adicionar, usado para busca)
+    ko_KR: 표시할 이름 (추가 시 필수, 검색에 사용)
   llm_description: The name to display for this customer
   form: llm
 - name: company_name
@@ -63,19 +95,39 @@ parameters:
   label:
     en_US: Company Name
     zh_Hans: 公司名称
+    ja_JP: 会社名
+    fr_FR: Nom de l'entreprise
+    es_ES: Nombre de empresa
+    pt_BR: Nome da empresa
+    ko_KR: 회사 이름
   human_description:
-    en_US: Company name (optional)
-    zh_Hans: 公司名称（可选）
+    en_US: Business name if applicable
+    zh_Hans: 企业名称（如适用）
+    ja_JP: 該当する場合は会社名
+    fr_FR: Nom de l'entreprise si applicable
+    es_ES: Nombre de la empresa si aplica
+    pt_BR: Nome da empresa se aplicável
+    ko_KR: 해당되는 경우 회사 이름
   form: llm
 - name: email
   type: string
   required: false
   label:
     en_US: Email
-    zh_Hans: 电子邮件
+    zh_Hans: 邮箱
+    ja_JP: メール
+    fr_FR: E-mail
+    es_ES: Correo electrónico
+    pt_BR: E-mail
+    ko_KR: 이메일
   human_description:
-    en_US: Primary email address
-    zh_Hans: 主要电子邮件地址
+    en_US: Customer's email address
+    zh_Hans: 客户的邮箱地址
+    ja_JP: 顧客のメールアドレス
+    fr_FR: Adresse e-mail du client
+    es_ES: Correo electrónico del cliente
+    pt_BR: Endereço de e-mail do cliente
+    ko_KR: 고객의 이메일 주소
   form: llm
 - name: phone
   type: string
@@ -83,9 +135,19 @@ parameters:
   label:
     en_US: Phone
     zh_Hans: 电话
+    ja_JP: 電話
+    fr_FR: Téléphone
+    es_ES: Teléfono
+    pt_BR: Telefone
+    ko_KR: 전화
   human_description:
-    en_US: Primary phone number
-    zh_Hans: 主要电话号码
+    en_US: Customer's phone number
+    zh_Hans: 客户的电话号码
+    ja_JP: 顧客の電話番号
+    fr_FR: Numéro de téléphone du client
+    es_ES: Número de teléfono del cliente
+    pt_BR: Número de telefone do cliente
+    ko_KR: 고객의 전화번호
   form: llm
 extra:
   python:

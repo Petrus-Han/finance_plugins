@@ -2,17 +2,23 @@ identity:
   name: vendor_management
   author: petrus
   label:
-    en_US: Vendor Management
-    zh_Hans: 供应商管理
-  human_description:
-    en_US: Vendor Management
-    zh_Hans: 供应商管理
+    en_US: Manage Vendors
+    zh_Hans: 管理供应商
+    ja_JP: 取引先を管理
+    fr_FR: Gérer les fournisseurs
+    es_ES: Gestionar proveedores
+    pt_BR: Gerenciar fornecedores
+    ko_KR: 공급업체 관리
 description:
   human:
-    en_US: Search or create vendors in QuickBooks.
-    zh_Hans: 在 QuickBooks 中搜索或创建供应商。
-  llm: Search for existing vendors in QuickBooks by name, or create a new vendor if
-    one doesn't exist. Returns vendor ID and details.
+    en_US: Search for existing vendors or add new ones. Vendors are businesses or people you pay for goods or services.
+    zh_Hans: 搜索现有供应商或添加新供应商。供应商是您为商品或服务付款的企业或个人。
+    ja_JP: 既存の取引先を検索または新規追加。取引先は商品やサービスの支払い先です。
+    fr_FR: Recherchez des fournisseurs existants ou ajoutez-en. Les fournisseurs sont des entreprises ou personnes que vous payez pour des biens ou services.
+    es_ES: Busque proveedores existentes o agregue nuevos. Los proveedores son empresas o personas a las que paga por bienes o servicios.
+    pt_BR: Pesquise fornecedores existentes ou adicione novos. Fornecedores são empresas ou pessoas que você paga por bens ou serviços.
+    ko_KR: 기존 공급업체를 검색하거나 새로 추가하세요. 공급업체는 상품이나 서비스 대가를 지불하는 기업 또는 개인입니다.
+  llm: Search for existing vendors in QuickBooks by name, or create a new vendor if one doesn't exist. Returns vendor ID and details.
 extra:
   python:
     source: tools/vendor_management.py
@@ -24,24 +30,38 @@ parameters:
   label:
     en_US: Action
     zh_Hans: 操作
+    ja_JP: 操作
+    fr_FR: Action
+    es_ES: Acción
+    pt_BR: Ação
+    ko_KR: 작업
   human_description:
-    en_US: What operation to perform (search or create)
-    zh_Hans: 要执行的操作（搜索或创建）
+    en_US: What would you like to do?
+    zh_Hans: 您想做什么？
+    ja_JP: 何をしますか？
+    fr_FR: Que souhaitez-vous faire ?
+    es_ES: ¿Qué le gustaría hacer?
+    pt_BR: O que você gostaria de fazer?
+    ko_KR: 무엇을 하시겠습니까?
   options:
   - value: search
     label:
-      en_US: Search
-      zh_Hans: 搜索
-    human_description:
-      en_US: Search
-      zh_Hans: 搜索
+      en_US: Find Vendor
+      zh_Hans: 查找供应商
+      ja_JP: 取引先を検索
+      fr_FR: Rechercher fournisseur
+      es_ES: Buscar proveedor
+      pt_BR: Buscar fornecedor
+      ko_KR: 공급업체 찾기
   - value: create
     label:
-      en_US: Create
-      zh_Hans: 创建
-    human_description:
-      en_US: Create
-      zh_Hans: 创建
+      en_US: Add New Vendor
+      zh_Hans: 添加新供应商
+      ja_JP: 新規取引先を追加
+      fr_FR: Ajouter fournisseur
+      es_ES: Agregar proveedor
+      pt_BR: Adicionar fornecedor
+      ko_KR: 새 공급업체 추가
 - name: name
   form: form
   type: string
@@ -49,9 +69,19 @@ parameters:
   label:
     en_US: Vendor Name
     zh_Hans: 供应商名称
+    ja_JP: 取引先名
+    fr_FR: Nom du fournisseur
+    es_ES: Nombre del proveedor
+    pt_BR: Nome do fornecedor
+    ko_KR: 공급업체 이름
   human_description:
-    en_US: The vendor name to search for or create
+    en_US: Name of the vendor to search for or create
     zh_Hans: 要搜索或创建的供应商名称
+    ja_JP: 検索または作成する取引先名
+    fr_FR: Nom du fournisseur à rechercher ou créer
+    es_ES: Nombre del proveedor a buscar o crear
+    pt_BR: Nome do fornecedor a pesquisar ou criar
+    ko_KR: 검색하거나 생성할 공급업체 이름
 output_schema:
   type: object
   properties:
