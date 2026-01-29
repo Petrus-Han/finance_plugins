@@ -32,9 +32,11 @@ class GetTransactionsTool(Tool):
                 - end_date: End date for filtering (ISO 8601, optional)
                 - limit: Max number of results per account (optional, default 100)
                 - offset: Pagination offset (optional, default 0)
+                - status_filter: Comma-separated list of statuses to filter by (optional).
+                  Valid values: pending, sent, cancelled, failed, reversed, blocked
 
         Returns:
-            List of transactions with details
+            List of transactions with details, filtered by status if specified
         """
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
@@ -61,6 +63,19 @@ class GetTransactionsTool(Tool):
         end_date = tool_parameters.get("end_date")
         limit = tool_parameters.get("limit", 100)
         offset = tool_parameters.get("offset", 0)
+        status_filter = tool_parameters.get("status_filter", "")
+
+        # Parse status filter into a set of valid statuses
+        valid_statuses = {"pending", "sent", "cancelled", "failed", "reversed", "blocked"}
+        filter_statuses = set()
+        if status_filter:
+            for status in status_filter.split(","):
+                status = status.strip().lower()
+                if status in valid_statuses:
+                    filter_statuses.add(status)
+            # Log warning if invalid statuses were provided
+            if not filter_statuses:
+                logger.warning(f"No valid statuses found in filter: {status_filter}")
 
         try:
             if account_id:
@@ -78,7 +93,7 @@ class GetTransactionsTool(Tool):
             for acc_id in account_ids:
                 transactions = self._get_transactions_for_account(
                     api_base_url, headers, acc_id,
-                    start_date, end_date, limit, offset
+                    start_date, end_date, limit, offset, filter_statuses
                 )
                 all_transactions.extend(transactions)
 
@@ -86,19 +101,25 @@ class GetTransactionsTool(Tool):
                 yield self.create_text_message("No transactions found for the specified criteria.")
                 return
 
-            # Yield as variables for direct access
-            yield self.create_variable_message("transactions", all_transactions)
-            yield self.create_variable_message("total_count", len(all_transactions))
+            # Yield scalar values as variables for direct access
+            yield self.create_variable_message("count", len(all_transactions))
             yield self.create_variable_message("limit", limit)
             yield self.create_variable_message("offset", offset)
+            if filter_statuses:
+                yield self.create_variable_message("status_filter", ",".join(sorted(filter_statuses)))
+
+            # Build output JSON
+            result = {
+                "transactions": all_transactions,
+                "count": len(all_transactions),
+                "limit": limit,
+                "offset": offset,
+            }
+            if filter_statuses:
+                result["status_filter"] = list(sorted(filter_statuses))
 
             # Also yield the full JSON for convenience
-            yield self.create_json_message({
-                "transactions": all_transactions,
-                "total_count": len(all_transactions),
-                "limit": limit,
-                "offset": offset
-            })
+            yield self.create_json_message(result)
 
         except httpx.HTTPError as e:
             raise Exception(f"Network error while fetching transactions: {str(e)}") from e
@@ -119,12 +140,28 @@ class GetTransactionsTool(Tool):
     def _get_transactions_for_account(
         self, api_base_url: str, headers: dict, account_id: str,
         start_date: str = None, end_date: str = None,
-        limit: int = 100, offset: int = 0
+        limit: int = 100, offset: int = 0, filter_statuses: set = None
     ) -> list[dict]:
-        """Fetch transactions for a specific account."""
+        """Fetch transactions for a specific account.
+
+        Args:
+            api_base_url: Mercury API base URL
+            headers: HTTP headers with authentication
+            account_id: The Mercury account ID
+            start_date: Start date for filtering (ISO 8601)
+            end_date: End date for filtering (ISO 8601)
+            limit: Max number of results
+            offset: Pagination offset
+            filter_statuses: Set of status values to filter by (e.g., {"pending", "sent"})
+
+        Returns:
+            List of transaction dictionaries
+        """
         url = f"{api_base_url}/account/{account_id}/transactions"
 
         # Build query parameters
+        # Note: Mercury API supports status filter via query param, but we also filter client-side
+        # to ensure consistent behavior across API versions
         params = {
             "limit": limit,
             "offset": offset,
@@ -133,6 +170,9 @@ class GetTransactionsTool(Tool):
             params["postedAtStart"] = start_date
         if end_date:
             params["postedAtEnd"] = end_date
+        # Mercury API may support status filter in query params
+        if filter_statuses:
+            params["status"] = ",".join(filter_statuses)
 
         response = httpx.get(url, headers=headers, params=params, timeout=15)
 
@@ -143,6 +183,13 @@ class GetTransactionsTool(Tool):
             # Format transactions for output
             output = []
             for txn in transactions:
+                txn_status = txn.get("status", "").lower()
+
+                # Apply client-side status filter if specified
+                # This ensures filtering works even if the API doesn't support the status param
+                if filter_statuses and txn_status not in filter_statuses:
+                    continue
+
                 transaction_info = {
                     "account_id": account_id,
                     "id": txn.get("id", ""),
