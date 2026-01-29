@@ -1,4 +1,6 @@
+import logging
 import secrets
+import time
 import urllib.parse
 from collections.abc import Mapping
 from typing import Any
@@ -9,6 +11,8 @@ from werkzeug import Request
 from dify_plugin import ToolProvider
 from dify_plugin.entities.oauth import ToolOAuthCredentials
 from dify_plugin.errors.tool import ToolProviderCredentialValidationError, ToolProviderOAuthError
+
+logger = logging.getLogger(__name__)
 
 
 class QuickBooksProvider(ToolProvider):
@@ -92,7 +96,6 @@ class QuickBooksProvider(ToolProvider):
                 raise ToolProviderOAuthError(f"Error in QuickBooks OAuth: {response_json}")
 
             # Calculate expiration timestamp
-            import time
             expires_at = int(time.time()) + expires_in
 
             credentials = {"access_token": access_token}
@@ -114,6 +117,9 @@ class QuickBooksProvider(ToolProvider):
         """
         Refresh the access token using the refresh token.
 
+        QuickBooks implements refresh token rotation - each refresh invalidates the old
+        refresh token and returns a new one. We MUST save the new refresh token.
+
         Args:
             redirect_uri: The callback URL
             system_credentials: System-level credentials containing client_id and client_secret
@@ -124,7 +130,9 @@ class QuickBooksProvider(ToolProvider):
         """
         refresh_token = credentials.get("refresh_token")
         if not refresh_token:
-            raise ToolProviderOAuthError("No refresh token available")
+            raise ToolProviderOAuthError("No refresh token available. Please re-authorize QuickBooks.")
+
+        logger.info("[QBO_REFRESH] Starting token refresh")
 
         data = {
             "grant_type": "refresh_token",
@@ -145,17 +153,28 @@ class QuickBooksProvider(ToolProvider):
             response.raise_for_status()
             response_json = response.json()
 
+            logger.info(f"[QBO_REFRESH] Response keys: {list(response_json.keys())}")
+
             access_token = response_json.get("access_token")
-            new_refresh_token = response_json.get("refresh_token", refresh_token)
+            new_refresh_token = response_json.get("refresh_token")
             expires_in = response_json.get("expires_in", 3600)
 
             if not access_token:
-                raise ToolProviderOAuthError(f"Error refreshing token: {response_json}")
+                raise ToolProviderOAuthError(f"No access_token in refresh response: {list(response_json.keys())}")
 
-            import time
+            # QuickBooks MUST return a new refresh_token on each refresh (token rotation)
+            if not new_refresh_token:
+                logger.error("[QBO_REFRESH] No new refresh_token in response! Token rotation may have failed.")
+                raise ToolProviderOAuthError(
+                    "QuickBooks did not return a new refresh_token. "
+                    "This is unexpected. Please re-authorize the connection."
+                )
+
+            logger.info("[QBO_REFRESH] Successfully received new tokens")
+
             expires_at = int(time.time()) + expires_in
 
-            # Preserve realm_id and other credentials
+            # Build new credentials with the rotated refresh token
             new_credentials = {
                 "access_token": access_token,
                 "refresh_token": new_refresh_token
@@ -172,10 +191,14 @@ class QuickBooksProvider(ToolProvider):
             error_detail = ""
             try:
                 error_detail = e.response.text
-            except:
+            except Exception:
                 pass
+            logger.error(f"[QBO_REFRESH] HTTP error: {e.response.status_code}, detail: {error_detail}")
             raise ToolProviderOAuthError(f"Failed to refresh token: {e}. Response: {error_detail}") from e
+        except ToolProviderOAuthError:
+            raise
         except Exception as e:
+            logger.error(f"[QBO_REFRESH] Unexpected error: {e}")
             raise ToolProviderOAuthError(f"Token refresh error: {e}") from e
 
     def _validate_credentials(self, credentials: Mapping[str, Any]) -> None:
