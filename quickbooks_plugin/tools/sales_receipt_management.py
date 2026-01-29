@@ -164,8 +164,11 @@ class SalesReceiptManagementTool(Tool):
                 "count": len(items),
                 "message": f"Found {len(items)} sales receipts"
             }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
+            # Only create variable messages for scalar values
+            yield self.create_variable_message("success", True)
+            yield self.create_variable_message("operation", "query")
+            yield self.create_variable_message("count", len(items))
+            yield self.create_variable_message("message", f"Found {len(items)} sales receipts")
             yield self.create_json_message(result)
         else:
             self._handle_error(response)

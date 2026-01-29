@@ -104,8 +104,8 @@ class CustomerManagementTool(Tool):
                 "customers": customers_list,
                 "count": len(customers_list)
             }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
+            # Only create variable message for scalar values
+            yield self.create_variable_message("count", len(customers_list))
             yield self.create_json_message(result)
 
         elif response.status_code == 401:
@@ -153,8 +153,8 @@ class CustomerManagementTool(Tool):
                 "customers": customers_list,
                 "count": len(customers_list)
             }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
+            # Only create variable message for scalar values
+            yield self.create_variable_message("count", len(customers_list))
             yield self.create_json_message(result)
 
         elif response.status_code == 401:

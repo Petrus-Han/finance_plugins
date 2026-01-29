@@ -70,8 +70,8 @@ class GetChartOfAccountsTool(Tool):
                         "count": 0,
                         "message": "No accounts found."
                     }
-                    for key, value in result.items():
-                        yield self.create_variable_message(key, value)
+                    yield self.create_variable_message("count", 0)
+                    yield self.create_variable_message("message", "No accounts found.")
                     yield self.create_json_message(result)
                     return
 
@@ -94,8 +94,9 @@ class GetChartOfAccountsTool(Tool):
                     "accounts": output,
                     "count": len(output)
                 }
-                for key, value in result.items():
-                    yield self.create_variable_message(key, value)
+                # Only create variable message for simple scalar values
+                # Complex nested structures should use json_message only
+                yield self.create_variable_message("count", len(output))
                 yield self.create_json_message(result)
 
             elif response.status_code == 400:
