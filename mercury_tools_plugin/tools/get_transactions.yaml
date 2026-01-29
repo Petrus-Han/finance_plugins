@@ -135,6 +135,28 @@ parameters:
     llm_description: Number of transactions to skip for pagination (default 0)
     form: llm
 
+  - name: status_filter
+    type: string
+    required: false
+    label:
+      en_US: Status Filter
+      zh_Hans: 状态筛选
+      ja_JP: ステータスフィルター
+      fr_FR: Filtre de statut
+      es_ES: Filtro de estado
+      pt_BR: Filtro de status
+      ko_KR: 상태 필터
+    human_description:
+      en_US: "Filter by transaction status. Comma-separated for multiple: pending,sent,cancelled,failed,reversed,blocked. Leave empty for all."
+      zh_Hans: "按交易状态筛选。多个状态用逗号分隔：pending,sent,cancelled,failed,reversed,blocked。留空表示全部。"
+      ja_JP: "取引ステータスでフィルター。複数はカンマ区切り：pending,sent,cancelled,failed,reversed,blocked。空欄で全件。"
+      fr_FR: "Filtrer par statut. Séparés par virgule pour plusieurs: pending,sent,cancelled,failed,reversed,blocked. Vide pour tous."
+      es_ES: "Filtrar por estado. Separados por coma para varios: pending,sent,cancelled,failed,reversed,blocked. Vacío para todos."
+      pt_BR: "Filtrar por status. Separados por vírgula para vários: pending,sent,cancelled,failed,reversed,blocked. Vazio para todos."
+      ko_KR: "거래 상태로 필터링. 여러 개는 쉼표로 구분: pending,sent,cancelled,failed,reversed,blocked. 비워두면 전체."
+    llm_description: "Filter transactions by status. Use comma-separated values for multiple statuses: pending (processing), sent (completed), cancelled (voided), failed (error), reversed (refunded), blocked (compliance hold). Example: 'pending,sent' or 'failed,cancelled'. Leave empty for all statuses."
+    form: llm
+
 output_schema:
   type: object
   properties:
@@ -177,15 +199,18 @@ output_schema:
     count:
       type: number
       description: Number of transactions returned
-    total:
-      type: number
-      description: Total number of transactions matching criteria
     offset:
       type: number
       description: Current offset for pagination
     limit:
       type: number
       description: Maximum results per page
+    status_filter:
+      type: array
+      description: Status values used for filtering (only present if filtering was applied)
+      items:
+        type: string
+        enum: [pending, sent, cancelled, failed, reversed, blocked]
 
 extra:
   python:

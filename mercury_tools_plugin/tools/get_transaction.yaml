@@ -66,45 +66,123 @@ parameters:
 output_schema:
   type: object
   properties:
+    # Core identification
     id:
       type: string
       description: Transaction ID
     account_id:
       type: string
-      description: Account ID
-    amount:
-      type: number
-      description: Transaction amount
+      description: Mercury account ID
+
+    # Status (enum: pending | sent | cancelled | failed | reversed | blocked)
     status:
       type: string
-      description: Transaction status
-    counterparty_name:
+      enum: [pending, sent, cancelled, failed, reversed, blocked]
+      description: "Transaction status: pending (processing), sent (completed), cancelled (voided), failed (error), reversed (refunded), blocked (compliance hold)"
+
+    # Financial data
+    amount:
+      type: number
+      description: Transaction amount (negative for debits, positive for credits)
+    kind:
       type: string
-      description: Counterparty name
+      description: "Transaction kind: externalTransfer, internalTransfer, cardTransaction, fee, etc."
+
+    # Counterparty info
     counterparty_id:
       type: string
       description: Counterparty ID
+    counterparty_name:
+      type: string
+      description: Counterparty name
+    counterparty_nickname:
+      type: string
+      description: User-defined nickname for counterparty
+
+    # Descriptions and notes
+    bank_description:
+      type: string
+      description: Bank-provided description
     note:
       type: string
-      description: Internal note
+      description: Internal note (only visible to account holders)
     external_memo:
       type: string
-      description: External memo
-    posted_at:
-      type: string
-      description: Posted timestamp
+      description: External memo (visible to counterparty)
+
+    # Timestamps
     created_at:
       type: string
-      description: Creation timestamp
-    kind:
+      format: date-time
+      description: When the transaction was created (ISO 8601)
+    posted_at:
       type: string
-      description: Transaction kind
+      format: date-time
+      description: When the transaction was posted (ISO 8601)
+    estimated_delivery_date:
+      type: string
+      format: date-time
+      description: Estimated delivery date for pending transfers
+    failed_at:
+      type: string
+      format: date-time
+      description: When the transaction failed (if status is 'failed')
+
+    # Tracking and reference
     tracking_number:
       type: string
-      description: Tracking number
+      description: Tracking number for wire transfers
+    check_number:
+      type: string
+      description: Check number (for check transactions)
+    fee_id:
+      type: string
+      description: Associated fee transaction ID
+
+    # Category data
+    category_id:
+      type: string
+      description: Category ID for expense classification
+    category_name:
+      type: string
+      description: Category name for expense classification
+
+    # Compliance and metadata
+    compliant_with_receipt_policy:
+      type: boolean
+      description: Whether transaction has required receipt attached
+    dashboard_link:
+      type: string
+      description: Direct link to transaction in Mercury dashboard
+    credit_account_period_id:
+      type: string
+      description: Credit account period ID (for credit transactions)
+
+    # Currency exchange info
+    currency_exchange:
+      type: object
+      description: Currency exchange details (for international transfers)
+      properties:
+        converted_amount:
+          type: number
+          description: Amount in target currency
+        exchange_rate:
+          type: number
+          description: Exchange rate used
+        from_currency:
+          type: string
+          description: Source currency code
+        to_currency:
+          type: string
+          description: Target currency code
+        fee:
+          type: number
+          description: Exchange fee
+
+    # Routing details
     routing_details:
       type: object
-      description: Routing information
+      description: ACH/Electronic routing information
       properties:
         account_number:
           type: string
@@ -115,21 +193,58 @@ output_schema:
         bank_name:
           type: string
           description: Bank name
+        account_type:
+          type: string
+          description: Account type (checking, savings)
+
+    domestic_wire_details:
+      type: object
+      description: Domestic wire routing information
+      properties:
+        account_number:
+          type: string
+        routing_number:
+          type: string
+        address:
+          type: object
+
+    international_wire_details:
+      type: object
+      description: International wire routing information
+      properties:
+        swift_code:
+          type: string
+        iban:
+          type: string
+        bank_name:
+          type: string
+        country:
+          type: string
+
+    # Card info
     credit_card_id:
       type: string
-      description: Credit card ID (for credit card transactions, can be matched with get_cards to find cardholder)
+      description: Credit card ID (match with get_cards for cardholder details)
     credit_card_email:
       type: string
       description: Credit card holder email
     credit_card_payment_method:
       type: string
-      description: Credit card payment method
+      description: Payment method (contactless, chip, online, etc.)
+    credit_card_last_four:
+      type: string
+      description: Last 4 digits of credit card
     debit_card_id:
       type: string
-      description: Debit card ID (for debit card transactions, can be matched with get_cards to find cardholder)
+      description: Debit card ID (match with get_cards for cardholder details)
+    debit_card_last_four:
+      type: string
+      description: Last 4 digits of debit card
+
+    # Attachments
     attachments:
       type: array
-      description: Transaction attachments
+      description: Transaction attachments (receipts, check images, etc.)
       items:
         type: object
         properties:
@@ -139,6 +254,13 @@ output_schema:
           file_name:
             type: string
             description: File name
+          url:
+            type: string
+            description: Download URL
+          attachment_type:
+            type: string
+            enum: [checkImage, receipt, other]
+            description: Type of attachment
 
 extra:
   python:
