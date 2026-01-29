@@ -1,4 +1,5 @@
 import logging
+import os
 from collections.abc import Generator
 from typing import Any
 
@@ -10,8 +11,11 @@ from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 from dify_plugin.config.logger_format import plugin_logger_handler
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 logger.addHandler(plugin_logger_handler)
+
+# Only enable debug logging when explicitly requested via environment variable
+if os.environ.get("MERCURY_PLUGIN_DEBUG", "").lower() in ("true", "1", "yes"):
+    logger.setLevel(logging.DEBUG)
 
 
 class GetTransactionsTool(Tool):
@@ -32,8 +36,6 @@ class GetTransactionsTool(Tool):
         Returns:
             List of transactions with details
         """
-        logger.info("=== GetTransactionsTool._invoke called ===")
-
         # Get credentials
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
@@ -41,7 +43,6 @@ class GetTransactionsTool(Tool):
 
         # Get API environment
         api_environment = self.runtime.credentials.get("api_environment", "production")
-        logger.info(f"API environment: {api_environment}")
 
         # Determine API base URL based on environment
         if api_environment == "sandbox":
@@ -67,7 +68,6 @@ class GetTransactionsTool(Tool):
                 account_ids = [account_id]
             else:
                 # Fetch all accounts first
-                logger.info("No account_id provided, fetching all accounts...")
                 account_ids = self._get_all_account_ids(api_base_url, headers)
                 if not account_ids:
                     yield self.create_text_message("No accounts found.")
@@ -81,8 +81,6 @@ class GetTransactionsTool(Tool):
                     start_date, end_date, limit, offset
                 )
                 all_transactions.extend(transactions)
-
-            logger.info(f"Found {len(all_transactions)} transactions total")
 
             if not all_transactions:
                 yield self.create_text_message("No transactions found for the specified criteria.")
@@ -125,7 +123,6 @@ class GetTransactionsTool(Tool):
     ) -> list[dict]:
         """Fetch transactions for a specific account."""
         url = f"{api_base_url}/account/{account_id}/transactions"
-        logger.info(f"Fetching transactions from: {url}")
 
         # Build query parameters
         params = {
@@ -165,8 +162,6 @@ class GetTransactionsTool(Tool):
         elif response.status_code == 401:
             raise ToolProviderCredentialValidationError("Authentication failed. Check your API token.")
         elif response.status_code == 404:
-            logger.warning(f"Account not found: {account_id}")
             return []
         else:
-            logger.warning(f"Failed to fetch transactions for account {account_id}: {response.status_code}")
             return []

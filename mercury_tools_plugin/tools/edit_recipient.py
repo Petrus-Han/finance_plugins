@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from collections.abc import Generator
 from typing import Any
 
@@ -11,15 +12,17 @@ from dify_plugin.errors.tool import ToolProviderCredentialValidationError
 from dify_plugin.config.logger_format import plugin_logger_handler
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 logger.addHandler(plugin_logger_handler)
+
+# Only enable debug logging when explicitly requested via environment variable
+if os.environ.get("MERCURY_PLUGIN_DEBUG", "").lower() in ("true", "1", "yes"):
+    logger.setLevel(logging.DEBUG)
 
 
 class EditRecipientTool(Tool):
     """Tool to update an existing recipient."""
 
     def _invoke(self, tool_parameters: dict[str, Any]) -> Generator[ToolInvokeMessage, None, None]:
-        logger.info("=== EditRecipientTool._invoke called ===")
 
         access_token = self.runtime.credentials.get("access_token")
         if not access_token:
