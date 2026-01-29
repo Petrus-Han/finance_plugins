@@ -40,13 +40,12 @@ class MercuryTrigger(Trigger):
 
     def _dispatch_event(self, subscription: Subscription, request: Request) -> EventDispatch:
         webhook_secret = subscription.properties.get("webhook_secret")
-        if webhook_secret:
-            self._validate_signature(request, webhook_secret)
-        else:
-            logger.warning(
-                "Webhook signature validation is disabled: webhook_secret not configured. "
-                "This is a security risk - webhooks can be forged without signature verification."
+        if not webhook_secret:
+            raise TriggerValidationError(
+                "Webhook secret not configured - cannot verify request authenticity. "
+                "This may indicate a subscription setup issue."
             )
+        self._validate_signature(request, webhook_secret)
 
         payload = self._validate_payload(request)
         response = Response(response='{"status": "ok"}', status=200, mimetype="application/json")
