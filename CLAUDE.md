@@ -1,135 +1,136 @@
 # CLAUDE.md
 
-本文件为 Claude 提供 Finance Plugins 项目的上下文和开发指南。
+This file provides Claude with context and development guidelines for the Finance Plugins project.
 
-## 项目概述
+## Project Overview
 
-Finance Plugins 是一组 Dify 插件，用于实现 Mercury 银行与 QuickBooks 的集成：
+Finance Plugins is a collection of Dify plugins for Mercury Bank and QuickBooks integration:
 
-- `mercury_tools_plugin` - Mercury 银行 API 工具集（账户、交易、收款人等）
-- `mercury_trigger_plugin` - Mercury Webhook 触发器（交易事件同步）
+- `mercury_tools_plugin` - Mercury Bank API tools (accounts, transactions, recipients, etc.)
+- `mercury_trigger_plugin` - Mercury Webhook trigger (transaction event sync)
 
-## 本项目文档
+## Project Documentation
 
-| 文档 | 用途 |
-|------|------|
-| `Mercury_API_Documentation.md` | Mercury 银行 API 文档 |
-| `QuickBooks_API_Documentation.md` | QuickBooks API 文档 |
-| `solution-design.md` | 技术方案详细设计 |
+| Document | Purpose |
+|----------|---------|
+| `Mercury_API_Documentation.md` | Mercury Bank API documentation |
+| `QuickBooks_API_Documentation.md` | QuickBooks API documentation |
+| `solution-design.md` | Technical solution design |
 
-## 财务安全合规要求
+## Financial Security Compliance Requirements
 
-本项目处理银行账户和财务数据，必须遵守以下合规要求：
+This project handles bank accounts and financial data. The following compliance requirements must be followed:
 
-### 1. 数据分类与保护
+### 1. Data Classification and Protection
 
-**敏感数据类型**：
-- 银行账户号码、路由号码
-- API 凭证（Access Token、Refresh Token、API Key）
+**Sensitive Data Types**:
+- Bank account numbers, routing numbers
+- API credentials (Access Token, Refresh Token, API Key)
 - OAuth Client Secret
-- 交易金额和明细
-- 个人身份信息（姓名、地址、税号等）
+- Transaction amounts and details
+- Personal identifiable information (name, address, tax ID, etc.)
 
-**保护措施**：
-- 敏感数据在传输中必须加密（TLS 1.2+）
-- 敏感数据不得明文存储在代码、配置文件或日志中
-- 遵循最小权限原则，仅请求业务必需的数据
+**Protection Measures**:
+- Sensitive data must be encrypted in transit (TLS 1.2+)
+- Sensitive data must not be stored in plaintext in code, config files, or logs
+- Follow the principle of least privilege, only request data necessary for business
 
-### 2. 认证与授权
+### 2. Authentication and Authorization
 
-- 所有 API 调用必须经过认证
-- OAuth Token 需设置合理的过期时间
-- Refresh Token 需安全存储，不得暴露给客户端
-- 实现 Token 自动刷新机制，避免服务中断
-- Webhook 请求必须验证签名，防止伪造
+- All API calls must be authenticated
+- OAuth Tokens must have reasonable expiration times
+- Refresh Tokens must be stored securely, never exposed to clients
+- Implement automatic token refresh to avoid service interruption
+- Webhook requests must verify signatures to prevent forgery
 
-### 3. 日志与审计
+### 3. Logging and Audit
 
-**必须记录**：
-- 所有金融操作的时间戳（UTC）
-- 操作类型和结果（成功/失败）
-- 脱敏后的业务标识符
-- 错误代码和非敏感错误信息
+**Must Log**:
+- Timestamps (UTC) for all financial operations
+- Operation type and result (success/failure)
+- Masked business identifiers
+- Error codes and non-sensitive error messages
 
-**禁止记录**：
-- 完整的账户号码（仅允许后 4 位）
-- Access Token、Refresh Token、API Key
-- 完整的交易金额明细
-- 个人身份信息
+**Must NOT Log**:
+- Full account numbers (only last 4 digits allowed)
+- Access Token, Refresh Token, API Key
+- Full transaction amount details
+- Personal identifiable information
 
-### 4. 数据脱敏规则
+### 4. Data Masking Rules
 
-- 银行账户号码：仅显示后 4 位，如 `****1234`
-- 路由号码：仅显示后 4 位
-- API Token：仅记录是否存在（true/false）
-- 金额：审计日志中可记录，调试日志中禁止
+- Bank account numbers: show only last 4 digits, e.g., `****1234`
+- Routing numbers: show only last 4 digits
+- API Tokens: only log existence (true/false)
+- Amounts: allowed in audit logs, forbidden in debug logs
 
-### 5. 错误处理
+### 5. Error Handling
 
-- 错误消息不得包含内部系统路径
-- 错误消息不得包含数据库查询或 API 响应原文
-- 错误消息不得包含凭证信息
-- 区分用户可见错误和内部日志错误
+- Error messages must not contain internal system paths
+- Error messages must not contain database queries or raw API responses
+- Error messages must not contain credential information
+- Distinguish between user-visible errors and internal log errors
 
-### 6. 传输安全
+### 6. Transport Security
 
-- 所有外部 API 调用必须使用 HTTPS
-- 禁止禁用 SSL/TLS 证书验证
-- 设置合理的请求超时（建议 15-30 秒）
-- 实现请求重试时使用指数退避
+- All external API calls must use HTTPS
+- Never disable SSL/TLS certificate verification
+- Set reasonable request timeouts (recommended 15-30 seconds)
+- Use exponential backoff for request retries
 
-### 7. 输入验证
+### 7. Input Validation
 
-- 验证所有外部输入的格式和范围
-- 账户 ID、交易 ID 需验证格式
-- 金额需验证为正数且在合理范围内
-- 日期需验证格式和有效性
-- 防止注入攻击（SQL、命令、SSRF）
+- Validate format and range of all external inputs
+- Account IDs and Transaction IDs must be format-validated
+- Amounts must be validated as positive and within reasonable range
+- Dates must be validated for format and validity
+- Prevent injection attacks (SQL, command, SSRF)
 
-### 8. 幂等性与一致性
+### 8. Idempotency and Consistency
 
-- 金融操作必须实现幂等性
-- 使用唯一业务标识符进行去重
-- 避免重复处理同一笔交易
-- 操作失败时确保状态一致
+- Financial operations must be idempotent
+- Use unique business identifiers for deduplication
+- Avoid duplicate processing of the same transaction
+- Ensure state consistency when operations fail
 
-### 9. 速率限制
+### 9. Rate Limiting
 
-- 遵守第三方 API 的速率限制
-- 实现客户端限流，避免超限
-- 监控 API 配额使用情况
+- Comply with third-party API rate limits
+- Implement client-side throttling to avoid exceeding limits
+- Monitor API quota usage
 
-### 10. 代码审查检查清单
+### 10. Code Review Checklist
 
-- [ ] 无硬编码凭证或密钥
-- [ ] 日志中无敏感数据
-- [ ] 所有外部输入已验证
-- [ ] 错误消息不暴露内部细节
-- [ ] API 调用使用 HTTPS
-- [ ] 设置了请求超时
-- [ ] Webhook 签名已验证
-- [ ] 金融操作具有幂等性
+- [ ] No hardcoded credentials or secrets
+- [ ] No sensitive data in logs
+- [ ] All external inputs validated
+- [ ] Error messages don't expose internal details
+- [ ] API calls use HTTPS
+- [ ] Request timeouts are set
+- [ ] Webhook signatures are verified
+- [ ] Financial operations are idempotent
 
-### 11. 禁止事项
+### 11. Prohibited Actions
 
-- 在代码、注释、配置中写入真实凭证
-- 将任何凭证提交到版本控制
-- 禁用 SSL/TLS 证书验证
-- 在日志中记录完整凭证或账户信息
-- 实现绕过认证授权的后门
-- 在 URL 参数中传递敏感信息
-- 存储超出业务需要的个人数据
+- Writing real credentials in code, comments, or config
+- Committing any credentials to version control
+- Disabling SSL/TLS certificate verification
+- Logging full credentials or account information
+- Implementing backdoors that bypass authentication/authorization
+- Passing sensitive information in URL parameters
+- Storing personal data beyond business requirements
 
-## Git 工作流规范
+## Git Workflow
 
-- **禁止直接在 main 分支提交代码**：必须根据当前任务新建功能分支
-- **分支命名规范**：`feature/<功能名>`, `fix/<问题描述>`, `chore/<维护任务>`
-- **提交 PR 前必须确保**：单元测试和集成测试全部通过
+- **Never commit directly to main branch**: Always create a feature branch for the current task
+- **Branch naming convention**: `feature/<feature-name>`, `fix/<issue-description>`, `chore/<maintenance-task>`
+- **Before creating PR**: Ensure all unit tests and integration tests pass
 - **PR merge strategy**: Always use **Rebase and merge** to keep commit history clean and linear. Never create merge commits.
-- **PR 合并后删除功能分支**
+- **Never auto-merge PRs**: Claude must never execute `gh pr merge` or any PR merge operations. User must manually merge PRs on GitHub.
+- **Delete feature branch after PR is merged**
 
-## 注意事项
+## Best Practices
 
-- **优先参考官方插件**：不要凭空实现，先找类似示例
-- **保持代码简洁**：遵循 KISS 原则，不要过度设计
-- **严格遵守安全合规**：上述安全规范是强制性要求，不可妥协
+- **Reference official plugins first**: Don't implement from scratch, find similar examples first
+- **Keep code simple**: Follow the KISS principle, avoid over-engineering
+- **Strict security compliance**: The above security requirements are mandatory and non-negotiable
