@@ -142,8 +142,13 @@ class QueryEntitiesTool(Tool):
                     "query": query,
                     "message": f"Query executed successfully, found {len(results)} results"
                 }
-                for key, value in result.items():
-                    yield self.create_variable_message(key, value)
+                # Only create variable messages for scalar values, not lists
+                yield self.create_variable_message("success", True)
+                yield self.create_variable_message("entity_type", result_key or entity_type)
+                yield self.create_variable_message("count", len(results))
+                yield self.create_variable_message("total_count", query_response.get("totalCount"))
+                yield self.create_variable_message("query", query)
+                yield self.create_variable_message("message", f"Query executed successfully, found {len(results)} results")
                 yield self.create_json_message(result)
             else:
                 self._handle_error(response)

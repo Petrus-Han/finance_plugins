@@ -81,8 +81,8 @@ class GetJournalEntryTool(Tool):
                 "journal_entries": [self._format(item) for item in items],
                 "count": len(items)
             }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
+            # Only create variable message for scalar values
+            yield self.create_variable_message("count", len(items))
             yield self.create_json_message(result)
         elif response.status_code == 401:
             raise ToolProviderCredentialValidationError("Authentication failed.")
