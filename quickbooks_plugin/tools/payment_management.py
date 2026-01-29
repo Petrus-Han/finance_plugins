@@ -229,8 +229,11 @@ class PaymentManagementTool(Tool):
                 "count": len(payments),
                 "message": f"Found {len(payments)} payments"
             }
-            for key, value in result.items():
-                yield self.create_variable_message(key, value)
+            # Only create variable messages for scalar values
+            yield self.create_variable_message("success", True)
+            yield self.create_variable_message("operation", "query")
+            yield self.create_variable_message("count", len(payments))
+            yield self.create_variable_message("message", f"Found {len(payments)} payments")
             yield self.create_json_message(result)
         else:
             self._handle_error(response)

@@ -91,8 +91,8 @@ class VendorManagementTool(Tool):
                         "vendors": output,
                         "count": len(output)
                     }
-                    for key, value in result.items():
-                        yield self.create_variable_message(key, value)
+                    # Only create variable message for scalar values
+                    yield self.create_variable_message("count", len(output))
                     yield self.create_json_message(result)
 
                 elif response.status_code == 400:
