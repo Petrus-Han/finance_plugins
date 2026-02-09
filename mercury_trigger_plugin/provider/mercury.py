@@ -278,6 +278,23 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
             response = httpx.post(
                 self._TOKEN_URL, data=data, headers={"Accept": "application/json"}, timeout=self._REQUEST_TIMEOUT
             )
+
+            # Check for refresh token expiration before raise_for_status
+            if response.status_code == 400:
+                try:
+                    error_json = response.json()
+                except Exception:
+                    error_json = {}
+                error_code = error_json.get("error", "")
+                if error_code == "invalid_grant":
+                    raise TriggerProviderOAuthError(
+                        "Mercury refresh token has expired or been revoked. "
+                        "Please re-authorize the Mercury connection."
+                    )
+                raise TriggerProviderOAuthError(
+                    f"Failed to refresh token: {error_code} - {error_json.get('error_description', response.text)}"
+                )
+
             response.raise_for_status()
             response_json = response.json()
 
@@ -285,7 +302,7 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
             if not access_token:
                 raise TriggerProviderOAuthError(f"Error refreshing token: {response_json}")
 
-            new_refresh_token = response_json.get("refresh_token", refresh_token)
+            new_refresh_token = response_json.get("refresh_token") or refresh_token
             expires_in = response_json.get("expires_in", 3600)
             expires_at = int(time.time()) + expires_in
 
@@ -293,10 +310,15 @@ class MercurySubscriptionConstructor(TriggerSubscriptionConstructor):
                 credentials={"access_token": access_token, "refresh_token": new_refresh_token}, expires_at=expires_at
             )
 
-        except httpx.HTTPStatusError as e:
-            raise TriggerProviderOAuthError(f"Failed to refresh token: {e}") from e
         except TriggerProviderOAuthError:
             raise
+        except httpx.HTTPStatusError as e:
+            error_detail = ""
+            try:
+                error_detail = e.response.text
+            except Exception:
+                pass
+            raise TriggerProviderOAuthError(f"Failed to refresh token: {e}. Response: {error_detail}") from e
         except Exception as e:
             raise TriggerProviderOAuthError(f"Token refresh error: {e}") from e
 

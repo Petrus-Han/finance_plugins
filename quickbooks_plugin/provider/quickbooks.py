@@ -150,13 +150,30 @@ class QuickBooksProvider(ToolProvider):
                 headers={"Accept": "application/json"},
                 timeout=self._REQUEST_TIMEOUT
             )
+
+            # Check for refresh token expiration before raise_for_status
+            if response.status_code == 400:
+                try:
+                    error_json = response.json()
+                except Exception:
+                    error_json = {}
+                error_code = error_json.get("error", "")
+                if error_code == "invalid_grant":
+                    raise ToolProviderOAuthError(
+                        "QuickBooks refresh token has expired or been revoked. "
+                        "Please re-authorize the QuickBooks connection."
+                    )
+                raise ToolProviderOAuthError(
+                    f"Failed to refresh token: {error_code} - {error_json.get('error_description', response.text)}"
+                )
+
             response.raise_for_status()
             response_json = response.json()
 
             logger.info(f"[QBO_REFRESH] Response keys: {list(response_json.keys())}")
 
             access_token = response_json.get("access_token")
-            new_refresh_token = response_json.get("refresh_token")
+            new_refresh_token = response_json.get("refresh_token") or refresh_token
             expires_in = response_json.get("expires_in", 3600)
 
             if not access_token:
@@ -186,8 +203,9 @@ class QuickBooksProvider(ToolProvider):
 
             return ToolOAuthCredentials(credentials=new_credentials, expires_at=expires_at)
 
+        except ToolProviderOAuthError:
+            raise
         except httpx.HTTPStatusError as e:
-            # Log the actual error response from QuickBooks
             error_detail = ""
             try:
                 error_detail = e.response.text
@@ -195,8 +213,6 @@ class QuickBooksProvider(ToolProvider):
                 pass
             logger.error(f"[QBO_REFRESH] HTTP error: {e.response.status_code}, detail: {error_detail}")
             raise ToolProviderOAuthError(f"Failed to refresh token: {e}. Response: {error_detail}") from e
-        except ToolProviderOAuthError:
-            raise
         except Exception as e:
             logger.error(f"[QBO_REFRESH] Unexpected error: {e}")
             raise ToolProviderOAuthError(f"Token refresh error: {e}") from e
