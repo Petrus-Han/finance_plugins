@@ -25,6 +25,7 @@ PLUGINS = [
     "mercury_trigger_plugin",
     "quickbooks_plugin",
     "quickbooks_payments_plugin",
+    "employee_roster_plugin",
 ]
 
 DEBUG_SUFFIX = " [DEBUG]"
