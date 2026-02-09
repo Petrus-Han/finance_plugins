@@ -1,0 +1,12 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue-green background for HR/roster -->
+  <rect width="256" height="256" rx="24" fill="#0D9488"/>
+
+  <!-- Person icon -->
+  <circle cx="128" cy="90" r="30" fill="white"/>
+  <path d="M76 170c0-28.719 23.281-52 52-52s52 23.281 52 52v10H76v-10z" fill="white"/>
+
+  <!-- List lines (roster) -->
+  <rect x="88" y="196" width="80" height="6" rx="3" fill="white" opacity="0.8"/>
+  <rect x="88" y="212" width="60" height="6" rx="3" fill="white" opacity="0.6"/>
+</svg>

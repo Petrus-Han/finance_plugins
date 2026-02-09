@@ -1,0 +1,89 @@
+identity:
+  author: petrus
+  name: employee_roster
+  label:
+    en_US: Employee Roster
+    zh_Hans: 员工花名册
+  description:
+    en_US: Manage employee roster with finance department mappings using Google Sheets as backend
+    zh_Hans: 以 Google Sheets 为后端，管理员工花名册与财务部门映射关系
+  icon: icon.svg
+  tags:
+    - finance
+    - utilities
+
+credentials_for_provider:
+  spreadsheet_id:
+    type: text-input
+    required: true
+    label:
+      en_US: Google Spreadsheet ID
+      zh_Hans: Google 表格 ID
+    placeholder:
+      en_US: e.g. 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms
+      zh_Hans: 例如 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms
+    help:
+      en_US: "The ID from the Google Sheets URL: https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit"
+      zh_Hans: "从 Google Sheets URL 获取 ID：https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}/edit"
+
+  service_account_json:
+    type: secret-input
+    required: false
+    label:
+      en_US: Service Account JSON (optional)
+      zh_Hans: 服务账号 JSON（可选）
+    placeholder:
+      en_US: Paste the full JSON content of your service account key file
+      zh_Hans: 粘贴服务账号密钥文件的完整 JSON 内容
+    help:
+      en_US: "Optional: Use a GCP Service Account instead of OAuth2. The service account must have access to the spreadsheet."
+      zh_Hans: "可选：使用 GCP 服务账号代替 OAuth2。服务账号必须有权访问该表格。"
+
+oauth_schema:
+  client_schema:
+    - name: "client_id"
+      type: "secret-input"
+      required: true
+      url: https://console.cloud.google.com/apis/credentials
+      placeholder:
+        en_US: "Please input your Google OAuth Client ID"
+        zh_Hans: "请输入你的 Google OAuth Client ID"
+      help:
+        en_US: "OAuth Client ID from Google Cloud Console. Enable Google Sheets API first."
+        zh_Hans: "来自 Google Cloud Console 的 OAuth Client ID。需先启用 Google Sheets API。"
+      label:
+        en_US: Client ID
+        zh_Hans: Client ID
+    - name: "client_secret"
+      type: "secret-input"
+      required: true
+      url: https://console.cloud.google.com/apis/credentials
+      placeholder:
+        en_US: "Please input your Google OAuth Client Secret"
+        zh_Hans: "请输入你的 Google OAuth Client Secret"
+      help:
+        en_US: "OAuth Client Secret from Google Cloud Console"
+        zh_Hans: "来自 Google Cloud Console 的 OAuth Client Secret"
+      label:
+        en_US: Client Secret
+        zh_Hans: Client Secret
+  credentials_schema:
+    - name: "access_token"
+      type: "secret-input"
+      label:
+        en_US: Access Token
+        zh_Hans: 访问令牌
+    - name: "refresh_token"
+      type: "secret-input"
+      label:
+        en_US: Refresh Token
+        zh_Hans: 刷新令牌
+
+extra:
+  python:
+    source: provider/employee_roster.py
+
+tools:
+  - tools/query_roster.yaml
+  - tools/import_roster_csv.yaml
+  - tools/get_department_mapping.yaml

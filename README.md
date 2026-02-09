@@ -1,6 +1,6 @@
 # Finance Plugins for Dify
 
-Dify plugins for integrating Mercury Banking and QuickBooks accounting services.
+Dify plugins for integrating Mercury Banking, QuickBooks accounting, and employee roster management.
 
 ## Project Status
 
@@ -9,6 +9,7 @@ Dify plugins for integrating Mercury Banking and QuickBooks accounting services.
 | mercury_trigger_plugin | Trigger | Ready | 29/29 |
 | mercury_tools_plugin | Tools | Ready | 12/12 |
 | quickbooks_plugin | Tools | Ready | 6/6 |
+| employee_roster_plugin | Tools | Ready | - |
 
 ## Project Structure
 
@@ -39,6 +40,9 @@ finance_plugins/
 │   │   ├── create_deposit.py
 │   │   └── create_transfer.py
 │   └── tests/                  # Unit tests
+├── employee_roster_plugin/     # Employee roster with Google Sheets
+│   ├── provider/               # OAuth2 / Service Account auth
+│   └── tools/                  # query, import CSV, dept mapping
 ├── scripts/                    # Development scripts
 │   └── mock_mercury_server.py  # Mock Mercury API server
 └── docs/                       # Documentation
@@ -142,6 +146,22 @@ Tools for interacting with QuickBooks Online API.
 | create_purchase | Create purchase transaction |
 | create_deposit | Create bank deposit |
 | create_transfer | Transfer between accounts |
+
+## Employee Roster Plugin
+
+Manages employee roster with finance department mappings using Google Sheets as backend. Replaces manual cross-referencing of Feishu and Deel exports.
+
+**Auth**: OAuth2 (interactive) or Service Account (automation)
+
+| Tool | Description |
+|------|-------------|
+| query_roster | Search employees by name/email (fuzzy match), returns finance department |
+| import_roster_csv | Bulk import from Feishu/Deel CSV with dedup and finance field preservation |
+| get_department_mapping | View source department to finance department mappings |
+
+**Key design**: Import never overwrites `finance_department` and `notes` — these are maintained manually by the finance team.
+
+See [docs/EMPLOYEE_ROSTER_DESIGN.md](docs/EMPLOYEE_ROSTER_DESIGN.md) for detailed architecture and workflow.
 
 ## Mock Mercury Server
 

@@ -1,0 +1,47 @@
+identity:
+  name: get_department_mapping
+  author: petrus
+  label:
+    en_US: Get Department Mapping
+    zh_Hans: 获取部门映射
+description:
+  human:
+    en_US: View the mapping from source departments (Feishu/Deel) to finance departments. Optionally filter by department name.
+    zh_Hans: 查看来源部门（飞书/Deel）到财务部门的映射关系。可按部门名称筛选。
+  llm: Get the department mapping table showing how source departments map to finance departments. Optionally filter by source department name (fuzzy match).
+extra:
+  python:
+    source: tools/get_department_mapping.py
+parameters:
+- name: source_department
+  form: llm
+  type: string
+  required: false
+  label:
+    en_US: Source Department Filter
+    zh_Hans: 来源部门筛选
+  human_description:
+    en_US: Optional department name to filter by (fuzzy match)
+    zh_Hans: 可选的部门名称筛选（模糊匹配）
+  llm_description: Optional source department name to filter results. Supports partial/fuzzy matching.
+output_schema:
+  type: object
+  properties:
+    mappings:
+      type: array
+      description: List of department mappings
+      items:
+        type: object
+        properties:
+          source_department:
+            type: string
+            description: Department name in source system
+          finance_department:
+            type: string
+            description: Mapped finance department
+          source:
+            type: string
+            description: Source system (feishu/deel)
+    count:
+      type: integer
+      description: Number of mappings returned

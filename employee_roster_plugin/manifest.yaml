@@ -1,0 +1,37 @@
+version: 0.0.1
+type: plugin
+author: petrus
+name: employee_roster
+created_at: 2026-02-09T00:00:00Z
+label:
+  en_US: Employee Roster
+  zh_Hans: 员工花名册
+icon: icon.svg
+description:
+  en_US: Manage employee roster with finance department mappings. Query employees, import from Feishu/Deel CSV exports, and view department mappings. Uses Google Sheets as backend.
+  zh_Hans: 管理员工花名册与财务部门映射关系。查询员工、从飞书/Deel CSV 导出导入，查看部门映射。以 Google Sheets 为后端存储。
+
+resource:
+  memory: 134217728
+  permission:
+    tool:
+      enabled: true
+
+meta:
+  version: 0.0.1
+  minimum_dify_version: 1.0.0
+  arch:
+    - amd64
+    - arm64
+  runner:
+    language: python
+    version: "3.12"
+    entrypoint: main
+
+plugins:
+  tools:
+    - provider/employee_roster.yaml
+
+tags:
+  - finance
+  - productivity
