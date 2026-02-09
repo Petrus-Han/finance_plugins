@@ -2,8 +2,8 @@ identity:
   author: petrus
   name: quickbooks
   label:
-    en_US: QuickBooks Online [DEBUG]
-    zh_Hans: QuickBooks 在线版 [DEBUG]
+    en_US: QuickBooks Online
+    zh_Hans: QuickBooks 在线版
   description:
     en_US: QuickBooks Online Accounting API integration for automated accounting synchronization
     zh_Hans: QuickBooks 在线版会计 API 集成，用于自动化的会计同步
@@ -43,8 +43,8 @@ oauth_schema:
         en_US: "Client ID from your QuickBooks Online app. Create one at developer.intuit.com"
         zh_Hans: "来自 QuickBooks Online 应用的 Client ID。在 developer.intuit.com 创建"
       label:
-        en_US: "Client ID"
-        zh_Hans: "Client ID"
+        en_US: Client ID
+        zh_Hans: Client ID
     - name: "client_secret"
       type: "secret-input"
       required: true
@@ -56,19 +56,19 @@ oauth_schema:
         en_US: "Client Secret from your QuickBooks Online app"
         zh_Hans: "来自 QuickBooks Online 应用的 Client Secret"
       label:
-        en_US: "Client Secret"
-        zh_Hans: "Client Secret"
+        en_US: Client Secret
+        zh_Hans: Client Secret
   credentials_schema:
     - name: "access_token"
       type: "secret-input"
       label:
-        en_US: "Access Token"
-        zh_Hans: "访问令牌"
+        en_US: Access Token
+        zh_Hans: 访问令牌
     - name: "realm_id"
       type: "text-input"
       label:
-        en_US: "Realm ID (Company ID)"
-        zh_Hans: "Realm ID（公司 ID）"
+        en_US: Realm ID (Company ID)
+        zh_Hans: Realm ID（公司 ID）
       help:
         en_US: "The QuickBooks company ID returned during OAuth authorization"
         zh_Hans: "OAuth 授权时返回的 QuickBooks 公司 ID"
