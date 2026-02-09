@@ -43,8 +43,8 @@ oauth_schema:
         en_US: "Client ID from your QuickBooks Payments app. Create one at developer.intuit.com"
         zh_Hans: "来自 QuickBooks Payments 应用的 Client ID。在 developer.intuit.com 创建"
       label:
-        en_US: "Client ID"
-        zh_Hans: "Client ID"
+        en_US: Client ID
+        zh_Hans: Client ID
     - name: "client_secret"
       type: "secret-input"
       required: true
@@ -56,14 +56,14 @@ oauth_schema:
         en_US: "Client Secret from your QuickBooks Payments app"
         zh_Hans: "来自 QuickBooks Payments 应用的 Client Secret"
       label:
-        en_US: "Client Secret"
-        zh_Hans: "Client Secret"
+        en_US: Client Secret
+        zh_Hans: Client Secret
   credentials_schema:
     - name: "access_token"
       type: "secret-input"
       label:
-        en_US: "Access Token"
-        zh_Hans: "访问令牌"
+        en_US: Access Token
+        zh_Hans: 访问令牌
 
 extra:
   python:

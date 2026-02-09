@@ -146,17 +146,20 @@ def get_provider_yaml_path(plugin_dir: Path) -> Path | None:
 def check_plugin_mode(plugin_name: str) -> str:
     """Check if a plugin is in debug or release mode."""
     plugin_dir = PROJECT_ROOT / plugin_name
-    manifest_path = plugin_dir / "manifest.yaml"
 
-    if not manifest_path.exists():
-        return "unknown"
+    # Check manifest.yaml and provider yaml files
+    files_to_check = [plugin_dir / "manifest.yaml"]
+    provider_yaml = get_provider_yaml_path(plugin_dir)
+    if provider_yaml:
+        files_to_check.append(provider_yaml)
 
-    content = manifest_path.read_text()
-
-    # Look for en_US label with [DEBUG]
-    for line in content.split("\n"):
-        if "en_US:" in line and "[DEBUG]" in line:
-            return "debug"
+    for file_path in files_to_check:
+        if not file_path.exists():
+            continue
+        content = file_path.read_text()
+        for line in content.split("\n"):
+            if "en_US:" in line and "[DEBUG]" in line:
+                return "debug"
 
     return "release"
 
@@ -164,8 +167,7 @@ def check_plugin_mode(plugin_name: str) -> str:
 def set_plugin_mode(plugin_name: str, mode: str) -> tuple[bool, list[str]]:
     """
     Set plugin mode (debug or release).
-    Only modifies manifest.yaml's top-level label to avoid cluttering
-    the UI with [DEBUG] tags on every label in the plugin.
+    Modifies both manifest.yaml and provider yaml labels.
 
     Returns (changed, messages) tuple.
     """
@@ -174,12 +176,19 @@ def set_plugin_mode(plugin_name: str, mode: str) -> tuple[bool, list[str]]:
     messages = []
     any_changed = False
 
-    # Only process manifest.yaml (top-level label only)
-    # Provider labels are not modified to keep the UI clean
+    # Process manifest.yaml
     changed, msg = process_file(manifest_path, mode)
     messages.append(f"  manifest.yaml: {msg}")
     if changed:
         any_changed = True
+
+    # Process provider yaml
+    provider_yaml = get_provider_yaml_path(plugin_dir)
+    if provider_yaml:
+        changed, msg = process_file(provider_yaml, mode)
+        messages.append(f"  {provider_yaml.relative_to(plugin_dir)}: {msg}")
+        if changed:
+            any_changed = True
 
     return any_changed, messages
 
