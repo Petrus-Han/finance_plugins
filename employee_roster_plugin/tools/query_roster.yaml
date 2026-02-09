@@ -1,0 +1,65 @@
+identity:
+  name: query_roster
+  author: petrus
+  label:
+    en_US: Query Employee Roster
+    zh_Hans: 查询员工花名册
+description:
+  human:
+    en_US: Search for employees by name or email to find their finance department assignment and other details.
+    zh_Hans: 按姓名或邮箱搜索员工，查看其所属财务部门及其他信息。
+  llm: Search the employee roster by name or email (fuzzy match). Returns matching employees with their finance department, source, job title, and status.
+extra:
+  python:
+    source: tools/query_roster.py
+parameters:
+- name: query
+  form: llm
+  type: string
+  required: true
+  label:
+    en_US: Search Query
+    zh_Hans: 搜索关键词
+  human_description:
+    en_US: Employee name or email to search for (supports fuzzy matching)
+    zh_Hans: 要搜索的员工姓名或邮箱（支持模糊匹配）
+  llm_description: Name or email of the employee to search for. Supports partial/fuzzy matching.
+output_schema:
+  type: object
+  properties:
+    employees:
+      type: array
+      description: List of matching employees
+      items:
+        type: object
+        properties:
+          full_name:
+            type: string
+            description: Employee full name
+          email:
+            type: string
+            description: Employee email
+          source:
+            type: string
+            description: Data source (feishu/deel)
+          source_department:
+            type: string
+            description: Department in source system
+          job_title:
+            type: string
+            description: Job title
+          employment_type:
+            type: string
+            description: Employment type
+          finance_department:
+            type: string
+            description: Assigned finance department
+          status:
+            type: string
+            description: Employee status
+          notes:
+            type: string
+            description: Notes
+    count:
+      type: integer
+      description: Number of matching employees

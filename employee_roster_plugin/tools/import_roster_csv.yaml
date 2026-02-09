@@ -1,0 +1,77 @@
+identity:
+  name: import_roster_csv
+  author: petrus
+  label:
+    en_US: Import Roster from CSV
+    zh_Hans: 从 CSV 导入花名册
+description:
+  human:
+    en_US: Import employee data from Feishu or Deel CSV exports into the roster. Supports smart column mapping, deduplication, and preserves manual finance edits.
+    zh_Hans: 从飞书或 Deel CSV 导出文件导入员工数据到花名册。支持智能列映射、去重，并保留手动编辑的财务字段。
+  llm: Import employee records from a CSV string (Feishu or Deel format). Deduplicates by source+source_id and email. Preserves existing finance_department and notes fields. Returns import summary.
+extra:
+  python:
+    source: tools/import_roster_csv.py
+parameters:
+- name: csv_content
+  form: llm
+  type: string
+  required: true
+  label:
+    en_US: CSV Content
+    zh_Hans: CSV 内容
+  human_description:
+    en_US: The full CSV text content to import
+    zh_Hans: 要导入的完整 CSV 文本内容
+  llm_description: Raw CSV text content from Feishu or Deel export. Include the header row.
+- name: source
+  form: llm
+  type: select
+  required: true
+  label:
+    en_US: Data Source
+    zh_Hans: 数据来源
+  human_description:
+    en_US: Which system the CSV was exported from
+    zh_Hans: CSV 导出的来源系统
+  options:
+  - value: feishu
+    label:
+      en_US: Feishu (飞书)
+      zh_Hans: 飞书
+  - value: deel
+    label:
+      en_US: Deel
+      zh_Hans: Deel
+- name: dry_run
+  form: llm
+  type: boolean
+  required: false
+  default: false
+  label:
+    en_US: Dry Run
+    zh_Hans: 试运行
+  human_description:
+    en_US: Preview changes without actually importing
+    zh_Hans: 预览变更但不实际导入
+  llm_description: If true, returns what would be changed without writing to the sheet.
+output_schema:
+  type: object
+  properties:
+    added:
+      type: integer
+      description: Number of new records added
+    updated:
+      type: integer
+      description: Number of existing records updated
+    skipped:
+      type: integer
+      description: Number of records skipped (no changes)
+    errors:
+      type: array
+      description: List of error messages for rows that failed
+      items:
+        type: string
+    dry_run:
+      type: boolean
+      description: Whether this was a dry run
