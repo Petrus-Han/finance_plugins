@@ -62,34 +62,29 @@ python3 scripts/mock_mercury_server.py
 
 ```bash
 # All tests
-.venv/bin/pytest */tests/ -v
+uv run pytest */tests/ -v
 
 # Mercury trigger tests
-.venv/bin/pytest mercury_trigger_plugin/tests/ -v
+uv run pytest mercury_trigger_plugin/tests/ -v
 
 # Mercury tools tests
-.venv/bin/pytest mercury_tools_plugin/tests/ -v
+uv run pytest mercury_tools_plugin/tests/ -v
 
 # QuickBooks tools tests
-.venv/bin/pytest quickbooks_plugin/tests/ -v
+uv run pytest quickbooks_plugin/tests/ -v
 ```
 
-### 3. Remote Debug with Dify
+### 3. Package & Install to Dify
 
 ```bash
-# Configure .env in plugin directory
-cat > mercury_trigger_plugin/.env << EOF
-INSTALL_METHOD=remote
-REMOTE_INSTALL_HOST=dify.greeep.com
-REMOTE_INSTALL_PORT=5003
-REMOTE_INSTALL_KEY=<your-key>
-PLUGIN_DEBUG=true
-EOF
+# Package a plugin
+dify plugin package employee_roster_plugin
 
-# Run plugin
-cd mercury_trigger_plugin
-dify plugin run .
+# Install to Dify instance
+uv run python scripts/install_plugin.py employee_roster_plugin.difypkg
 ```
+
+See [Development](#development) section below for full setup details.
 
 ## Mercury Trigger Plugin
 
@@ -194,17 +189,88 @@ curl -X POST http://localhost:8765/simulate/transaction \
 ### Prerequisites
 
 - Python 3.12+
-- Dify CLI
+- [uv](https://docs.astral.sh/uv/) — Python package manager
+- [Dify CLI](https://github.com/langgenius/dify-plugin-daemon) (v0.5.3+) — plugin packaging & debug
 - Access to Dify platform
 
-### Virtual Environment
+### Install Dify CLI
 
 ```bash
-# Activate
-source .venv/bin/activate
+# Download latest dify CLI (replace arch as needed: linux-amd64, linux-arm64, darwin-arm64)
+gh release download --repo langgenius/dify-plugin-daemon --pattern "dify-plugin-linux-arm64" --dir /tmp/
+chmod +x /tmp/dify-plugin-linux-arm64
+sudo mv /tmp/dify-plugin-linux-arm64 /usr/local/bin/dify
 
-# Install dependencies
-pip install -r requirements.txt
+# Verify
+dify version   # v0.5.3
+```
+
+### Setup Plugin Environment
+
+```bash
+# Create virtual environment and install dependencies with uv
+cd <plugin_dir>
+uv venv
+uv pip install -r pyproject.toml
+
+# Or install all dev dependencies
+uv pip install -r pyproject.toml --group dev
+```
+
+### Run Tests
+
+```bash
+# All tests
+uv run pytest */tests/ -v
+
+# Single plugin
+uv run pytest mercury_trigger_plugin/tests/ -v
+uv run pytest quickbooks_plugin/tests/ -v
+```
+
+### Package & Deploy
+
+```bash
+# Package a single plugin
+dify plugin package <plugin_dir>
+# e.g. dify plugin package employee_roster_plugin
+
+# Package all plugins
+python3 scripts/build_mode.py package
+
+# Package all in release mode (removes [DEBUG] labels)
+python3 scripts/build_mode.py package --release
+
+# Remote install to Dify instance (requires .credential file)
+uv run python scripts/install_plugin.py <plugin>.difypkg
+# e.g. uv run python scripts/install_plugin.py employee_roster_plugin.difypkg
+```
+
+The `.credential` file format (not committed to git):
+
+```json
+{
+  "host": "https://your-dify-instance.com",
+  "email": "admin@example.com",
+  "password": "your-password"
+}
+```
+
+### Remote Debug
+
+```bash
+# Configure .env in plugin directory
+cat > <plugin_dir>/.env << EOF
+INSTALL_METHOD=remote
+REMOTE_INSTALL_HOST=your-dify-instance.com
+REMOTE_INSTALL_PORT=5003
+REMOTE_INSTALL_KEY=<your-debug-key>
+PLUGIN_DEBUG=true
+EOF
+
+# Run plugin in remote debug mode
+cd <plugin_dir>
+dify plugin run .
 ```
 
 ### Testing Documentation
