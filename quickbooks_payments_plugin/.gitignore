@@ -1,13 +1,52 @@
+# Virtual environments
 .venv/
+venv/
+ENV/
+
+# Python cache
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
+*.py[cod]
+*$py.class
 *.so
-*.egg
-*.egg-info/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Linting
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dify plugin
+*.difypkg
+.credentials
+debug.log
+
+# Build
 dist/
 build/
-.env
-.DS_Store
+*.egg
+*.egg-info/
+
+# Lock files (not needed in package)
+uv.lock
+
+# Tests (not needed in marketplace package)
+tests/
