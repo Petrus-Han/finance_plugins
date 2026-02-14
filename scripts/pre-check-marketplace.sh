@@ -15,6 +15,7 @@
 # Prerequisites:
 #   - yq        (https://github.com/mikefarah/yq)
 #   - curl
+#   - perl      (for CJK character detection in README)
 #   - dify CLI  (pip install dify-plugin-daemon, or the standalone binary)
 #
 set -euo pipefail
@@ -184,14 +185,16 @@ fi
 #            U+FF00-U+FFEF  (Halfwidth and Fullwidth Forms)
 #            U+3400-U+4DBF  (CJK Unified Ideographs Extension A)
 # ────────────────────────────────────────────────────────────────────
-if [[ -f "$PLUGIN_DIR/README.md" ]]; then
+if ! command -v perl &>/dev/null; then
+    warn "README language" "perl not found, skipping CJK check"
+elif [[ -f "$PLUGIN_DIR/README.md" ]]; then
     # Use perl for reliable Unicode range matching
     CJK_MATCHES=$(perl -CSD -ne '
         while (/[\x{4E00}-\x{9FFF}\x{3000}-\x{303F}\x{FF00}-\x{FFEF}\x{3400}-\x{4DBF}]/g) {
             $count++;
         }
         END { print $count // 0 }
-    ' "$PLUGIN_DIR/README.md" 2>/dev/null || echo "0")
+    ' "$PLUGIN_DIR/README.md")
 
     if [[ "$CJK_MATCHES" -gt 0 ]]; then
         fail "README language" "Found $CJK_MATCHES CJK character(s) - English only"
@@ -290,7 +293,8 @@ fi
 # 9. Package test: dify plugin package <dir>
 # ────────────────────────────────────────────────────────────────────
 if command -v dify &>/dev/null; then
-    PACKAGE_OUTPUT=$(dify plugin package "$PLUGIN_DIR" 2>&1) && PACKAGE_RC=$? || PACKAGE_RC=$?
+    PACKAGE_RC=0
+    PACKAGE_OUTPUT=$(dify plugin package "$PLUGIN_DIR" 2>&1) || PACKAGE_RC=$?
     if [[ $PACKAGE_RC -eq 0 ]]; then
         # Extract .difypkg filename if present
         PKG_FILE=$(echo "$PACKAGE_OUTPUT" | grep -oE '[^ ]+\.difypkg' | tail -1 || true)
@@ -308,11 +312,13 @@ fi
 # 10. Version check against marketplace API
 # ────────────────────────────────────────────────────────────────────
 if [[ -n "$AUTHOR" && -n "$PLUGIN_NAME" && -n "$PLUGIN_VERSION" ]]; then
+    TMP_FILE=$(mktemp)
+    trap 'rm -f "$TMP_FILE"' EXIT
     API_URL="https://marketplace.dify.ai/api/v1/plugins/${AUTHOR}/${PLUGIN_NAME}/${PLUGIN_VERSION}"
-    HTTP_CODE=$(curl -s -o /tmp/marketplace_response.json -w '%{http_code}' "$API_URL" 2>/dev/null || echo "000")
+    HTTP_CODE=$(curl -s -o "$TMP_FILE" -w '%{http_code}' "$API_URL" 2>/dev/null || echo "000")
 
     if [[ "$HTTP_CODE" == "200" ]]; then
-        API_CODE=$(yq -r '.code // ""' /tmp/marketplace_response.json 2>/dev/null || echo "")
+        API_CODE=$(yq -r '.code // ""' "$TMP_FILE" 2>/dev/null || echo "")
         if [[ "$API_CODE" == "0" ]]; then
             fail "Version check" "v$PLUGIN_VERSION already exists on marketplace"
         else
@@ -323,7 +329,6 @@ if [[ -n "$AUTHOR" && -n "$PLUGIN_NAME" && -n "$PLUGIN_VERSION" ]]; then
     else
         pass "Version check" "v$PLUGIN_VERSION not on marketplace (HTTP $HTTP_CODE)"
     fi
-    rm -f /tmp/marketplace_response.json
 else
     warn "Version check" "Missing author/name/version in manifest"
 fi
