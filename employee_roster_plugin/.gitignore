@@ -37,7 +37,9 @@ htmlcov/
 # Dify plugin
 *.difypkg
 .credentials
+.credential
 debug.log
+.debug.pid
 
 # Build
 dist/
