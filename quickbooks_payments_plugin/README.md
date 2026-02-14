@@ -1,127 +1,43 @@
 # QuickBooks Payments Plugin
 
-QuickBooks Payments API integration for Dify, enabling secure payment processing for credit cards, debit cards, and bank accounts (ACH/eCheck).
+Process credit card and ACH payments through the QuickBooks Payments API.
 
-## Features
+## Setup
 
-### Payment Processing
-- **Create Token** - Tokenize credit card or bank account information securely
-- **Create Charge** - Process payments using payment tokens
-- **Get Charge** - Retrieve payment transaction details
-- **Create Refund** - Issue full or partial refunds
+1. Register at [Intuit Developer Portal](https://developer.intuit.com) and create a QuickBooks Payments app
+2. Obtain **Client ID** and **Client Secret**
+3. Install this plugin in Dify and enter the OAuth credentials
+4. Authorize via the OAuth flow
+5. Select environment: **Sandbox** (testing) or **Production** (live payments)
 
-### Bank Account Management
-- **Create Bank Account** - Save bank accounts for future ACH payments
-- **Get Bank Accounts** - List all saved bank accounts for a customer
-- **Delete Bank Account** - Remove bank accounts from customer profile
+Required OAuth scope: `com.intuit.quickbooks.payment`
 
-## Authentication
+**Note**: QuickBooks Payments API is only available in the United States and requires a QuickBooks Payments merchant account.
 
-This plugin uses OAuth 2.0 authentication with QuickBooks Payments API.
+## Tools
 
-**Required Scope**: `com.intuit.quickbooks.payment`
+### Payments
+- **Prepare Payment Method** — Tokenize a credit card or bank account for secure payment processing
+- **Process Payment** — Charge a payment using a token
+- **View Payment Details** — Look up a completed charge
+- **Refund Payment** — Issue a full or partial refund on a charge
 
-### Setup Steps
+### Bank Accounts
+- **Save Bank Account** — Store a bank account for a customer (ACH/eCheck)
+- **List Saved Bank Accounts** — View all saved bank accounts for a customer
+- **Remove Bank Account** — Delete a saved bank account
 
-1. Register at [Intuit Developer Portal](https://developer.intuit.com)
-2. Create a QuickBooks Payments app
-3. Obtain Client ID and Client Secret
-4. Configure redirect URI in Dify
-5. Select environment (Sandbox for testing, Production for live payments)
+## Payment Flow
 
-## Usage
+1. **Tokenize** → Create a single-use token from card or bank account info (tokens expire in 15 minutes)
+2. **Charge** → Process the payment using the token
+3. **Refund** (if needed) → Issue a refund against the charge
 
-### 1. Tokenize Payment Method
+## Sandbox Testing
 
-First, create a secure token from credit card or bank account info:
+Test card numbers for sandbox:
+- Visa: `4111111111111111`
+- Mastercard: `5105105105105100`
+- Amex: `378282246310005`
 
-```
-Tool: create_token
-Parameters:
-  - payment_type: card
-  - card_number: 4111111111111111
-  - card_exp_month: 12
-  - card_exp_year: 2026
-  - card_cvc: 123
-  - card_name: John Doe
-```
-
-### 2. Process Payment
-
-Use the token to charge the payment:
-
-```
-Tool: create_charge
-Parameters:
-  - amount: "10.50"
-  - token: <token_from_step_1>
-  - currency: USD
-  - capture: true
-  - description: Payment for Invoice #1234
-```
-
-### 3. Issue Refund (if needed)
-
-```
-Tool: create_refund
-Parameters:
-  - charge_id: <charge_id_from_step_2>
-  - amount: "10.50"
-  - description: Customer requested refund
-```
-
-## Testing
-
-### Sandbox Environment
-
-Use these test credentials in sandbox mode:
-
-**Test Credit Cards**:
-- Visa: 4111111111111111
-- Mastercard: 5105105105105100
-- Amex: 378282246310005
-- Discover: 6011111111111117
-
-**Test Bank Account**:
-- Routing Number: 322079353
-- Account Number: Any 10-17 digits
-
-### Test Scenarios
-
-- **Successful Charge**: Use test card numbers above
-- **Declined Card**: Use amount `5.01`
-- **Insufficient Funds**: Use amount `5.02`
-
-## Important Notes
-
-1. **US Only**: QuickBooks Payments API is only available in the United States
-2. **Token Expiration**: Payment tokens expire after 15 minutes and are single-use only
-3. **PCI Compliance**: Tokenization keeps you PCI DSS compliant - never store raw card data
-4. **Merchant Account**: Requires a QuickBooks Payments merchant account
-
-## API Documentation
-
-For complete API documentation, visit:
-- [QuickBooks Payments API](https://developer.intuit.com/app/developer/qbpayments/docs/api/)
-- [Getting Started Guide](https://developer.intuit.com/app/developer/qbpayments/docs/get-started)
-
-## Security
-
-- All payment data is tokenized before transmission
-- OAuth 2.0 ensures secure API authentication
-- No sensitive payment data is stored in your system
-- Compliant with PCI DSS requirements
-
-## Support
-
-For issues or questions:
-- [Intuit Developer Community](https://help.developer.intuit.com/)
-- [API Reference](https://developer.intuit.com/app/developer/qbpayments/docs/api/resources/all-entities/charges)
-
-## Version
-
-Current version: 0.1.0
-
-## License
-
-This plugin is provided as-is for integration with Dify and QuickBooks Payments API.
+Use amount `5.01` to simulate a declined card, `5.02` for insufficient funds.

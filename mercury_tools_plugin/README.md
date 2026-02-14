@@ -1,169 +1,48 @@
-# Mercury Banking Tools Plugin
+# Mercury Banking Tools
 
-Mercury Banking Tools plugin for Dify - Access Mercury accounts, transactions, and financial data via API.
-
-## Overview
-
-This plugin provides tools to interact with Mercury Banking API, allowing you to:
-- Retrieve all bank accounts
-- Get details for specific accounts
-- Fetch transaction history with filtering
-
-## Tools Included
-
-### 1. Get Accounts
-Retrieve all Mercury bank accounts associated with your API token.
-
-**No parameters required**
-
-**Returns:**
-- Account ID
-- Account name and type
-- Current and available balance
-- Routing and account numbers
-- Status
-
-### 2. Get Account
-Get detailed information for a specific Mercury bank account.
-
-**Parameters:**
-- `account_id` (required): The unique identifier of the Mercury account
-
-**Returns:**
-- Full account details including balance, status, and account numbers
-
-### 3. Get Transactions
-Retrieve transaction history for a Mercury bank account with optional filtering.
-
-**Parameters:**
-- `account_id` (required): The unique identifier of the Mercury account
-- `start_date` (optional): Start date for filtering (ISO 8601 format, e.g., 2026-01-01T00:00:00Z)
-- `end_date` (optional): End date for filtering (ISO 8601 format)
-- `limit` (optional): Maximum number of transactions to return (default 100)
-- `offset` (optional): Number of transactions to skip for pagination (default 0)
-
-**Returns:**
-- List of transactions with details (amount, date, counterparty, status, etc.)
-- Total count and pagination info
+Access Mercury Bank accounts, transactions, recipients, and payments through the Mercury API.
 
 ## Setup
 
-### 1. Get Mercury API Token
+1. Log in to [Mercury](https://mercury.com) → **Settings** → **API Tokens**
+2. Create a token with the permissions you need (e.g., `read:accounts`, `read:transactions`, `write:recipients`)
+3. Install this plugin in Dify and enter your API token
+4. Select API environment: **Sandbox** (testing) or **Production** (live data)
 
-1. Log in to your Mercury account
-2. Go to **Settings** → **API Tokens**
-3. Create a new token with the following permissions:
-   - `read:accounts` - Access account information
-   - `read:transactions` - Access transaction data
-4. Copy the access token
+## Tools
 
-### 2. Install Plugin in Dify
+### Accounts
+- **Get Bank Accounts** — List all accounts with balances
+- **Get Account Details** — View a specific account's full details
 
-1. Upload the `mercury_tools_plugin.difypkg` to your Dify instance
-2. Or use remote debugging (see below)
+### Transactions
+- **Get Transactions** — Query transaction history with date range, status, and pagination filters
+- **Get Transaction Details** — View a single transaction
+- **Add Note to Transaction** — Attach a note to a transaction
+- **Attach File to Transaction** — Upload an attachment to a transaction
 
-### 3. Configure Credentials
+### Payments
+- **Send Payment** — Send money to a recipient (ACH, wire, or check)
+- **Internal Transfer** — Transfer funds between your Mercury accounts
 
-When using the tools, you'll be prompted to enter:
-- **Mercury API Access Token**: The token you created in step 1
+### Recipients
+- **Get Recipients** — List all saved recipients
+- **Get Recipient Details** — View a specific recipient
+- **Add New Recipient** — Create a new payment recipient
+- **Edit Recipient** — Update recipient details
+- **Attach File to Recipient** — Upload a document to a recipient profile
 
-## Usage Examples
+### Cards
+- **Get Employee Cards** — List debit cards issued to employees
 
-### Example 1: Get All Accounts
+### Statements
+- **Get Statements** — List available bank statements
+- **Download Statement PDF** — Download a statement as PDF
 
-```yaml
-Workflow Step: Use Tool
-Tool: Get Accounts
-Parameters: (none)
-```
+### Invoicing
+- **Manage Invoices** — Create, search, and manage invoices
+- **Manage Invoicing Customers** — Create and search invoice customers
+- **Download Invoice PDF** — Download an invoice as PDF
 
-Output: List of all your Mercury accounts with balances
-
-### Example 2: Get Specific Account Details
-
-```yaml
-Workflow Step: Use Tool
-Tool: Get Account
-Parameters:
-  account_id: "acc_abc123xyz"
-```
-
-### Example 3: Get Recent Transactions
-
-```yaml
-Workflow Step: Use Tool
-Tool: Get Transactions
-Parameters:
-  account_id: "acc_abc123xyz"
-  start_date: "2026-01-01T00:00:00Z"
-  end_date: "2026-01-31T23:59:59Z"
-  limit: 50
-```
-
-### Example 4: Trigger + Tools Integration
-
-```yaml
-# Use Mercury Trigger to receive transaction events
-# Then use Tools to fetch additional context
-
-Trigger: Mercury Transaction Trigger
-  → Receives transaction event
-
-Step 1: Get Account (Tool)
-  → Use account_id from trigger to get full account details
-
-Step 2: Get Transactions (Tool)
-  → Fetch recent transactions for context
-
-Step 3: Your Business Logic
-  → Process the data (e.g., sync to QuickBooks)
-```
-
-## Development & Testing
-
-### Local Development
-
-```bash
-# Create virtual environment
-cd mercury_tools_plugin
-uv venv
-source .venv/bin/activate  # or .venv/Scripts/activate on Windows
-
-# Install dependencies
-uv pip install -r requirements.txt
-
-# Run with remote debugging
-python main.py
-```
-
-### Remote Debugging
-
-Configure `.env` file:
-```
-INSTALL_METHOD=remote
-REMOTE_INSTALL_HOST=debug.dify.ai
-REMOTE_INSTALL_PORT=5003
-REMOTE_INSTALL_KEY=your-debug-key
-```
-
-### Package Plugin
-
-```bash
-dify plugin package ./mercury_tools_plugin
-```
-
-## API Reference
-
-See [Mercury API Documentation](https://docs.mercury.com) for full API details.
-
-## Related Plugins
-
-- **Mercury Trigger Plugin** (`mercury_plugin`): Receives real-time transaction events via webhooks
-
-## License
-
-Copyright (c) 2026
-
-## Support
-
-For issues or questions, please refer to the Dify plugin documentation.
+### Activity
+- **Get Activity Log** — View account activity events
