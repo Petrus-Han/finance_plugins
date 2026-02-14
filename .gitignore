@@ -17,10 +17,9 @@ build/
 *.egg
 .eggs/
 
-# Dify plugin packages - keep dist/*.difypkg
-!dist/
-dist/*
-!dist/*.difypkg
+# Dify plugin packages - exclude all from git
+dist/
+*.difypkg
 
 # IDE
 .vscode/

@@ -1,42 +1,13 @@
-# Environment variables
-.env
-.env.local
+# Virtual environments
+.venv/
+venv/
+ENV/
 
-# Python
+# Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-*.egg
-*.egg-info/
-dist/
-build/
-eggs/
-.eggs/
-*.manifest
-*.spec
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Virtual environments
-venv/
-.venv/
-ENV/
-env/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
 
 # Testing
 .pytest_cache/
@@ -45,5 +16,39 @@ htmlcov/
 .tox/
 .nox/
 
-# Dify plugin specific
+# Linting
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dify plugin
 *.difypkg
+.credentials
+.credential
+debug.log
+.debug.pid
+
+# Build
+dist/
+build/
+*.egg
+*.egg-info/
+
+# Lock files (not needed in package)
+uv.lock
+
+# Tests (not needed in marketplace package)
+tests/
